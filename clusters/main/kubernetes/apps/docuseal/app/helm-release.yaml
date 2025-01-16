@@ -48,20 +48,20 @@ spec:
             port: 10310
             protocol: http
             targetPort: 3000
-    # ingress:
-    #   main:
-    #     enabled: true
-    #     hosts:
-    #       - host: sign.${DOMAIN_1}
-    #     integrations:
-    #       traefik:
-    #         enabled: true
-    #         # middlewares:
-    #         #   - name: local
-    #         #     namespace: traefik
-    #       certManager:
-    #         enabled: true
-    #         certificateIssuer: cloudflare         
+    ingress:
+      main:
+        enabled: true
+        hosts:
+          - host: sign.${DOMAIN_1}
+        integrations:
+          traefik:
+            enabled: true
+            # middlewares:
+            #   - name: local
+            #     namespace: traefik
+          certManager:
+            enabled: true
+            certificateIssuer: cloudflare         
     workload:
       main:
         podSpec:

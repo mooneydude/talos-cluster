@@ -3,8 +3,6 @@ kind: HelmRelease
 metadata:
   name: hass
   namespace: hass
-  labels:
-    kubernetes.io/hostname: k8s-worker-1
 spec:
   interval: 15m
   chart:
