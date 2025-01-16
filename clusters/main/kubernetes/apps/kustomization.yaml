@@ -5,4 +5,4 @@ resources:
   - cloudflared/ks.yaml
   - docuseal/ks.yaml
   - wg-easy/ks.yaml
-  - hass/ks.yaml
+  # - hass/ks.yaml
