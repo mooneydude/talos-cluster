@@ -1,15 +1,16 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: traefik
-  namespace: traefik
+  name: cloudflared
+  namespace: cloudflared
 spec:
   interval: 15m
   chart:
     spec:
-      chart: traefik
-      version: 30.2.0
+      chart: cloudflared
+      version: 12.7.2
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -17,8 +18,6 @@ spec:
       interval: 15m
   timeout: 20m
   maxHistory: 3
-  driftDetection:
-    mode: warn
   install:
     createNamespace: true
     remediation:
@@ -30,11 +29,13 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    ## set stopAll to "true" if you do not want to use traefik
-    # and/or disable its service
     global:
       stopAll: false
-    defaultCertificate: "cloudflare"
-    service:
-      tcp:
-        loadBalancerIP: ${TRAEFIK_IP}
+    TZ: America/Chicago   
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                TUNNEL_TOKEN: ${CLOUDFLARED_TUNNEL_TOKEN}
