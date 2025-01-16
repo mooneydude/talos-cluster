@@ -1,0 +1,98 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: wg-easy
+  namespace: wg-easy
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: wg-easy
+      version: 16.1.2
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 15m
+  timeout: 5m
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    TZ: America/Chicago
+    global:
+      stopAll: false
+    credentials:
+      s3:
+        type: s3
+        url: "${S3URL}"
+        bucket: "${S3PREFIX}-wg-easy"
+        accessKey: "${S3ID}"
+        secretKey: "${S3KEY}"
+        encrKey: "${S3KEY}"
+    service:
+      vpn:
+        loadBalancerIP: ${WG_EASY_IP}
+        type: LoadBalancer
+        externalTrafficPolicy: Local
+    ingress:
+      main:
+        enabled: true
+        hosts:
+          - host: wireguard.${DOMAIN_1}
+        integrations:
+          traefik:
+            enabled: true
+            # middlewares:
+            #   - name: local
+            #     namespace: traefik
+          certManager:
+            enabled: true
+            certificateIssuer: cloudflare
+    persistence:
+      config:
+        volsync:
+        - name: config
+          type: restic
+          credentials: s3
+          dest:
+            enabled: true
+          src:
+            enabled: true
+            # trigger:
+            #   schedule: 30 1 * * *
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                WG_HOST: wg.${DOMAIN_1}
+                WG_MTU: 1350
+                WG_DEFAULT_DNS: ${BLOCKY_IP}
+                PASSWORD_HASH: ${WG_EASY_PASSWORD}
+                UI_TRAFFIC_STATS: "true"
+    securityContext:
+      container:
+        PUID: 0
+        UMASK: '0022'
+        advanced: false
+        capabilities:
+          add:
+          - NET_ADMIN
+          - NET_RAW
+          - SYS_MODULE
+        readOnlyRootFilesystem: false
+        runAsGroup: 0
+        runAsNonRoot: false
+        runAsUser: 0
+        privileged: true
