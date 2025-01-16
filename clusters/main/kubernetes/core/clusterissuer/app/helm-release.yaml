@@ -1,0 +1,39 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: clusterissuer
+  namespace: clusterissuer
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: clusterissuer
+      version: 9.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 15m
+  timeout: 20m
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    TZ: America/Chicago
+    clusterIssuer:
+      ACME:
+      - name: cloudflare
+        email: "${DOMAIN_0_EMAIL}"
+        server: 'https://acme-v02.api.letsencrypt.org/directory'
+        type: cloudflare
+        cfapitoken: "${DOMAIN_0_CLOUDFLARE_TOKEN}"         
