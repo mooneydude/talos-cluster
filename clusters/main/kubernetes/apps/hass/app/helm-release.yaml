@@ -46,7 +46,7 @@ spec:
     #   main:
     #     enabled: true
     #     hosts:
-    #       - host: ha1.${DOMAIN_1}
+    #       - host: ha.${DOMAIN_1}
     #     integrations:
     #       traefik:
     #         enabled: true
