@@ -92,7 +92,7 @@ spec:
               enabled: true
     cnpg:
       main:
-        password: ${VAULTWARDEN_CNPG_PWD}
+        # password: ${VAULTWARDEN_CNPG_PWD}
         #mode: recovery
         backups:
           enabled: true
