@@ -42,20 +42,20 @@ spec:
         accessKey: "${S3ID}"
         secretKey: "${S3KEY}"
         encrKey: "${S3KEY}"       
-    # ingress:
-    #   main:
-    #     enabled: true
-    #     hosts:
-    #       - host: vault.${DOMAIN_1}
-    #     integrations:
-    #       traefik:
-    #         enabled: true
-    #         # middlewares:
-    #         #   - name: local
-    #         #     namespace: traefik
-    #       certManager:
-    #         enabled: true
-    #         certificateIssuer: cloudflare 
+    ingress:
+      main:
+        enabled: true
+        hosts:
+          - host: vault.${DOMAIN_1}
+        integrations:
+          traefik:
+            enabled: true
+            # middlewares:
+            #   - name: local
+            #     namespace: traefik
+          certManager:
+            enabled: true
+            certificateIssuer: cloudflare 
     vaultwarden:
         allowSignups: false
         verifySignup: false
