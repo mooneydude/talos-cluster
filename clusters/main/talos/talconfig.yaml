@@ -4,7 +4,7 @@ talosVersion: v1.9.1
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.31.4
 endpoint: https://${VIP}:6443
-allowSchedulingOnControlPlanes: true
+allowSchedulingOnControlPlanes: false
 additionalMachineCertSans:
     - 127.0.0.1
     - ${VIP}
@@ -40,6 +40,84 @@ nodes:
               gateway: ${GATEWAY}
           vip:
             ip: ${VIP}
+    # - hostname: k8s-control-2
+    #   ipAddress: ${MASTER2IP_IP}
+    #   controlPlane: true
+    #   nameservers:
+    #     - 1.1.1.1
+    #     - 8.8.8.8
+    #   installDiskSelector:
+    #     size: <= 1TB
+    #   networkInterfaces:
+    #     # suffix is the adapter mac adres.
+    #     - interface: eth0
+    #       addresses:
+    #         - ${MASTER2IP_CIDR}
+    #       routes:
+    #         - network: 0.0.0.0/0
+    #           gateway: ${GATEWAY}
+    #       vip:
+    #         ip: ${VIP}  
+    # - hostname: k8s-control-3
+    #   ipAddress: ${MASTER3IP_IP}
+    #   controlPlane: true
+    #   nameservers:
+    #     - 1.1.1.1
+    #     - 8.8.8.8
+    #   installDiskSelector:
+    #     size: <= 1TB
+    #   networkInterfaces:
+    #     # suffix is the adapter mac adres.
+    #     - interface: eth0
+    #       addresses:
+    #         - ${MASTER3IP_CIDR}
+    #       routes:
+    #         - network: 0.0.0.0/0
+    #           gateway: ${GATEWAY}
+    #       vip:
+    #         ip: ${VIP}                    
+    - hostname: k8s-worker-1
+      ipAddress: 192.168.68.143
+      nameservers:
+        - 1.1.1.1
+        - 8.8.8.8
+      installDiskSelector:
+        size: <= 600GB
+      schematic:
+          customization:
+              systemExtensions:
+                  officialExtensions:
+                      - siderolabs/amd-ucode
+                      - siderolabs/iscsi-tools
+                      - siderolabs/util-linux-tools                                      
+    - hostname: k8s-worker-2
+      ipAddress: 192.168.68.144
+      nameservers:
+        - 1.1.1.1
+        - 8.8.8.8
+      installDiskSelector:
+        size: <= 600GB
+      schematic:
+          customization:
+              systemExtensions:
+                  officialExtensions:
+                      - siderolabs/amd-ucode
+                      - siderolabs/iscsi-tools
+                      - siderolabs/util-linux-tools                                      
+    - hostname: k8s-worker-3
+      ipAddress: 192.168.68.145
+      nameservers:
+        - 1.1.1.1
+        - 8.8.8.8
+      installDiskSelector:
+        size: <= 600GB
+      schematic:
+          customization:
+              systemExtensions:
+                  officialExtensions:
+                      - siderolabs/qemu-guest-agent
+                      - siderolabs/iscsi-tools
+                      - siderolabs/util-linux-tools             
 controlPlane:
     patches:
         - '@./patches/controlplane.yaml'
