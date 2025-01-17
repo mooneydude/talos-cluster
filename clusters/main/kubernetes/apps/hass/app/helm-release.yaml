@@ -42,21 +42,21 @@ spec:
         accessKey: "${S3ID}"
         secretKey: "${S3KEY}"
         encrKey: "${S3KEY}"       
-    # ingress:
-    #   main:
-    #     enabled: true
-    #     hosts:
-    #       - host: ha.${DOMAIN_1}
-    #     integrations:
-    #       traefik:
-    #         enabled: true
-    #         ## To do
-    #         # middlewares:
-    #         #   - name: local
-    #         #     namespace: traefik
-    #       certManager:
-    #         enabled: true
-    #         certificateIssuer: cloudflare  
+    ingress:
+      main:
+        enabled: true
+        hosts:
+          - host: ha.${DOMAIN_1}
+        integrations:
+          traefik:
+            enabled: true
+            ## To do
+            # middlewares:
+            #   - name: local
+            #     namespace: traefik
+          certManager:
+            enabled: true
+            certificateIssuer: cloudflare  
     homeassistant:
       trusted_proxies:
       - 172.16.0.0/16
