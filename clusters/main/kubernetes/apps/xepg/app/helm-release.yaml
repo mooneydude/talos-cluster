@@ -36,7 +36,7 @@ spec:
     TZ: America/Chicago
 
     image:
-      repository: docker.io/mooneydude/nginxphp
+      repository: docker.io/mooneydude/ngixphp
       pullPolicy: IfNotPresent
       tag: latest
     service:
