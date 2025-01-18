@@ -36,9 +36,9 @@ spec:
     TZ: America/Chicago
 
     image:
-      repository: docker.io/mooneydude/ngixphp
+      repository: docker.io/mooneydude/nginxphp
       pullPolicy: IfNotPresent
-      tag: latest
+      tag: latest@sha256:e812078711d2c3b96f3e86b7ab119aeb4af7a50fdd24827ecbef43b0ccd31e34
     service:
         main:
             ports:
@@ -46,11 +46,11 @@ spec:
                     port: 80
                     targetPort: 80
             type: ClusterIP 
-    # workload:
-    #   main:
-    #     podSpec:
-    #       containers:
-    #         main:
-    #           env:
-    #             SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
     #             SERVER_ROOT: "/dynmap"                   
