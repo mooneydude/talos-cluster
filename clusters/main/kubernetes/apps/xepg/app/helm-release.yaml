@@ -39,6 +39,12 @@ spec:
       repository: docker.io/mooneydude/nginxphp
       pullPolicy: IfNotPresent
       tag: latest@sha256:cacd495ba8e6c05e1b8b48d152323afb7307a0eb8e22ce7e57272635b4b2c684
+    securityContext:
+      container:
+        readOnlyRootFilesystem: false
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0      
     service:
         main:
             ports:
