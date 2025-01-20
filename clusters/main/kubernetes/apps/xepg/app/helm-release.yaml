@@ -36,9 +36,9 @@ spec:
     TZ: America/Chicago
 
     image:
-      repository: docker.io/mooneydude/nginxphp-amd
+      repository: docker.io/mooneydude/nginxphp
       pullPolicy: IfNotPresent
-      tag: latest@sha256:e812078711d2c3b96f3e86b7ab119aeb4af7a50fdd24827ecbef43b0ccd31e34
+      tag: latest@sha256:02e67d6440b0a3a0f9fe71796cae9794259b7912b620ad629c4ef9b619072404
     service:
         main:
             ports:
