@@ -38,7 +38,7 @@ spec:
     image:
       repository: docker.io/mooneydude/nginxphp
       pullPolicy: IfNotPresent
-      tag: latest@sha256:d7d4a75abb8fd776abde6ad0639679a57e80c66856a3b86bf62428b085ecb332
+      tag: latest@sha256:cacd495ba8e6c05e1b8b48d152323afb7307a0eb8e22ce7e57272635b4b2c684
     service:
         main:
             ports:
