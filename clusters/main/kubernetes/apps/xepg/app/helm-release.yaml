@@ -36,7 +36,7 @@ spec:
     TZ: America/Chicago
 
     image:
-      repository: docker.io/mooneydude/nginxphp
+      repository: docker.io/mooneydude/xepg
       pullPolicy: IfNotPresent
       tag: latest@sha256:4847d86af7b662c2d756304709fa656b65ecaf02cfd3626f1db5f35a3596745c
     securityContext:
