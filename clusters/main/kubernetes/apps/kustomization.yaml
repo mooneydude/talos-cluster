@@ -7,4 +7,4 @@ resources:
   - hass/ks.yaml
   - vaultwarden/ks.yaml
   # - docuseal/ks.yaml
-  - xepg/ks.yaml
+  # - xepg/ks.yaml
