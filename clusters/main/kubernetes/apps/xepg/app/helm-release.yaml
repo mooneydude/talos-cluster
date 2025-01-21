@@ -46,12 +46,12 @@ spec:
         runAsUser: 0
         runAsGroup: 0      
     service:
-        main:
-            ports:
-                main:
-                    port: 80
-                    targetPort: 80
-            type: ClusterIP 
+      main:
+        type: LoadBalancer
+        loadBalancerIP: ${XMLTV_IP}
+        ports:
+          main:
+            port: 80
     workload:
       main:
         podSpec:
