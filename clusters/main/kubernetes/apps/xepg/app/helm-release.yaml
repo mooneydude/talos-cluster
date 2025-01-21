@@ -59,4 +59,4 @@ spec:
             main:
               env:
                 SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
-    #             SERVER_ROOT: "/dynmap"                   
+    #             SERVER_ROOT: "/html"                   

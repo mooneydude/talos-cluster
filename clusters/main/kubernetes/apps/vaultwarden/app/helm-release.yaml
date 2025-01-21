@@ -46,7 +46,7 @@ spec:
       main:
         enabled: true
         hosts:
-          - host: myvault.${DOMAIN_1}
+          - host: vault.${DOMAIN_1}
         integrations:
           traefik:
             enabled: true
