@@ -38,7 +38,7 @@ spec:
     image:
       repository: docker.io/mooneydude/xepg
       pullPolicy: IfNotPresent
-      tag: latest@sha256:e391d80011d35ef7e2003cb67a4bba4a4cfe9f0d1f910af4c05d1b079fca1c69
+      tag: latest@sha256:2f215c94fdb1c1a2b59a6bbda490d2af734c8f3cbeab8709d12f9ac2c964376e
     securityContext:
       container:
         readOnlyRootFilesystem: false
