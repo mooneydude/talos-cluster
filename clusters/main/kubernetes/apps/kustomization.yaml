@@ -10,3 +10,4 @@ resources:
   - vaultwarden/ks.yaml
   - xteve/ks.yaml
   - jellyfin/ks.yaml
+  - mooneycloud/ks.yaml
