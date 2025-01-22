@@ -8,4 +8,4 @@ resources:
   # - docuseal/ks.yaml
   - xepg/ks.yaml
   - vaultwarden/ks.yaml
-  # - xteve/ks.yaml
+  - xteve/ks.yaml
