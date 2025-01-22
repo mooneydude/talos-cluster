@@ -9,3 +9,4 @@ resources:
   - xepg/ks.yaml
   - vaultwarden/ks.yaml
   - xteve/ks.yaml
+  - jellyfin/ks.yaml
