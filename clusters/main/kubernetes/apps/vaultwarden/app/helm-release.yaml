@@ -57,7 +57,7 @@ spec:
             enabled: true
             certificateIssuer: cloudflare 
     vaultwarden:
-        allowSignups: false
+        allowSignups: true
         verifySignup: false
         requireEmail: false
         allowInvitation: true
