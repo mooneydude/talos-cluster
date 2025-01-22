@@ -87,11 +87,6 @@ spec:
               enabled: true
               trigger:
                 schedule: 0 23 * * *
-        # data:
-        #   enabled: true
-        #   type: nfs
-        #   path: ${NEXTCLOUD_NFS_PATH}
-        #   server: ${CONFIG_TRUENAS_IP}
         data:
           enabled: true
           type: nfs
