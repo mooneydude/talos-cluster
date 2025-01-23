@@ -7,7 +7,7 @@ resources:
   - hass/ks.yaml
   # - docuseal/ks.yaml
   - xepg/ks.yaml
-  - vaultwarden/ks.yaml
+  # - vaultwarden/ks.yaml
   - xteve/ks.yaml
   - jellyfin/ks.yaml
   - mooneycloud/ks.yaml
