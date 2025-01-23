@@ -93,13 +93,13 @@ spec:
     cnpg:
       main:
         # password: ${VAULTWARDEN_CNPG_PWD}
-        mode: recovery
+        # mode: recovery
         backups:
           enabled: true
           credentials: s3
           revision: "1"
           retentionPolicy: "7d"
         recovery:
-          # method: object_store
+          method: object_store
           credentials: s3
           revision: "1"  
