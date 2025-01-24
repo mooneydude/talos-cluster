@@ -97,6 +97,12 @@ spec:
         backups:
           enabled: true
           credentials: s3
+          scheduledBackups:
+            - name: daily-backup
+              schedule: "0 15 16 * * *"
+              backupOwnerReference: self
+              immediate: true
+              suspend: false           
           revision: "1"
           retentionPolicy: "7d"
         recovery:
