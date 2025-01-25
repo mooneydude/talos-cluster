@@ -9,7 +9,7 @@ spec:
   interval: 15m
   chart:
     spec:
-      chart: stun-tun-server
+      chart: stun-turn-server
       version: 8.4.0
       sourceRef:
         kind: HelmRepository
