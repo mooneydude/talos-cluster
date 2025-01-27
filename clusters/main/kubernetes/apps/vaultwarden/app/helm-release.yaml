@@ -67,19 +67,6 @@ spec:
           enabled: true
           disableAdminToken: false
           token: ${VW_TOKEN}
-        smtp:
-          enabled: false
-          host: smtp.gmail.com
-          from: ${EMAIL}
-          fromName: Dude
-          security: starttls
-          port: 587
-          heloName: Vault
-          timeout: 15
-          invalidHostname: false
-          invalidCertificate: false
-          user: ${EMAIL}
-          password: ${VW_SMTP_PWD}
     persistence:
       data:
         volsync:
@@ -92,13 +79,13 @@ spec:
               enabled: true
     cnpg:
       main:
-        mode: recovery
+        # mode: recovery
         backups:
           enabled: true
           credentials: s3
           scheduledBackups:
             - name: daily-backup
-              schedule: "0 25 17 * * *"
+              schedule: "0 25 19 * * *"
               backupOwnerReference: self
               immediate: true
               suspend: false           
