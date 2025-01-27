@@ -81,7 +81,7 @@ spec:
                 schedule: 0 20 * * *
     cnpg:
       main:
-        # mode: recovery
+        mode: recovery
         backups:
           enabled: true
           credentials: s3
@@ -95,4 +95,4 @@ spec:
         recovery:
           method: object_store
           credentials: s3
-          # revision: "1"  
+          revision: "1"  
