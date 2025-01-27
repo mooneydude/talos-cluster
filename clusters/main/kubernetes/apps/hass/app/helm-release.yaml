@@ -85,15 +85,14 @@ spec:
           credentials: s3
           scheduledBackups:
             - name: daily-backup
-              schedule: "0 15 16 * * *"
+              schedule: "0 30 17 * * *"
               backupOwnerReference: self
               immediate: true
               suspend: false          
           retentionPolicy: "14d"
-          revision: "1"
         recovery:
           credentials: s3
-          revision: "1"
+          # revision: "1"
     workload:
       main:
         podSpec:
