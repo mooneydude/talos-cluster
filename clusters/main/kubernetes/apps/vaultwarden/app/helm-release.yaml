@@ -105,5 +105,6 @@ spec:
               suspend: false           
           retentionPolicy: "7d"
         recovery:
+          method: object_store
           credentials: s3
           # revision: "1"  
