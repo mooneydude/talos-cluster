@@ -81,9 +81,9 @@ spec:
                 schedule: 0 20 * * *
     cnpg:
       main:
-        mode: recovery
+        # mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
         backups:
-          enabled: true
+          enabled: true  # Set to 'false' when performing new install (recovery)
           credentials: s3
           scheduledBackups:
             - name: daily-backup
