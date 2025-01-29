@@ -35,14 +35,10 @@ spec:
 
     TZ: America/Chicago
     
-    ingress:
+    service:
       main:
-        enabled: true
-        hosts:
-          - host: stun.${DOMAIN_1}
-        integrations:
-          traefik:
-            enabled: true
-          certManager:
-            enabled: true
-            certificateIssuer: cloudflare  
+        type: LoadBalancer
+        loadBalancerIP: ${TURN_IP}
+        ports:
+          main:
+            port: 5349
