@@ -37,8 +37,20 @@ spec:
     
     service:
       main:
-        type: LoadBalancer
+        enabled: true
         loadBalancerIP: ${TURN_IP}
         ports:
           main:
+            enabled: true
             port: 5349
+            protocol: tcp
+            targetPort: 5349
+      udpports:
+        enabled: true
+        loadBalancerIP: ${TURN_IP}
+        ports:
+          udpports:
+            enabled: true
+            port: 5349
+            protocol: udp
+            targetPort: 5349
