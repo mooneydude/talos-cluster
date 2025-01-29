@@ -46,3 +46,14 @@ spec:
             port: 5349
             protocol: tcp
             targetPort: 5349
+    ingress:
+      main:
+        enabled: true
+        hosts:
+          - host: stun.${DOMAIN_1}
+        integrations:
+          traefik:
+            enabled: true
+          certManager:
+            enabled: true
+            certificateIssuer: cloudflare         
