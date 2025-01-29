@@ -33,7 +33,7 @@ spec:
     global:
       stopAll: false
 
-    TZ: America/
+    TZ: America/Chicago
     
     ingress:
       main:
@@ -43,10 +43,6 @@ spec:
         integrations:
           traefik:
             enabled: true
-            ## To do
-            # middlewares:
-            #   - name: local
-            #     namespace: traefik
           certManager:
             enabled: true
             certificateIssuer: cloudflare  
