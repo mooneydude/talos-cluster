@@ -10,5 +10,5 @@ resources:
   - vaultwarden/ks.yaml
   - xteve/ks.yaml
   - jellyfin/ks.yaml
-  - mooneycloud/ks.yaml
+  # - mooneycloud/ks.yaml
   - nc-talk/ks.yaml
