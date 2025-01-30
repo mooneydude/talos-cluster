@@ -54,7 +54,7 @@ spec:
                 recovery:
                     credentials: s3
                     enabled: true
-                    revision: "3"
+                    # revision: "3"
                     serverName: ""
                 user: nextcloud
         credentials:
