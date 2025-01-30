@@ -38,7 +38,7 @@ spec:
                     credentials: s3
                     enabled: true
                     retentionPolicy: ""
-                    revision: "1"
+                    revision: "2"
                 # mode: recovery
                 monitoring:
                     disableDefaultQueries: false
@@ -47,14 +47,14 @@ spec:
                 pgVersion: 15
                 scheduledBackups:
                   - name: daily-backup
-                    schedule: "0 0 15 * * *"
+                    schedule: "0 25 17 * * *"
                     backupOwnerReference: self
                     immediate: true
                     suspend: false
                 recovery:
                     credentials: s3
                     enabled: true
-                    revision: "2"
+                    revision: "3"
                     serverName: ""
                 user: nextcloud
         credentials:
@@ -69,7 +69,7 @@ spec:
             main:
                 enabled: true
                 hosts:
-                    - host: testcloud.${DOMAIN_0}
+                    - host: testcloud.${DOMAIN_1}
                       paths:
                         - path: /
                           pathType: Prefix
