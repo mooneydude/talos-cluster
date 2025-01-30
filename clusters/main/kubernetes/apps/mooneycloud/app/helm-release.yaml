@@ -1,125 +1,132 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-    name: mooneycloud
-    namespace: mooneycloud
+    name: nextcloud
+    namespace: nextcloud
 spec:
-    interval: 5m
+    interval: 15m
     chart:
         spec:
-            # renovate: registryUrl=https://charts.truechartsoci.org
             chart: nextcloud
-            version: 32.6.5
+            version: 32.8.6
             sourceRef:
                 kind: HelmRepository
                 name: truecharts
                 namespace: flux-system
-            interval: 5m
+            interval: 15m
+    timeout: 20m
+    maxHistory: 3
+    driftDetection:
+        mode: warn
     install:
         createNamespace: true
-        crds: CreateReplace
         remediation:
             retries: 3
     upgrade:
-        crds: CreateReplace
+        cleanupOnFail: true
         remediation:
             retries: 3
-    timeout: 20m
+    uninstall:
+        keepHistory: false
     values:
-      TZ: America/Chicago
-      global:
-        stopAll: false
-      credentials:
-        s3:
-          type: s3
-          url: "${S3URL}"
-          bucket: "${S3PREFIX}-nextcloud"
-          accessKey: "${S3ID}"
-          secretKey: "${S3KEY}"
-          encrKey: "${S3KEY}"
-      ingress:
-        main:
-          enabled: true
-          hosts:
-            - host: testcloud.${DOMAIN_1}
-          integrations:
-            traefik:
-              enabled: true
-            certManager:
-              enabled: true
-              certificateIssuer: cloudflare         
-      persistence:
-        config:
-          volsync:
-          - name: config
-            type: restic
-            cleanupTempPVC: true
-            cleanupCachePVC: true
-            credentials: s3
-            dest:
-              enabled: true
-            src:
-              enabled: true
-              trigger:
-                schedule: 0 23 * * *
-        data:
-          enabled: true
-          type: nfs
-          server: ${TRUENAS_IP}
-          path: /mnt/data1/nc_userdata
-          mountPath: /var/www/html/data               
-        html:
-          volsync:
-          - name: html
-            type: restic
-            cleanupTempPVC: true
-            cleanupCachePVC: true
-            credentials: s3
-            dest:
-              enabled: true
-            src:
-              enabled: true
-              trigger:
-                schedule: 0 23 * * *
-      cnpg:
-        main:
-          cluster:
-            postgresql:
-                max_slot_wal_keep_size: 1GB
-                wal_compression: lz4
-          # mode: recovery
-          backups:
-            enabled: true
-            credentials: s3
-            scheduledBackups:
-              - name: daily-backup
-                schedule: "0 15 14 * * *"
-                backupOwnerReference: self
-                immediate: true
-                suspend: false
-          recovery:
-            method: object_store
-            credentials: s3
-            # revision: "1"
-      nextcloud:
-        collabora:
-          enabled: false
-          password: "${NEXTCLOUD_PWD}"
+        global:
+            stopAll: false
+        TZ: America/Chicago
+        cnpg:
+            main:
+                backups:
+                    credentials: s3
+                    enabled: true
+                    retentionPolicy: ""
+                    revision: "1"
+                # mode: recovery
+                monitoring:
+                    disableDefaultQueries: false
+                    enablePodMonitor: true
+                password: ${NEXTCLOUD_CNPG_PWD}
+                pgVersion: 15
+                scheduledBackups:
+                  - name: daily-backup
+                    schedule: "0 0 15 * * *"
+                    backupOwnerReference: self
+                    immediate: true
+                    suspend: false
+                recovery:
+                    credentials: s3
+                    enabled: true
+                    revision: "2"
+                    serverName: ""
+                user: nextcloud
         credentials:
-          initialAdminPassword: "${NEXTCLOUD_PWD}"
-          initialAdminUser: "${NEXTCLOUD_USER}"
-        general:
-          accessIP: ${TRAEFIK_IP}
-          default_phone_region: US
-        previews:
-          providers:
-          - BMP
-          - GIF
-          - JPEG
-          - Krita
-          - MarkDown
-          - MP3
-          - OpenDocument
-          - PNG
-          - TXT
-          - XBitmap
+          s3:
+            type: s3
+            url: "${S3URL}"
+            bucket: "${S3PREFIX}-nextcloud"
+            accessKey: "${S3ID}"
+            secretKey: "${S3KEY}"
+            encrKey: "${S3KEY}"
+        ingress:
+            main:
+                enabled: true
+                hosts:
+                    - host: testcloud.${DOMAIN_0}
+                      paths:
+                        - path: /
+                          pathType: Prefix
+                integrations:
+                    certManager:
+                        certificateIssuer: cloudflare
+                        enabled: true
+                    # homepage:
+                    #     description: ""
+                    #     enabled: true
+                    #     group: Apps
+                    #     icon: ""
+                    #     name: ""
+                    #     widget:
+                    #         custom:
+                    #             key: ""
+                    #         enabled: false
+                    traefik:
+                        enabled: true
+                        entrypoints:
+                            - websecure
+        nextcloud:
+            credentials:
+                initialAdminPassword: ${ADMIN_PASSWORD}
+                initialAdminUser: admin
+            general:
+                accessIP: ${TRUENAS_IP}
+                default_phone_region: US
+            notify_push:
+                enabled: true
+        persistence:
+            config:
+                volsync:
+                    - credentials: s3
+                      dest:
+                        enabled: true
+                      name: config
+                      src:
+                        enabled: true
+                        trigger:
+                          schedule: 0 15 * * *
+                      type: restic
+            data:
+                enabled: true
+                path: /mnt/data1/nc_userdata
+                readOnly: false
+                server: ${TRUENAS_IP}
+                type: nfs
+            html:
+                volsync:
+                    - credentials: s3
+                      dest:
+                        enabled: true
+                      name: html
+                      src:
+                        enabled: true
+                        trigger:
+                          schedule: 0 15 * * *
+                      type: restic
+
