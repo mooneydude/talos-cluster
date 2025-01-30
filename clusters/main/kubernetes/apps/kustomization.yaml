@@ -11,4 +11,4 @@ resources:
   - xteve/ks.yaml
   - jellyfin/ks.yaml
   - nc-talk/ks.yaml
-  - nextcloud/ks.yaml
+  # - nextcloud/ks.yaml
