@@ -87,20 +87,20 @@ spec:
             postgresql:
                 max_slot_wal_keep_size: 1GB
                 wal_compression: lz4
-          mode: recovery
+          # mode: recovery
           backups:
-            enabled: false
+            enabled: true
             credentials: s3
             scheduledBackups:
               - name: daily-backup
-                schedule: "0 30 14 * * *"
+                schedule: "0 15 14 * * *"
                 backupOwnerReference: self
                 immediate: true
                 suspend: false
           recovery:
             method: object_store
             credentials: s3
-            revision: "1"
+            # revision: "1"
       nextcloud:
         collabora:
           enabled: false
