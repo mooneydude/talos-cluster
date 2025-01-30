@@ -51,28 +51,6 @@ spec:
             certManager:
               enabled: true
               certificateIssuer: cloudflare         
-      cnpg:
-        main:
-          cluster:
-            # singleNode: true
-            postgresql:
-                max_slot_wal_keep_size: 1GB
-                wal_compression: lz4
-          # mode: recovery
-          backups:
-            enabled: true
-            credentials: s3
-            scheduledBackups:
-              - name: daily-backup
-                schedule: "0 30 14 * * *"
-                backupOwnerReference: self
-                immediate: true
-                suspend: false
-            revision: "1"      
-          recovery:
-            method: object_store
-            credentials: s3 
-            # revision: "1"           
       persistence:
         config:
           volsync:
@@ -106,6 +84,26 @@ spec:
               enabled: true
               trigger:
                 schedule: 0 23 * * *
+      cnpg:
+        main:
+          cluster:
+            postgresql:
+                max_slot_wal_keep_size: 1GB
+                wal_compression: lz4
+          mode: recovery
+          backups:
+            enabled: false
+            credentials: s3
+            scheduledBackups:
+              - name: daily-backup
+                schedule: "0 30 14 * * *"
+                backupOwnerReference: self
+                immediate: true
+                suspend: false
+          recovery:
+            method: object_store
+            credentials: s3
+            revision: "1"
       nextcloud:
         collabora:
           enabled: false
