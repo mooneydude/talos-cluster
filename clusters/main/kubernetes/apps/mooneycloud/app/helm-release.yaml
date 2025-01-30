@@ -41,7 +41,7 @@ spec:
         main:
           enabled: true
           hosts:
-            - host: cloud.${DOMAIN_1}
+            - host: testcloud.${DOMAIN_1}
           integrations:
             traefik:
               enabled: true
