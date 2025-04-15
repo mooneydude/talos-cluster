@@ -12,7 +12,7 @@ metadata:
 spec:
   ingressClassName: external
   rules:
-  - host: webhook.${DOMAIN_2}
+  - host: webhook-flux.${DOMAIN_2}
     http:
       paths:
       - pathType: Prefix
@@ -24,5 +24,5 @@ spec:
               number: 80
   tls:
     - hosts:
-      - webhook.${DOMAIN_2}
+      - webhook-flux.${DOMAIN_2}
       secretName: cloudflare
