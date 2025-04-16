@@ -91,3 +91,6 @@ spec:
           method: object_store
           credentials: s3
           revision: ""
+    podOptions:
+        nodeSelector:
+            kubernetes.io/hostname: "k8s-worker-2"          
