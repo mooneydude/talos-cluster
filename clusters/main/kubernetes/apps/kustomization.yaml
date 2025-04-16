@@ -5,3 +5,4 @@ resources:
   - cloudflared/ks.yaml
   - speedtest-tracker/ks.yaml
   - hass/ks.yaml
+  - vaultwarden/ks.yaml
