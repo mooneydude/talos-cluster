@@ -3,5 +3,5 @@ kind: Kustomization
 resources:
   # - kubernetes-dashboard/ks.yaml
   - cloudflared/ks.yaml
-  # - speedtest-tracker/ks.yaml
+  - speedtest-tracker/ks.yaml
   - hass/ks.yaml
