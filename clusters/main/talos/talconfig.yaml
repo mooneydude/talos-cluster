@@ -82,7 +82,7 @@ nodes:
           vip:
             ip: ${VIP}
     - hostname: k8s-worker-1
-      ipAddress: 192.168.2.213
+      ipAddress: 192.168.2.207
       nameservers:
         - 1.1.1.1
         - 8.8.8.8
@@ -90,7 +90,7 @@ nodes:
         # size: <= 600GB
         model: Fan*
     - hostname: k8s-worker-2
-      ipAddress: 192.168.2.214
+      ipAddress: 192.168.2.206
       nameservers:
         - 1.1.1.1
         - 8.8.8.8
