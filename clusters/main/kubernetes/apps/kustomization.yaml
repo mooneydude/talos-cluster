@@ -9,6 +9,7 @@ resources:
   - ext-cow/ks.yaml
   - ext-ntopng/ks.yaml
   - ext-pfsense/ks.yaml
+  - ext-plex/ks.yaml
   - jellyfin/ks.yaml
   - xepg/ks.yaml
   - xteve/ks.yaml
