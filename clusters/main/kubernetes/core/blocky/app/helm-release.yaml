@@ -79,15 +79,15 @@ spec:
       main:
         enabled: false
 
-    # customDNS:
-    #   mapping:
-    #   - domain: "${DOMAIN_0}"
-    #     dnsserver: ${COW_IP}
-    #   - domain: "${DOMAIN_3}"
-    #     dnsserver: ${COW_IP}
-    #   - domain: "${DOMAIN_5}"
-    #     dnsserver: ${COW_IP}
-    #   - domain: plex.${DOMAIN_1}
-    #     dnsserver: ${PLEX_IP}
+    customDNS:
+      mapping:
+      - domain: "${DOMAIN_0}"
+        dnsserver: ${COW_IP}
+      - domain: "${DOMAIN_3}"
+        dnsserver: ${COW_IP}
+      - domain: "${DOMAIN_5}"
+        dnsserver: ${COW_IP}
+      - domain: plex.${DOMAIN_1}
+        dnsserver: ${PLEX_IP}
       
 
