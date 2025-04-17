@@ -49,6 +49,18 @@ spec:
           main:
             port: 34400
             targetPort: 34400
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: internal 
+        hosts:
+          - host: xteve.${DOMAIN_1}
+        integrations:
+          traefik:
+            enabled: false
+          certManager:
+            enabled: true
+            certificateIssuer: cloudflare 
     persistence:
       config:
         size: 1Gi
