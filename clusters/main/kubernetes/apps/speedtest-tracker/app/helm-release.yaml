@@ -62,7 +62,7 @@ spec:
         enabled: true
         ingressClassName: internal
         hosts:
-          - host: speed.${DOMAIN_1}
+          - host: speedtest.${DOMAIN_1}
         integrations:
           traefik:
             enabled: false
