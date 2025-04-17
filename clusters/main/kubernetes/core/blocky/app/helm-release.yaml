@@ -71,3 +71,32 @@ spec:
     cnpg:
       main:
         enabled: false
+
+    workload:
+    main:
+      replicas: 2
+      strategy: RollingUpdate
+      podSpec:
+        nodeSelector:
+          feature.node.kubernetes.io/usb-ff_10c4_ea60.present: "true"        
+        containers:
+          main:
+            probes:
+              liveness:
+                enabled: false
+                type: exec
+                command:
+                  - /app/blocky
+                  - healthcheck
+              readiness:
+                enabled: false
+                type: exec
+                command:
+                  - /app/blocky
+                  - healthcheck
+              startup:
+                enabled: false
+                type: exec
+                command:
+                  - /app/blocky
+                  - healthcheck
