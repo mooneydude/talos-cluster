@@ -82,11 +82,6 @@ spec:
     defaultBackend:
       enabled: false
 
-    workload:
-      main:
-        # type: Deployment
-        # strategy: RollingUpdate #ToDo install a second zigbee dongle 
-        # replicas: 2      
-        podSpec:
-          nodeSelector:
-            kubernetes.io/hostname: "k8s-worker-2"
+    podOptions:
+        nodeSelector:
+            kubernetes.io/hostname: "k8s-worker-3"            
