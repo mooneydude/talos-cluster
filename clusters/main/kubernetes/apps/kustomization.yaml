@@ -11,5 +11,5 @@ resources:
   - ext-pfsense/ks.yaml
   - ext-plex/ks.yaml
   - jellyfin/ks.yaml
-  - xepg/ks.yaml
+  # - xepg/ks.yaml
   - xteve/ks.yaml
