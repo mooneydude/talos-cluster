@@ -82,6 +82,8 @@ spec:
     defaultBackend:
       enabled: false
 
-    podOptions:
-        nodeSelector:
-            kubernetes.io/hostname: "k8s-worker-2"            
+    workload:
+      controller:
+        podSpec:
+          nodeSelector:
+            kubernetes.io/hostname: "k8s-worker-2"
