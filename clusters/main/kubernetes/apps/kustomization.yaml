@@ -4,8 +4,8 @@ resources:
   # - kubernetes-dashboard/ks.yaml
   - cloudflared/ks.yaml
   - speedtest-tracker/ks.yaml
-  - hass/ks.yaml
-  # - vaultwarden/ks.yaml
+  # - hass/ks.yaml
+  - vaultwarden/ks.yaml
   - ext-cow/ks.yaml
   - ext-ntopng/ks.yaml
   - ext-pfsense/ks.yaml
