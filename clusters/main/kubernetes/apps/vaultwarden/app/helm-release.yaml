@@ -73,10 +73,12 @@ spec:
             type: restic
             credentials: s3
             src:
+              volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true
               schedule: "15 2 * * *"  
             dest:
-              enabled: true  
+              volumeSnapshotClassName: csi-ceph-blockpool               
+              enabled: true
     cnpg:
       main:
         mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
