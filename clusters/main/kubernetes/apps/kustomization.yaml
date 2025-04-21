@@ -13,5 +13,5 @@ resources:
   - jellyfin/ks.yaml
   - xepg/ks.yaml
   - xteve/ks.yaml
-  # - grafana/ks.yaml
+  - grafana/ks.yaml
   - docuseal/ks.yaml
