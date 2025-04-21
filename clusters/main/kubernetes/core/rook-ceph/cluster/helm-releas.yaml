@@ -166,8 +166,8 @@ spec:
         isDefault: true
         deletionPolicy: Delete
 
-      cephFileSystemVolumeSnapshotClass:
-        enabled: true
-        name: ceph-filesystem
-        isDefault: true
-        deletionPolicy: Delete        
+      # cephFileSystemVolumeSnapshotClass:
+      #   enabled: true
+      #   name: ceph-filesystem
+      #   isDefault: true
+      #   deletionPolicy: Delete        
