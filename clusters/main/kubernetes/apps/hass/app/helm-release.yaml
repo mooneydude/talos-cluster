@@ -58,7 +58,7 @@ spec:
         enabled: true
         ingressClassName: external
         hosts:
-          - host: hass.${DOMAIN_1}
+          - host: ha.${DOMAIN_1}
         integrations:
           traefik:
             enabled: false
