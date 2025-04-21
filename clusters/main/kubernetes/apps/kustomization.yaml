@@ -14,3 +14,4 @@ resources:
   - xepg/ks.yaml
   - xteve/ks.yaml
   # - grafana/ks.yaml
+  - docuseal/ks.yaml
