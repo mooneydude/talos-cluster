@@ -97,7 +97,7 @@ nodes:
       installDiskSelector:
         size: '> 200GB'
     - hostname: k8s-worker-3
-      ipAddress: 192.168.68.130
+      ipAddress: 192.168.2.205
       nameservers:
         - 1.1.1.1
         - 8.8.8.8
