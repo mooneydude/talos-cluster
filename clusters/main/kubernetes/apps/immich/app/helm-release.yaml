@@ -34,7 +34,14 @@ spec:
       stopAll: false
 
     TZ: America/Chicago
-
+    credentials:
+      s3:
+        type: s3
+        url: "${MINIO_S3URL}"
+        bucket: "${MINIO_S3PREFIX}-immich"
+        accessKey: "${MINIO_S3ID}"
+        secretKey: "${MINIO_S3KEY}"
+        encrKey: "${MINIO_S3KEY}"       
     ingress:
       main:
         enabled: true
@@ -48,24 +55,28 @@ spec:
             enabled: true
             certificateIssuer: cloudflare
     persistence:
-      # profile:
-      #   volsync:
-      #     - name: prf
-      #       type: restic
-      #       credentials: backblaze
-      #       dest:
-      #         enabled: true
-      #       src:
-      #         enabled: true
-      # thumbs:
-      #   volsync:
-      #     - name: thn
-      #       type: restic
-      #       credentials: backblaze
-      #       dest:
-      #         enabled: true
-      #       src:
-      #         enabled: true
+      profile:
+        volsync:
+          - name: prf
+            type: restic
+            credentials: s3
+            dest:
+              volumeSnapshotClassName: csi-ceph-blockpool
+              enabled: true
+            src:
+              volumeSnapshotClassName: csi-ceph-blockpool
+              enabled: true
+      thumbs:
+        volsync:
+          - name: thn
+            type: restic
+            credentials: s3
+            dest:
+              volumeSnapshotClassName: csi-ceph-blockpool
+              enabled: true
+            src:
+              volumeSnapshotClassName: csi-ceph-blockpool
+              enabled: true
 
       backups:
         type: nfs
