@@ -47,7 +47,7 @@ spec:
         enabled: true
         ingressClassName: internal
         hosts:
-          - host: vaultwarden.${DOMAIN_1}
+          - host: vault.${DOMAIN_1}
         integrations:
           traefik:
             enabled: false
