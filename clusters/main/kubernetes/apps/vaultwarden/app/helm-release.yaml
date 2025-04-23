@@ -75,7 +75,7 @@ spec:
             src:
               volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true
-              schedule: "15 2 * * *"  
+              schedule: "0 0 * * *"  
             dest:
               volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true
@@ -83,11 +83,11 @@ spec:
       main:
         mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
         backups:
-          enabled: false  # Set to 'false' when performing new install (recovery)
+          enabled: true  # Set to 'false' when performing new install (recovery)
           credentials: s3
           scheduledBackups:
             - name: daily-backup
-              schedule: "0 30 15 * * *"
+              schedule: "0 0 0 * * *"
               backupOwnerReference: self
               immediate: true
               suspend: false           
