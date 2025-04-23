@@ -83,7 +83,7 @@ spec:
       main:
         mode: recovery   # Set to 'recovery' when recovery from S3, also change the revisions 
         backups:
-          enabled: true
+          enabled: fasle
           credentials: s3
           retentionPolicy: "14d"
           revision: "2"
