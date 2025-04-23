@@ -81,9 +81,9 @@ spec:
               enabled: true
     cnpg:
       main:
-        # mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
+        mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
         backups:
-          enabled: true  # Set to 'false' when performing new install (recovery)
+          enabled: false  # Set to 'false' when performing new install (recovery)
           credentials: s3
           scheduledBackups:
             - name: daily-backup
@@ -92,11 +92,11 @@ spec:
               immediate: true
               suspend: false           
           retentionPolicy: "7d"
-          revision: "2"
+          revision: "3"
         recovery:
           method: object_store
           credentials: s3
-          revision: "1"
+          revision: "2"
     workload:
       main:
         # type: Deployment
