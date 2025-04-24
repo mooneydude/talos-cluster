@@ -89,9 +89,7 @@ spec:
         ports:
           main:
             enabled: true
-            port: 8123
-            protocol: tcp
-            targetPort: 8123
+            port: 8086
 
     ingress:
       main:
