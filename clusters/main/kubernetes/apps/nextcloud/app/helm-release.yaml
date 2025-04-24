@@ -74,7 +74,7 @@ spec:
               volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
               trigger:
-                schedule: 50 17 * * *
+                schedule: 30 7 * * *
       html:
         storageClass: ceph-nvme
         size: 10Gi
@@ -91,14 +91,13 @@ spec:
               volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
               trigger:
-                schedule: 55 17 * * *
+                schedule: 30 7 * * *
       data:
         type: nfs
         server: ${TRUENAS_IP}
         path: /mnt/data1/nc_userdata
     cnpg:
       main:
-        hibernate: false
         # mode: recovery
         backups:
           enabled: true
@@ -106,7 +105,7 @@ spec:
           revision: "1"
           scheduledBackups:
             - name: daily-backup
-              schedule: "0 0 18 * * *"
+              schedule: "0 45 7 * * *"
               backupOwnerReference: self
               immediate: true
               suspend: false 
