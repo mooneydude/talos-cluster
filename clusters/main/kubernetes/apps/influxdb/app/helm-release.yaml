@@ -97,10 +97,10 @@ spec:
             - path: /
               pathType: Prefix
         integrations:
-          # traefik:
-          #   enabled: false
-          #   entrypoints:
-          #     - websecure        
+          traefik:
+            enabled: false
+            entrypoints:
+              - websecure        
           certManager:
             certificateIssuer: cloudflare
             enabled: true
