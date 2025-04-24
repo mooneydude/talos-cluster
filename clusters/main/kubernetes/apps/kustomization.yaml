@@ -16,3 +16,4 @@ resources:
   - grafana/ks.yaml
   - docuseal/ks.yaml
   - immich/ks.yaml
+  - nextcloud/ks.yaml
