@@ -38,7 +38,7 @@ spec:
         ports:
           main:
             protocol: tcp
-            port: 80
+            port: 8888
     ingress:
       main:
         enabled: true
