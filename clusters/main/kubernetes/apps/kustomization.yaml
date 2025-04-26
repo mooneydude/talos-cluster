@@ -15,6 +15,6 @@ resources:
   - xteve/ks.yaml
   - grafana/ks.yaml
   - docuseal/ks.yaml
-  # - immich/ks.yaml
+  - immich/ks.yaml
   - nextcloud/ks.yaml
   - influxdb/ks.yaml
