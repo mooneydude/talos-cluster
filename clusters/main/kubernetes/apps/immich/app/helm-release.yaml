@@ -121,3 +121,11 @@ spec:
           credentials: s3
           revision: ""
 
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                - name: IMMICH_ENABLE_LIBRARY_WATCHER
+                  value: "true"
