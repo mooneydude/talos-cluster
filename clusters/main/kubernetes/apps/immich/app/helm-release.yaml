@@ -121,12 +121,13 @@ spec:
           credentials: s3
           revision: ""
 
-    workload:
-      main:
-        enabled: true
-        podSpec:
-          containers:
-            main:
-              env:
-                - name: IMMICH_ENABLE_LIBRARY_WATCHER
-                  value: "true"
+    services:
+      main: # Corresponds to the 'immich-server' component
+        primary: true # Usually the default, explicitly stating
+        containers:
+          main:
+            env:
+              # Enable library watcher for external libraries
+              IMMICH_ENABLE_LIBRARY_WATCHER: "true" # Use quotes for boolean values in Helm env vars
+              # Add other environment variables for the main server here if needed
+              # TZ: "America/Chicago" # Set Timezone here if not globally
