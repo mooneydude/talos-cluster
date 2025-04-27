@@ -123,6 +123,7 @@ spec:
 
     workload:
       main:
+        enabled: true
         podSpec:
           containers:
             main:
