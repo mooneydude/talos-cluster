@@ -61,8 +61,8 @@ spec:
       config:
         storageClass: ceph-filesystem
         size: 1Gi
-        # accessModes:
-        #   - ReadWriteMany        
+        accessModes:
+          - ReadWriteMany        
         volsync:
           - name: config
             type: restic
@@ -76,10 +76,10 @@ spec:
               trigger:
                 schedule: 30 7 * * *
       html:
-        storageClass: ceph-nvme
+        storageClass: ceph-filesystem
         size: 10Gi
-        # accessModes:
-        #   - ReadWriteMany        
+        accessModes:
+          - ReadWriteMany        
         volsync:
           - name: html
             type: restic
