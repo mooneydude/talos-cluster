@@ -207,3 +207,25 @@ spec:
                 csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
                 csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
                 csi.storage.k8s.io/fstype: ext4
+
+      cephObjectStores:
+        - name: ceph-objectstore
+          spec:
+            metadataPool:
+              replicated:
+                size: 3
+            dataPool:
+              erasureCoded:
+                dataChunks: 2
+                codingChunks: 1
+            gateway:
+              port: 80
+              instances: 1
+              resources:
+                requests:
+                  cpu: "100m"
+                  memory: "128Mi"
+                limits:
+                  memory: "256Mi"
+            storageClass:
+              enabled: false
