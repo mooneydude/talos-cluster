@@ -170,4 +170,16 @@ spec:
         enabled: true
         name: ceph-filesystem
         isDefault: true
-        deletionPolicy: Delete        
+        deletionPolicy: Delete
+
+      cephFileSystems:
+        - name: ceph-filesystem
+          # see https://github.com/rook/rook/blob/master/Documentation/CRDs/Shared-Filesystem/ceph-filesystem-crd.md#filesystem-settings for available configuration
+          spec:
+            metadataServer:
+              resources:
+                limits:
+                  memory: "1Gi"
+                requests:
+                  cpu: "1000m"
+                  memory: "256Mi"
