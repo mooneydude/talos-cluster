@@ -36,7 +36,7 @@ spec:
       s3:
         type: s3
         url: "${MINIO_S3URL}"
-        bucket: "${MINIO_S3PREFIX}-nextcloud"
+        bucket: "${MINIO_S3PREFIX}-nextcloud-rwx"
         accessKey: "${MINIO_S3ID}"
         secretKey: "${MINIO_S3KEY}"
         encrKey: "${MINIO_S3KEY}"
@@ -45,7 +45,7 @@ spec:
         enabled: true
         ingressClassName: external
         hosts:
-          - host: cloud.${DOMAIN_1}
+          - host: nextcloud.${DOMAIN_1}
             paths:
             - path: /
               pathType: Prefix
@@ -59,7 +59,7 @@ spec:
             enabled: true
     persistence:
       config:
-        storageClass: ceph-nvme
+        storageClass: ceph-filesystem
         size: 1Gi
         # accessModes:
         #   - ReadWriteMany        
@@ -68,10 +68,10 @@ spec:
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: csi-ceph-blockpool
+              volumeSnapshotClassName: ceph-filesystem
               enabled: true
             src:
-              volumeSnapshotClassName: csi-ceph-blockpool
+              volumeSnapshotClassName: ceph-filesystem
               enabled: true
               trigger:
                 schedule: 30 7 * * *
@@ -85,17 +85,17 @@ spec:
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: csi-ceph-blockpool
+              volumeSnapshotClassName: ceph-filesystem
               enabled: true
             src:
-              volumeSnapshotClassName: csi-ceph-blockpool
+              volumeSnapshotClassName: ceph-filesystem
               enabled: true
               trigger:
                 schedule: 30 7 * * *
       data:
         type: nfs
         server: ${TRUENAS_IP}
-        path: /mnt/data1/nc_userdata
+        path: /mnt/data1/nc_userdata/rwx_data
     cnpg:
       main:
         # mode: recovery
