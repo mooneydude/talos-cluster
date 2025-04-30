@@ -81,9 +81,3 @@ spec:
           memory: 500Mi
     defaultBackend:
       enabled: false
-
-    workload:
-      controller:
-        podOptions:
-          nodeSelector:
-            kubernetes.io/hostname: "k8s-worker-2"

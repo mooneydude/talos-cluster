@@ -91,7 +91,7 @@ spec:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
               trigger:
-                schedule: 30 7 * * *
+                schedule: 0 8 * * *
       data:
         type: nfs
         server: ${TRUENAS_IP}
