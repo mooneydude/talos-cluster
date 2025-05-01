@@ -98,11 +98,11 @@ spec:
         path: /mnt/data1/nc_userdata/rwx_data
     cnpg:
       main:
-        # mode: recovery
+        mode: recovery
         backups:
           enabled: true
           credentials: s3
-          revision: "1"
+          revision: "2"
           scheduledBackups:
             - name: daily-backup
               schedule: "0 45 7 * * *"
@@ -112,7 +112,7 @@ spec:
         recovery:
           method: object_store
           credentials: s3
-          revision: ""
+          revision: "1"
     nextcloud:
       credentials:
         initialAdminPassword: ${NEXTCLOUD_PWD}
