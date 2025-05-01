@@ -102,17 +102,18 @@ spec:
         backups:
           enabled: true
           credentials: s3
-          revision: "2"
           scheduledBackups:
             - name: daily-backup
-              schedule: "0 15 16 * * *"
+              schedule: "0 30 18 * * *"
               backupOwnerReference: self
               immediate: true
-              suspend: false 
+              suspend: false           
+          retentionPolicy: "7d"
+          revision: "3"
         recovery:
           method: object_store
           credentials: s3
-          revision: ""
+          revision: "2"
     nextcloud:
       credentials:
         initialAdminPassword: ${NEXTCLOUD_PWD}
