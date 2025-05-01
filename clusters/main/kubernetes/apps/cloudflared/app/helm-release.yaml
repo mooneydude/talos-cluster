@@ -38,4 +38,4 @@ spec:
           containers:
             main:
               env:
-                TUNNEL_TOKEN: ${CLOUDFLARED_TUNNEL_TOKEN} #some new stuff
+                TUNNEL_TOKEN: ${CLOUDFLARED_TUNNEL_TOKEN}
