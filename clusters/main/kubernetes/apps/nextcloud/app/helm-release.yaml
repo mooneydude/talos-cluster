@@ -45,7 +45,7 @@ spec:
         enabled: true
         ingressClassName: external
         hosts:
-          - host: nextcloud.${DOMAIN_1}
+          - host: cloud.${DOMAIN_1}
             paths:
             - path: /
               pathType: Prefix
