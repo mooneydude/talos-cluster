@@ -90,7 +90,7 @@ spec:
           credentials: s3
           scheduledBackups:
             - name: daily-backup
-              schedule: "0 15 23 * * *"
+              schedule: "0 20 23 * * *"
               backupOwnerReference: self
               immediate: true
               suspend: false           
