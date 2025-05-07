@@ -19,3 +19,4 @@ resources:
   - nextcloud/ks.yaml
   - influxdb/ks.yaml
   - stun-turn/ks.yaml
+  - ext-talk/ks.yaml
