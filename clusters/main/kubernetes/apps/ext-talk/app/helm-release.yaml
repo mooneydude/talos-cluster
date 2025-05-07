@@ -43,7 +43,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: external-service
+        ingressClassName: external
         hosts:
           - host: talk.${DOMAIN_1}
         integrations:
