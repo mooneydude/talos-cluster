@@ -18,3 +18,4 @@ resources:
   - immich/ks.yaml
   - nextcloud/ks.yaml
   - influxdb/ks.yaml
+  - stun-turn/ks.yaml
