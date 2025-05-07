@@ -35,17 +35,17 @@ spec:
 
     TZ: America/Chicago
     
-    service:
-      main:
-        enabled: true
-        loadBalancerIP: ${TURN_IP}
-        type: LoadBalancer
-        ports:
-          main:
-            enabled: true
-            port: 3478
-            protocol: udp
-            targetPort: 3478
+    # service:
+    #   main:
+    #     enabled: true
+    #     loadBalancerIP: ${TURN_IP}
+    #     type: LoadBalancer
+    #     ports:
+    #       main:
+    #         enabled: true
+    #         port: 3478
+    #         protocol: udp
+    #         targetPort: 3478
     ingress:
       main:
         enabled: true
@@ -55,7 +55,7 @@ spec:
           nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
           nginx.ingress.kubernetes.io/proxy-connect-timeout: "3600"
           nginx.ingress.kubernetes.io/proxy-buffer-size: "64k"
-          nginx.ingress.kubernetes.io/websocket-services: "nc-talk"
+          nginx.ingress.kubernetes.io/websocket-services: "stun-turn"
           nginx.ingress.kubernetes.io/upstream-hash-by: "$binary_remote_addr"              
         hosts:
           - host: turn.${DOMAIN_1}
