@@ -43,9 +43,9 @@ spec:
         ports:
           main:
             enabled: true
-            port: 5349
-            protocol: tcp
-            targetPort: 5349
+            port: 3478
+            protocol: udp
+            targetPort: 3478
     ingress:
       main:
         enabled: true
