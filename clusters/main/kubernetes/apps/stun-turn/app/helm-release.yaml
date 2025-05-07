@@ -58,7 +58,7 @@ spec:
           nginx.ingress.kubernetes.io/websocket-services: "nc-talk"
           nginx.ingress.kubernetes.io/upstream-hash-by: "$binary_remote_addr"              
         hosts:
-          - host: stun.${DOMAIN_1}
+          - host: turn.${DOMAIN_1}
         integrations:
           traefik:
             enabled: false
