@@ -39,7 +39,7 @@ spec:
         ports:
           main:
             protocol: https
-            port: 8080
+            port: 443
     ingress:
       main:
         enabled: true
