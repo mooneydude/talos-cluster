@@ -60,4 +60,5 @@ spec:
               env:
                 SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
                 NC_DOMAIN: cloud.mooneybin.net
+                TALK_PORT: 3478
     #             SERVER_ROOT: "/html"                   
