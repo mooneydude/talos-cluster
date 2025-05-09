@@ -59,4 +59,5 @@ spec:
             main:
               env:
                 SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
+                NC_DOMAIN: cloud.mooneybin.net
     #             SERVER_ROOT: "/html"                   
