@@ -58,6 +58,7 @@ spec:
           initContainers:
             - name: init-supervisord
               enabled: true
+              type: init
               image: busybox
               command: ["sh", "-c", "mkdir -p /var/run/supervisord && chmod -R 755 /var/run/supervisord"]
               securityContext:
