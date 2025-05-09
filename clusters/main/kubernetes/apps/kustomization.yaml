@@ -21,4 +21,4 @@ resources:
   - stun-turn/ks.yaml
   # - ext-talk/ks.yaml
   # - ext-nextcloud/ks.yaml
-  - nextcloud-talk/ks.yaml
+  # - nextcloud-talk/ks.yaml
