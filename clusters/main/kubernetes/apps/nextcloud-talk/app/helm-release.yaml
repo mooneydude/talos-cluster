@@ -61,6 +61,7 @@ spec:
                 SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
                 NC_DOMAIN: cloud.mooneybin.net
                 TALK_PORT: 3478
-                TURN_SECRET: kXj9mP2qWvL8rT5zY6uB3nF7cQeJ1aK2
-                SIGNALING_SECRET: kXj9mP2qWvL8rT5zY6uB3nF7cQeJ1aK2
+                TURN_SECRET: ${TALK_SECRET}
+                SIGNALING_SECRET: ${TALK_SECRET}
+                INTERNAL_SECRET: ${TALK_SECRET}
     #             SERVER_ROOT: "/html"                   
