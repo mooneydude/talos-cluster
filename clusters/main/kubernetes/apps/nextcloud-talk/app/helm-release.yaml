@@ -55,13 +55,20 @@ spec:
     workload:
       main:
         podSpec:
+          initContainers:
+            - name: init-supervisord
+              image: busybox
+              command: ["sh", "-c", "mkdir -p /var/run/supervisord && chmod -R 755 /var/run/supervisord"]
+              securityContext:
+                runAsUser: 0
+                runAsGroup: 0
           containers:
             main:
               env:
                 SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
                 NC_DOMAIN: cloud.mooneybin.net
                 TALK_PORT: 3478
-                TURN_SECRET: ${TALK_SECRET}
+                TURN_SECRET: 
                 SIGNALING_SECRET: ${TALK_SECRET}
                 INTERNAL_SECRET: ${TALK_SECRET}
     #             SERVER_ROOT: "/html"                   
