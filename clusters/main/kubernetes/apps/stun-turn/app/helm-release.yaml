@@ -44,7 +44,7 @@ spec:
           main:
             enabled: true
             port: 3478
-            protocol: udp
+            protocol: http
             targetPort: 3478
     ingress:
       main:
