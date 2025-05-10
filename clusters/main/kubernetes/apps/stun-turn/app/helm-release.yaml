@@ -35,17 +35,17 @@ spec:
 
     TZ: America/Chicago
     
-    # service:
-    #   main:
-    #     enabled: true
-    #     loadBalancerIP: ${TURN_IP}
-    #     type: LoadBalancer
-    #     ports:
-    #       main:
-    #         enabled: true
-    #         port: 3478
-    #         protocol: udp
-    #         targetPort: 3478
+    service:
+      main:
+        enabled: true
+        loadBalancerIP: ${TURN_IP}
+        type: LoadBalancer
+        ports:
+          main:
+            enabled: true
+            port: 3478
+            protocol: udp
+            targetPort: 3478
     ingress:
       main:
         enabled: true
