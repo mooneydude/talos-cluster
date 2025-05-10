@@ -39,7 +39,7 @@ spec:
         ports:
           main:
             protocol: http
-            port: 8081
+            port: 8181
     ingress:
       main:
         enabled: true
