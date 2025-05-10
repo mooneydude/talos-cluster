@@ -18,7 +18,7 @@ resources:
   - immich/ks.yaml
   - nextcloud/ks.yaml
   - influxdb/ks.yaml
-  # - stun-turn/ks.yaml
+  - stun-turn/ks.yaml
   - ext-talk/ks.yaml
   # - ext-nextcloud/ks.yaml
   # - nextcloud-talk/ks.yaml

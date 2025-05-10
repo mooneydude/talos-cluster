@@ -44,8 +44,8 @@ spec:
           main:
             enabled: true
             port: 3478
-            protocol: http
-            targetPort: 3478
+            protocol: tcp
+        #     targetPort: 3478
     ingress:
       main:
         enabled: true
