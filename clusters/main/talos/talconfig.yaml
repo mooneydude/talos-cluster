@@ -95,7 +95,7 @@ nodes:
         - 1.1.1.1
         - 8.8.8.8
       installDiskSelector:
-        size: '> 200GB'
+        model: KIN*
     - hostname: k8s-worker-3
       ipAddress: 192.168.2.205
       nameservers:
