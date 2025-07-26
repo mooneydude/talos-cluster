@@ -4,7 +4,7 @@ talosVersion: v1.9.5
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.32.3
 endpoint: https://${VIP}:6443
-allowSchedulingOnControlPlanes: true
+allowSchedulingOnControlPlanes: false
 additionalMachineCertSans:
     - 127.0.0.1
     - ${VIP}
