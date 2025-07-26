@@ -10,3 +10,6 @@ resources:
   - vaultwarden/ks.yaml
   - xepg/ks.yaml
   - xteve/ks.yaml
+  - nextcloud/ks.yaml
+  - speedtest-tracker/ks.yaml
+  - stun-turn/ks.yaml
