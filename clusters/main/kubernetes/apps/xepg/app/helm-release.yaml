@@ -1,0 +1,76 @@
+---
+# yaml-language-server: schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: xepg
+  namespace: xepg
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 15.2.5
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 15m
+  timeout: 20m
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
+  values:
+    global:
+      stopAll: false
+    TZ: America/Chicago
+    resources:
+      requests:
+        cpu: 10m
+    image:
+      repository: docker.io/mooneydude/xepg
+      pullPolicy: IfNotPresent
+      tag: latest@sha256:f01f888a6574b9a1345ea0f6ff453b262864ae8e357714e7f7704922af3f458e
+    securityContext:
+      container:
+        readOnlyRootFilesystem: false
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0      
+    service:
+      main:
+        type: LoadBalancer
+        loadBalancerIP: ${XMLTV_IP}
+        integrations:
+          metallb:
+            enabled: true
+        ports:
+          main:
+            port: 3000
+            targetPort: 3000
+            protocol: http            
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
+                CRON: "5 0 * * *"
+                CRON2: "10 0 * * *"
+                CRON3: "20 0 * * *"
+                MAX_CONNECTIONS: "1"
+                DAYS: "3"
+                DELAY: "500"
+                TIMEOUT: "5000"
+                # SITE: "zap2it.com"             
+                # SERVER_ROOT: "/html"                   
