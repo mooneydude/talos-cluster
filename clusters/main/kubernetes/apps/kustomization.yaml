@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - kubernetes-dashboard/ks.yaml
   - cloudflared/ks.yaml
-  # - ext-cow/ks.yaml
+  - ext-cow/ks.yaml
