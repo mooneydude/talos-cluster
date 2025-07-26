@@ -4,7 +4,7 @@ talosVersion: v1.9.5
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.32.3
 endpoint: https://${VIP}:6443
-allowSchedulingOnControlPlanes: false
+allowSchedulingOnControlPlanes: true
 additionalMachineCertSans:
     - 127.0.0.1
     - ${VIP}
@@ -40,47 +40,47 @@ nodes:
               gateway: ${GATEWAY}
           vip:
             ip: ${VIP}
-    # - hostname: k8s-control-2
-    #   ipAddress: ${MASTER2IP_IP}
-    #   controlPlane: true
-    #   nameservers:
-    #     - 1.1.1.1
-    #     - 8.8.8.8
-    #   installDiskSelector:
-    #     size: <= 1TB
-    #   networkInterfaces:
-    #     # suffix is the adapter mac adres.
-    #     - interface: eth0
-    #       addresses:
-    #         - ${MASTER2IP_CIDR}
-    #       routes:
-    #         - network: 0.0.0.0/0
-    #           gateway: ${GATEWAY}
-    #       vip:
-    #         ip: ${VIP}  
-    # - hostname: k8s-control-3
-    #   ipAddress: ${MASTER3IP_IP}
-    #   controlPlane: true
-    #   nameservers:
-    #     - 1.1.1.1
-    #     - 8.8.8.8
-    #   installDiskSelector:
-    #     size: <= 1TB
-    #   schematic:
-    #       customization:
-    #           systemExtensions:
-    #               officialExtensions:
-    #                   - siderolabs/qemu-guest-agent
-    #   networkInterfaces:
-    #     # suffix is the adapter mac adres.
-    #     - interface: eth0
-    #       addresses:
-    #         - ${MASTER3IP_CIDR}
-    #       routes:
-    #         - network: 0.0.0.0/0
-    #           gateway: ${GATEWAY}
-    #       vip:
-    #         ip: ${VIP}
+    - hostname: k8s-control-2
+      ipAddress: ${MASTER2IP_IP}
+      controlPlane: true
+      nameservers:
+        - 1.1.1.1
+        - 8.8.8.8
+      installDiskSelector:
+        size: <= 1TB
+      networkInterfaces:
+        # suffix is the adapter mac adres.
+        - interface: eth0
+          addresses:
+            - ${MASTER2IP_CIDR}
+          routes:
+            - network: 0.0.0.0/0
+              gateway: ${GATEWAY}
+          vip:
+            ip: ${VIP}  
+    - hostname: k8s-control-3
+      ipAddress: ${MASTER3IP_IP}
+      controlPlane: true
+      nameservers:
+        - 1.1.1.1
+        - 8.8.8.8
+      installDiskSelector:
+        size: <= 1TB
+      schematic:
+          customization:
+              systemExtensions:
+                  officialExtensions:
+                      - siderolabs/qemu-guest-agent
+      networkInterfaces:
+        # suffix is the adapter mac adres.
+        - interface: eth0
+          addresses:
+            - ${MASTER3IP_CIDR}
+          routes:
+            - network: 0.0.0.0/0
+              gateway: ${GATEWAY}
+          vip:
+            ip: ${VIP}
     # - hostname: k8s-worker-1
     #   ipAddress: 192.168.2.207
     #   nameservers:
