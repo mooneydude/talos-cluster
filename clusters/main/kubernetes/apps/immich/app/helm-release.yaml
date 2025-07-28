@@ -74,12 +74,12 @@ spec:
           - name: thn
             type: restic
             credentials: s3
-            # dest:
-            #   volumeSnapshotClassName: ceph-filesystem
-            #   enabled: true
-            # src:
-            #   volumeSnapshotClassName: ceph-filesystem
-            #   enabled: true
+            dest:
+              # volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+            src:
+              # volumeSnapshotClassName: ceph-filesystem
+              enabled: true
       # thumbs:
       #   type: nfs
       #   server: ${TRUENAS_IP}
