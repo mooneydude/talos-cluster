@@ -75,10 +75,10 @@ spec:
             type: restic
             credentials: s3
             dest:
-              # volumeSnapshotClassName: ceph-filesystem
+              volumeSnapshotClassName: ceph-filesystem
               enabled: true
             src:
-              # volumeSnapshotClassName: ceph-filesystem
+              volumeSnapshotClassName: ceph-filesystem
               enabled: true
       # thumbs:
       #   type: nfs
