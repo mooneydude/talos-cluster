@@ -69,21 +69,21 @@ spec:
             src:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
-      # thumbs:
-      #   volsync:
-      #     - name: thn
-      #       type: restic
-      #       credentials: s3
-      #       dest:
-      #         volumeSnapshotClassName: csi-ceph-blockpool
-      #         enabled: true
-      #       src:
-      #         volumeSnapshotClassName: csi-ceph-blockpool
-      #         enabled: true
       thumbs:
-        type: nfs
-        server: ${TRUENAS_IP}
-        path: /mnt/data1/immich/thumbs
+        volsync:
+          - name: thn
+            type: restic
+            credentials: s3
+            dest:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+            src:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+      # thumbs:
+      #   type: nfs
+      #   server: ${TRUENAS_IP}
+      #   path: /mnt/data1/immich/thumbs
       backups:
         type: nfs
         server: ${TRUENAS_IP}
