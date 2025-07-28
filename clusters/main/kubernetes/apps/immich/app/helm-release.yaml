@@ -39,7 +39,7 @@ spec:
       s3:
         type: s3
         url: "${MINIO_S3URL}"
-        bucket: "${MINIO_S3PREFIX}-immich-rwx"
+        bucket: "${MINIO_S3PREFIX}-immich"
         accessKey: "${MINIO_S3ID}"
         secretKey: "${MINIO_S3KEY}"
         encrKey: "${MINIO_S3KEY}"       
@@ -69,21 +69,21 @@ spec:
             src:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
-      # thumbs:
-      #   volsync:
-      #     - name: thn
-      #       type: restic
-      #       credentials: s3
-      #       dest:
-      #         volumeSnapshotClassName: csi-ceph-blockpool
-      #         enabled: true
-      #       src:
-      #         volumeSnapshotClassName: csi-ceph-blockpool
-      #         enabled: true
       thumbs:
-        type: nfs
-        server: ${TRUENAS_IP}
-        path: /mnt/data1/immich/thumbs
+        volsync:
+          - name: thn
+            type: restic
+            credentials: s3
+            dest:
+              volumeSnapshotClassName: csi-ceph-blockpool
+              enabled: true
+            src:
+              volumeSnapshotClassName: csi-ceph-blockpool
+              enabled: true
+      # thumbs:
+      #   type: nfs
+      #   server: ${TRUENAS_IP}
+      #   path: /mnt/data1/immich/thumbs
       backups:
         type: nfs
         server: ${TRUENAS_IP}
@@ -116,9 +116,9 @@ spec:
 
     cnpg:
       main:
-        mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
+        # mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
         backups:
-          enabled: false  # Set to 'false' when performing new install (recovery)
+          enabled: true  # Set to 'false' when performing new install (recovery)
           credentials: s3
           retentionPolicy: "7d"
           revision: "1"
