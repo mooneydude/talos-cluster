@@ -6,7 +6,7 @@ resources:
   - ext-cow/ks.yaml
   - hass/ks.yaml
   - jellyfin/ks.yaml
-  - immich/ks.yaml
+  # - immich/ks.yaml
   - vaultwarden/ks.yaml
   - xepg/ks.yaml
   - xteve/ks.yaml

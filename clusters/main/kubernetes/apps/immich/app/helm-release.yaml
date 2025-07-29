@@ -73,15 +73,19 @@ spec:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
       thumbs:
+        storageClass: ceph-filesystem
+        size: 50Gi
+        accessModes:
+          - ReadWriteMany        
         volsync:
           - name: thn
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: csi-ceph-blockpool
+              volumeSnapshotClassName: ceph-filesystem
               enabled: true
             src:
-              volumeSnapshotClassName: csi-ceph-blockpool
+              volumeSnapshotClassName: ceph-filesystem
               enabled: true
       # thumbs:
       #   type: nfs
