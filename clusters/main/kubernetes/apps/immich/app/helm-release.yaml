@@ -34,11 +34,10 @@ spec:
     TZ: America/Chicago
     resources:    
       limits:
-        cpu: 3000m
-        memory: 2Gi
-      requests:
-        cpu: 2000m
         memory: 1Gi
+      requests:
+        cpu: 500m
+        memory: 512Mi
     credentials:
       s3:
         type: s3
