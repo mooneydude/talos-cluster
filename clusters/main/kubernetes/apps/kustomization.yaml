@@ -13,4 +13,4 @@ resources:
   - nextcloud/ks.yaml
   - speedtest-tracker/ks.yaml
   - stun-turn/ks.yaml
-  - rustdesk/ks.yaml
+  # - rustdesk/ks.yaml
