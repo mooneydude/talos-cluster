@@ -51,7 +51,7 @@ spec:
             main:
               env:
                 # RELAY: "xteve.${DOMAIN_1}:21117"
-                ENCRYPTED_ONLY: 0
+                KEY: ""
     service:
       main:
         loadBalancerIP: ${RUSTDESK_IP}
