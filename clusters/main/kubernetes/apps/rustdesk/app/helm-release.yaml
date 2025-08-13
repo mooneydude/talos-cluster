@@ -50,7 +50,7 @@ spec:
           containers:
             main:
               env:
-                RELAY: "wireguard.${DOMAIN_1}:21117"
+                RELAY: "xteve.${DOMAIN_1}:21117"
     service:
       main:
         loadBalancerIP: ${RUSTDESK_IP}
