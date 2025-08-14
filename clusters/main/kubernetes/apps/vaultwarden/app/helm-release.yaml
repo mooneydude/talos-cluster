@@ -57,7 +57,7 @@ spec:
         allowSignups: true
         verifySignup: false
         requireEmail: false
-        allowInvitation: false
+        allowInvitation: true
         showPasswordHint: false
         enableWebVault: true
         admin:
