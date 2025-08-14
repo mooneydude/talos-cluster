@@ -76,7 +76,7 @@ spec:
       invalidHostname: false
       invalidCertificate: false
       user: ${DOMAIN_7_EMAIL}
-      password: ${VW_SMTP_PWD}          
+      password: ${VAULT_SMTP_PWD}          
     persistence:
       data:
         size: 10Gi
