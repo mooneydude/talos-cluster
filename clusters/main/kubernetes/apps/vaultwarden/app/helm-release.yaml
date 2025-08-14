@@ -57,26 +57,26 @@ spec:
         allowSignups: true
         verifySignup: false
         requireEmail: false
-        allowInvitation: true
+        allowInvitation: false
         showPasswordHint: false
         enableWebVault: true
         admin:
           enabled: true
           disableAdminToken: false
           token: ${VW_TOKEN}
-    smtp:
-      enabled: true
-      host: smtp.gmail.com
-      from: ${DOMAIN_7_EMAIL}
-      fromName: MooneyDude
-      security: starttls
-      port: 587
-      heloName: Vault
-      timeout: 15
-      invalidHostname: false
-      invalidCertificate: false
-      user: ${DOMAIN_7_EMAIL}
-      password: ${VW_SMTP_PWD}          
+    # smtp:
+    #   enabled: true
+    #   host: smtp.gmail.com
+    #   from: ${DOMAIN_7_EMAIL}
+    #   fromName: MooneyDude
+    #   security: starttls
+    #   port: 587
+    #   heloName: Vault
+    #   timeout: 15
+    #   invalidHostname: false
+    #   invalidCertificate: false
+    #   user: ${DOMAIN_7_EMAIL}
+    #   password: ${VW_SMTP_PWD}          
     persistence:
       data:
         size: 10Gi
