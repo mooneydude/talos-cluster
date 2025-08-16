@@ -50,7 +50,7 @@ spec:
           containers:
             main:
               env:
-                # RELAY: "xteve.${DOMAIN_1}:21117"
+                RELAY: "support.${DOMAIN_4}:21117"
                 KEY: ""
     service:
       main:
