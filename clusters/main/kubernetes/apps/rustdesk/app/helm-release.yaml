@@ -59,6 +59,12 @@ spec:
         integrations:
           metallb:
             enabled: true
+        ports:
+          main:
+            enabled: true
+            port: 21117
+            protocol: tcp
+            targetPort: 21117            
     persistence:
       data:
         storageClass: ceph-filesystem
