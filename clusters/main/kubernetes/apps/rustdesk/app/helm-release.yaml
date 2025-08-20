@@ -77,3 +77,20 @@ spec:
             enabled: true
             trigger:
               schedule: "0 15 * * *"        
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: external
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "3600"
+          nginx.ingress.kubernetes.io/proxy-buffer-size: "64k"
+          nginx.ingress.kubernetes.io/websocket-services: "stun-turn"
+          nginx.ingress.kubernetes.io/upstream-hash-by: "$binary_remote_addr"              
+        hosts:
+          - host: support.${DOMAIN_4}
+        integrations:
+          certManager:
+            enabled: true
+            certificateIssuer: domain-0-le-prod         
