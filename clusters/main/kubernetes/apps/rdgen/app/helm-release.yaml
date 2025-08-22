@@ -39,7 +39,7 @@ spec:
     image:
       repository: docker.io/bryangerlach/rdgen
       pullPolicy: IfNotPresent
-      tag: latest@sha256:be6068de6d4b5df0e04e2ca0423c72f9397c37cef1418cff796dbcedb79cce43
+      tag: v.0.3.8@sha256:1c46246062c5cfb0b9e9e15b1c64ea2f80a672d1dd980983677af81081d91216
     securityContext:
       container:
         readOnlyRootFilesystem: false
