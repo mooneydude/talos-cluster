@@ -68,7 +68,7 @@ spec:
                 SECRET_KEY: "${RD_SECRET_KEY}"
                 GHUSER: "${RD_GHUSER}"
                 GHBEARER: "${RD_GHBEARER}"
-                GENURL: rdgen.${DOMAIN_4}
+                GENURL: rustgen.${DOMAIN_4}
                 PROTOCOL: "https"
                 REPONAME: "rdgen"
     ingress:
@@ -76,7 +76,7 @@ spec:
         enabled: true
         ingressClassName: external
         hosts:
-          - host: rdgen.${DOMAIN_4}
+          - host: rustgen.${DOMAIN_4}
         integrations:
           certManager:
             enabled: true
