@@ -63,8 +63,16 @@ spec:
         podSpec:
           containers:
             main:
+              command:
+                - /usr/local/bin/gunicorn
+              args:
+                - rdgen.app:app        # change if your module path differs
+                - --bind
+                - 0.0.0.0:8000
+                - --workers
+                - "4"          
               env:
-                SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
+                # SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
                 SECRET_KEY: "${RD_SECRET_KEY}"
                 GHUSER: "${RD_GHUSER}"
                 GHBEARER: "${RD_GHBEARER}"
