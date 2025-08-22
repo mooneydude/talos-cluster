@@ -48,11 +48,11 @@ spec:
         runAsGroup: 0      
     service:
       main:
-        # type: LoadBalancer
-        # loadBalancerIP: ${XMLTV_IP}
-        # integrations:
-        #   metallb:
-        #     enabled: true
+        type: LoadBalancer
+        loadBalancerIP: ${RDGEN_IP}
+        integrations:
+          metallb:
+            enabled: true
         ports:
           main:
             port: 8000
@@ -64,7 +64,7 @@ spec:
           containers:
             main:
               env:
-                # SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
+                SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
                 SECRET_KEY: "${RD_SECRET_KEY}"
                 GHUSER: "${RD_GHUSER}"
                 GHBEARER: "${RD_GHBEARER}"
