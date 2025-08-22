@@ -48,11 +48,11 @@ spec:
         runAsGroup: 0      
     service:
       main:
-        type: LoadBalancer
-        loadBalancerIP: ${XMLTV_IP}
-        integrations:
-          metallb:
-            enabled: true
+        # type: LoadBalancer
+        # loadBalancerIP: ${XMLTV_IP}
+        # integrations:
+        #   metallb:
+        #     enabled: true
         ports:
           main:
             port: 8000
