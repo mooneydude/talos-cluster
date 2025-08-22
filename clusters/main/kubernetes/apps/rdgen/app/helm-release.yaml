@@ -37,9 +37,9 @@ spec:
       requests:
         cpu: 10m
     image:
-      repository: docker.io/bryangerlach/rdgen
+      repository: docker.io/mooneydude/rdgen
       pullPolicy: IfNotPresent
-      tag: v.0.3.8@sha256:1c46246062c5cfb0b9e9e15b1c64ea2f80a672d1dd980983677af81081d91216
+      tag: custom-v.0.3.8@sha256:fb369f83ecfe977a09b0974e78caa23b8e0bd107fec4f62d409977e063948f2b
     securityContext:
       container:
         readOnlyRootFilesystem: false
@@ -63,14 +63,6 @@ spec:
         podSpec:
           containers:
             main:
-              command:
-                - /usr/local/bin/gunicorn
-              args:
-                - rdgen.app:app        # change if your module path differs
-                - --bind
-                - 0.0.0.0:8000
-                - --workers
-                - "4"          
               env:
                 # SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
                 SECRET_KEY: "${RD_SECRET_KEY}"
