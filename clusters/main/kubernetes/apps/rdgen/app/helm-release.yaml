@@ -39,7 +39,7 @@ spec:
     image:
       repository: docker.io/mooneydude/rdgen
       pullPolicy: IfNotPresent
-      tag: custom-v.0.3.8@sha256:1b7edc8711df40c293721e61fb4a7e055ec71d564c4220a8653a7d6233c22d5a
+      tag: custom-v.0.3.9@sha256:be9fd3509b246c19edb0d39187f9ed3f67f255a3e6369e42784c7dbeba43f88c
     securityContext:
       container:
         readOnlyRootFilesystem: false
