@@ -67,3 +67,5 @@ spec:
             - '*.${DOMAIN_0}'
             - ${DOMAIN_1}
             - '*.${DOMAIN_1}'
+            - ${DOMAIN_4}
+            - '*.${DOMAIN_4}'            
