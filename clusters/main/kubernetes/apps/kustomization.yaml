@@ -15,4 +15,4 @@ resources:
   - stun-turn/ks.yaml
   - rustdesk/ks.yaml
   # - rdgen/ks.yaml
-  - docuseal/ks.yaml
+  # - docuseal/ks.yaml
