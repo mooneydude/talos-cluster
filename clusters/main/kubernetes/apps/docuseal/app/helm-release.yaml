@@ -51,7 +51,7 @@ spec:
         enabled: true
         ingressClassName: external
         hosts:
-          - host: esign.${DOMAIN_4}
+          - host: sign.${DOMAIN_4}
         integrations:
           certManager:
             enabled: true
