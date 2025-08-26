@@ -78,7 +78,7 @@ spec:
       main:
         mode: recovery   # Set to 'recovery' when recovery from S3, also change the revisions 
         backups:
-          enabled: true  # Set to 'false' when performing new install (recovery)
+          enabled: false  # Set to 'false' when performing new install (recovery)
           credentials: s3
           scheduledBackups:
             - name: daily-backup
@@ -86,9 +86,9 @@ spec:
               backupOwnerReference: self
               immediate: true
               suspend: false          
-          revision: "1"
+          revision: "2"
         recovery:
           method: object_store
           credentials: s3
-          revision: ""
+          revision: "1"
 
