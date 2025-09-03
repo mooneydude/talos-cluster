@@ -16,4 +16,4 @@ resources:
   - rustdesk/ks.yaml
   # - rdgen/ks.yaml
   - docuseal/ks.yaml
-  - joplin/ks.yaml
+  # - joplin/ks.yaml
