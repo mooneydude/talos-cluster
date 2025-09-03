@@ -1,0 +1,119 @@
+---
+# yaml-language-server: schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: joplin
+  namespace: joplin
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: joplin
+      version: 21.4.5
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 15m
+  timeout: 20m
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
+  values:
+    global:
+      stopAll: false
+    credentials:
+      s3:
+        type: s3
+        url: "${MINIO_S3URL}"
+        bucket: "${MINIO_S3PREFIX}-joplin"
+        accessKey: "${MINIO_S3ID}"
+        secretKey: "${MINIO_S3KEY}"
+        encrKey: "${MINIO_S3KEY}" 
+    TZ: America/Chicago
+    resources:
+      requests:
+        cpu: 10m    
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: external
+        hosts:
+          - host: joplin.${DOMAIN_1}
+        integrations:
+          certManager:
+            enabled: true
+            certificateIssuer: domain-0-le-prod
+    persistence:
+      config:
+        size: 1Gi
+        volsync:
+          - name: config
+            type: restic
+            credentials: s3
+            src:
+              volumeSnapshotClassName: csi-ceph-blockpool               
+              enabled: true
+              schedule: "0 0 * * *"  
+            dest:
+              volumeSnapshotClassName: csi-ceph-blockpool               
+              enabled: true
+    cnpg:
+      main:
+        # mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
+        backups:
+          enabled: true  # Set to 'false' when performing new install (recovery)
+          credentials: s3
+          scheduledBackups:
+            - name: daily-backup
+              schedule: "0 0 0 * * *"
+              backupOwnerReference: self
+              immediate: true
+              suspend: false           
+          retentionPolicy: "7d"
+          revision: "1"
+        recovery:
+          method: object_store
+          credentials: s3
+          revision: ""
+    workload:
+      main:
+        # type: Deployment
+        # strategy: RollingUpdate
+        # replicas: 2      
+        podSpec:
+          containers:
+            main:
+              env:
+                APP_BASE_URL: "https://{{ if .Values.ingress }}{{ if .Values.ingress.main.enabled }}{{ ( index .Values.ingress.main.hosts 0 ).host }}{{ else }}placeholder.com{{ end }}{{ else }}placeholder.com{{ end }}"
+                APP_PORT: "{{ .Values.service.main.ports.main.port }}"
+                DB_CLIENT: "pg"
+                POSTGRES_DATABASE: "{{ .Values.cnpg.main.database }}"
+                POSTGRES_USER: "{{ .Values.cnpg.main.user }}"
+                POSTGRES_PORT: "5432"
+                POSTGRES_PASSWORD:
+                  secretKeyRef:
+                    name: cnpg-main-user
+                    key: password
+                POSTGRES_HOST:
+                  secretKeyRef:
+                    name: cnpg-main-urls
+                    key: host
+                MAILER_ENABLED: 0
+                MAILER_HOST: ""
+                MAILER_PORT: 465
+                MAILER_SECURITY: tls
+                MAILER_AUTH_USER: ""
+                MAILER_AUTH_PASSWORD: ""
+                MAILER_NOREPLY_NAME: ""
+                MAILER_NOREPLY_EMAIL: ""       
