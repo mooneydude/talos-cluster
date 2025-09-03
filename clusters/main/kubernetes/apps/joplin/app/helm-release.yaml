@@ -3,13 +3,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: joplin
-  namespace: joplin
+  name: joplin-server
+  namespace: joplin-server
 spec:
   interval: 15m
   chart:
     spec:
-      chart: joplin
+      chart: joplin-server
       version: 21.4.5
       sourceRef:
         kind: HelmRepository
