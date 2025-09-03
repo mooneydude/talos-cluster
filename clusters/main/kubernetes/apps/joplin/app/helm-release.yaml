@@ -95,7 +95,7 @@ spec:
           containers:
             main:
               env:
-                APP_BASE_URL: "https://{{ if .Values.ingress }}{{ if .Values.ingress.main.enabled }}{{ ( index .Values.ingress.main.hosts 0 ).host }}{{ else }}placeholder.com{{ end }}{{ else }}placeholder.com{{ end }}"
+                APP_BASE_URL: ""
                 APP_PORT: "{{ .Values.service.main.ports.main.port }}"
                 DB_CLIENT: "pg"
                 POSTGRES_DATABASE: "{{ .Values.cnpg.main.database }}"
