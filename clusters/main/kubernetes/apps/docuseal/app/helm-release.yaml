@@ -50,8 +50,8 @@ spec:
       main:
         enabled: true
         ingressClassName: external
-        # hosts:
-        #   - host: sign.${DOMAIN_4}
+        hosts:
+          - host: sign.${DOMAIN_4}
         integrations:
           certManager:
             enabled: true
