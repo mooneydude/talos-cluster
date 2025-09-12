@@ -17,4 +17,4 @@ resources:
   # - rdgen/ks.yaml
   - docuseal/ks.yaml
   - joplin/ks.yaml
-  - authentik/ks.yaml
+  # - authentik/ks.yaml
