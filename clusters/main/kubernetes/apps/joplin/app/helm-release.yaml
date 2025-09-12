@@ -47,20 +47,13 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
+        ingressClassName: external
         hosts:
           - host: joplin.${DOMAIN_1}
         integrations:
           certManager:
             enabled: true
             certificateIssuer: domain-0-le-prod
-          nginx:
-            enabled: true
-            auth:
-              type: "authentik"
-              internalHost: "authentik-http.authentik.svc.cluster.local:10230"
-              externalHost: "joplin.${DOMAIN_1}"                   
-
     persistence:
       config:
         size: 1Gi
