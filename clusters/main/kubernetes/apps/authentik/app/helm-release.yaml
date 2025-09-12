@@ -51,56 +51,61 @@ spec:
           - name: b2
             type: restic
             credentials: s3
-            dest:
-              enabled: true                          
             src:
+              volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true
-              trigger:
-                schedule: 0 3 * * *  
+              schedule: "0 3 * * *"  
+            dest:
+              volumeSnapshotClassName: csi-ceph-blockpool               
+              enabled: true
       templates:
         volsync:
           - name: b2
             type: restic
             credentials: s3
-            dest:
-              enabled: true                          
             src:
+              volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true
-              trigger:
-                schedule: 0 3 * * *  
+              schedule: "0 3 * * *"  
+            dest:
+              volumeSnapshotClassName: csi-ceph-blockpool               
+              enabled: true
       blueprints:
         volsync:
           - name: b2
             type: restic
             credentials: s3
-            dest:
-              enabled: true                          
             src:
+              volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true
-              trigger:
-                schedule: 0 3 * * *  
+              schedule: "0 3 * * *"  
+            dest:
+              volumeSnapshotClassName: csi-ceph-blockpool               
+              enabled: true
       certs:
         volsync:
           - name: b2
             type: restic
             credentials: s3
-            dest:
-              enabled: true                          
             src:
+              volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true
-              trigger:
-                schedule: 0 3 * * *  
+              schedule: "0 3 * * *"  
+            dest:
+              volumeSnapshotClassName: csi-ceph-blockpool               
+              enabled: true
       geoip:
         volsync:
           - name: b2
             type: restic
             credentials: s3
-            dest:
-              enabled: true                          
             src:
+              volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true
-              trigger:
-                schedule: 0 3 * * *           
+              schedule: "0 3 * * *"  
+            dest:
+              volumeSnapshotClassName: csi-ceph-blockpool               
+              enabled: true
     cnpg:
       main:
         password: ${AUTHENTIK_CNPG_PWD}
@@ -139,18 +144,14 @@ spec:
         ingressClassName: internal
         hosts:
           - host: auth.${DOMAIN_1}
-          - host: "paul.${DOMAIN_1}"
+          - host: "pics.${DOMAIN_1}"
             paths:
               - path: /outpost.goauthentik.io
                 pathType: ImplementationSpecific
-          - host: "tc.${DOMAIN_1}"
-            paths:
-              - path: /outpost.goauthentik.io
-                pathType: ImplementationSpecific
-          - host: "metube.${DOMAIN_1}"
-            paths:
-              - path: /outpost.goauthentik.io
-                pathType: ImplementationSpecific
+          # - host: "metube.${DOMAIN_1}"
+          #   paths:
+          #     - path: /outpost.goauthentik.io
+          #       pathType: ImplementationSpecific
         integrations:
           certManager:
             enabled: true
