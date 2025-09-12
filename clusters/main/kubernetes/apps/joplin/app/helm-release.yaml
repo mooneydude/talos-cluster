@@ -47,13 +47,20 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: external
+        ingressClassName: internal
         hosts:
           - host: joplin.${DOMAIN_1}
         integrations:
           certManager:
             enabled: true
             certificateIssuer: domain-0-le-prod
+          nginx:
+            enabled: true
+            auth:
+              type: "authentik"
+              internalHost: "authentik-http.authentik.svc.cluster.local:10230"
+              externalHost: "joplin.${DOMAIN_1}"                   
+
     persistence:
       config:
         size: 1Gi
@@ -70,7 +77,7 @@ spec:
               enabled: true
     cnpg:
       main:
-        # mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
+        mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
         backups:
           enabled: true  # Set to 'false' when performing new install (recovery)
           credentials: s3
@@ -81,11 +88,11 @@ spec:
               immediate: true
               suspend: false           
           retentionPolicy: "7d"
-          revision: "1"
+          revision: "2"
         recovery:
           method: object_store
           credentials: s3
-          revision: ""
+          revision: "1"
     workload:
       main:
         # type: Deployment
