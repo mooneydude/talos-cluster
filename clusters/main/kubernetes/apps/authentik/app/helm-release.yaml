@@ -150,10 +150,10 @@ spec:
             paths:
               - path: /outpost.goauthentik.io
                 pathType: ImplementationSpecific
-          - host: "joplin.${DOMAIN_1}"
-            paths:
-              - path: /outpost.goauthentik.io
-                pathType: ImplementationSpecific
+          # - host: "joplin.${DOMAIN_1}"
+          #   paths:
+          #     - path: /outpost.goauthentik.io
+          #       pathType: ImplementationSpecific
         integrations:
           certManager:
             enabled: true
