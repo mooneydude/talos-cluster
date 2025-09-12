@@ -144,10 +144,10 @@ spec:
         ingressClassName: internal
         hosts:
           - host: auth.${DOMAIN_1}
-          - host: "pics.${DOMAIN_1}"
-            paths:
-              - path: /outpost.goauthentik.io
-                pathType: ImplementationSpecific
+          # - host: "pics.${DOMAIN_1}"
+          #   paths:
+          #     - path: /outpost.goauthentik.io
+          #       pathType: ImplementationSpecific
           # - host: "metube.${DOMAIN_1}"
           #   paths:
           #     - path: /outpost.goauthentik.io
