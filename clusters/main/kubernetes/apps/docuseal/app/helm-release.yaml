@@ -38,7 +38,7 @@ spec:
       s3:
         type: s3
         url: "${MINIO_S3URL}"
-        bucket: "${MINIO_S3PREFIX}-docuseal"
+        bucket: "${MINIO_S3PREFIX}-docuseal-1"
         accessKey: "${MINIO_S3ID}"
         secretKey: "${MINIO_S3KEY}"
         encrKey: "${MINIO_S3KEY}"       
@@ -51,7 +51,7 @@ spec:
         enabled: true
         ingressClassName: external
         hosts:
-          - host: sign.${DOMAIN_4}
+          - host: sign.${DOMAIN_1}
         integrations:
           certManager:
             enabled: true
@@ -61,7 +61,7 @@ spec:
             auth:
               type: "authentik"
               internalHost: "authentik-http.authentik.svc.cluster.local:10230"
-              externalHost: "sign.${DOMAIN_4}"                   
+              externalHost: "sign.${DOMAIN_1}"                   
     persistence:
       data:
         storageClass: ceph-filesystem
@@ -82,7 +82,7 @@ spec:
               schedule: "15 15 * * *"        
     cnpg:
       main:
-        mode: recovery   # Set to 'recovery' when recovery from S3, also change the revisions 
+        # mode: recovery   # Set to 'recovery' when recovery from S3, also change the revisions 
         backups:
           enabled: false  # Set to 'false' when performing new install (recovery)
           credentials: s3
@@ -92,9 +92,9 @@ spec:
               backupOwnerReference: self
               immediate: true
               suspend: false          
-          revision: "2"
+          revision: "1"
         recovery:
           method: object_store
           credentials: s3
-          revision: "1"
+          revision: ""
 
