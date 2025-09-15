@@ -49,7 +49,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: external
+        ingressClassName: internal
         hosts:
           - host: sign.${DOMAIN_1}
         integrations:
