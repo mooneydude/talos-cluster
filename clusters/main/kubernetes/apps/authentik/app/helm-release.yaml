@@ -141,7 +141,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: external
+        ingressClassName: internal
         annotations:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"        
         hosts:
