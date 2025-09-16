@@ -146,10 +146,10 @@ spec:
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"        
         hosts:
           - host: auth.${DOMAIN_1}
-          - host: "sign.${DOMAIN_4}"
-            paths:
-              - path: /outpost.goauthentik.io
-                pathType: ImplementationSpecific
+          # - host: "sign.${DOMAIN_4}"
+          #   paths:
+          #     - path: /outpost.goauthentik.io
+          #       pathType: ImplementationSpecific
         integrations:
           certManager:
             enabled: true
