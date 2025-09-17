@@ -14,7 +14,7 @@ resources:
   - speedtest-tracker/ks.yaml
   - stun-turn/ks.yaml
   - rustdesk/ks.yaml
-  # - docuseal/ks.yaml
+  - docuseal/ks.yaml
   - joplin/ks.yaml  
   - authentik/ks.yaml
   # - rdgen/ks.yaml
