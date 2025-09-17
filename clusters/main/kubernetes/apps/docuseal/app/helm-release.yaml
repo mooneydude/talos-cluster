@@ -70,6 +70,9 @@ spec:
           # Authentik OAuth2 and Authentication Annotations
           nginx.ingress.kubernetes.io/auth-url: "https://auth.${DOMAIN_1}/outpost.goauthentik.io/auth/nginx"
           nginx.ingress.kubernetes.io/auth-signin: "https://auth.${DOMAIN_1}/login?rd=$escaped_request_uri"
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_set_header X-Original-URI $request_uri;
+            proxy_set_header X-Forwarded-Proto $scheme;
         integrations:
           certManager:
             enabled: true
