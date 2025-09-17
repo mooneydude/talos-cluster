@@ -28,9 +28,6 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  uninstall:
-    keepHistory: false
-
   values:
     global:
       stopAll: false
@@ -41,11 +38,17 @@ spec:
         bucket: "${MINIO_S3PREFIX}-docuseal"
         accessKey: "${MINIO_S3ID}"
         secretKey: "${MINIO_S3KEY}"
-        encrKey: "${MINIO_S3KEY}"       
+        encrKey: "${MINIO_S3KEY}"
     TZ: America/Chicago
     resources:
       requests:
-        cpu: 10m    
+        cpu: 10m
+    env:
+      # Disable native authentication
+      DISABLE_REGISTRATION: "true"
+      DISABLE_LOGIN: "true"
+      # Force Authentik as the only authentication method
+      AUTHENTICATION_METHOD: "external"
     ingress:
       main:
         enabled: true
@@ -54,35 +57,41 @@ spec:
           - host: sign.${DOMAIN_4}
             paths:
               - path: /
-                pathType: Prefix          
+                pathType: Prefix
         integrations:
           certManager:
             enabled: true
-            certificateIssuer: domain-0-le-prod   
+            certificateIssuer: domain-0-le-prod
           nginx:
             enabled: true
             auth:
               type: "authentik"
               internalHost: "authentik-http.authentik.svc.cluster.local:10230"
-              externalHost: "sign.${DOMAIN_4}"                   
+              externalHost: "sign.${DOMAIN_4}"
+    authentik:
+      enabled: true
+      outpost:
+        type: proxy
+        serviceName: authentik-outpost
+        servicePort: 9000
     persistence:
       data:
         storageClass: ceph-filesystem
         size: 10Gi
         accessModes:
-          - ReadWriteMany        
+          - ReadWriteMany
         volsync:
-        - name: data
-          type: restic
-          credentials: s3
-          dest:
-            volumeSnapshotClassName: ceph-filesystem
-            enabled: true
-          src:
-            volumeSnapshotClassName: ceph-filesystem 
-            enabled: true
-            trigger:
-              schedule: "15 15 * * *"        
+          - name: data
+            type: restic
+            credentials: s3
+            dest:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+            src:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+              trigger:
+                schedule: "15 15 * * *"
     cnpg:
       main:
         # mode: recovery   # Set to 'recovery' when recovery from S3, also change the revisions 
@@ -94,10 +103,9 @@ spec:
               schedule: "0 15 15 * * *"
               backupOwnerReference: self
               immediate: true
-              suspend: false          
+              suspend: false
           revision: "1"
         recovery:
           method: object_store
           credentials: s3
           revision: ""
-
