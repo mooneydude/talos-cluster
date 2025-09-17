@@ -63,6 +63,7 @@ spec:
               enabled: true
       templates:
         storageClass: ceph-filesystem
+        size: 1Gi      
         accessModes:
           - ReadWriteMany       
         volsync:
@@ -70,14 +71,15 @@ spec:
             type: restic
             credentials: s3
             src:
-              volumeSnapshotClassName: csi-ceph-blockpool               
+              volumeSnapshotClassName: ceph-filesystem              
               enabled: true
               schedule: "0 3 * * *"  
             dest:
-              volumeSnapshotClassName: csi-ceph-blockpool               
+              volumeSnapshotClassName: ceph-filesystem               
               enabled: true
       blueprints:
         storageClass: ceph-filesystem
+        size: 1Gi      
         accessModes:
           - ReadWriteMany       
         volsync:
@@ -85,14 +87,15 @@ spec:
             type: restic
             credentials: s3
             src:
-              volumeSnapshotClassName: csi-ceph-blockpool               
+              volumeSnapshotClassName: ceph-filesystem               
               enabled: true
               schedule: "0 3 * * *"  
             dest:
-              volumeSnapshotClassName: csi-ceph-blockpool               
+              volumeSnapshotClassName: ceph-filesystem              
               enabled: true
       certs:
         storageClass: ceph-filesystem
+        size: 1Gi      
         accessModes:
           - ReadWriteMany       
         volsync:
@@ -100,14 +103,15 @@ spec:
             type: restic
             credentials: s3
             src:
-              volumeSnapshotClassName: csi-ceph-blockpool               
+              volumeSnapshotClassName: ceph-filesystem              
               enabled: true
               schedule: "0 3 * * *"  
             dest:
-              volumeSnapshotClassName: csi-ceph-blockpool               
+              volumeSnapshotClassName: ceph-filesystem              
               enabled: true
       geoip:
         storageClass: ceph-filesystem
+        size: 1Gi      
         accessModes:
           - ReadWriteMany       
         volsync:
@@ -115,11 +119,11 @@ spec:
             type: restic
             credentials: s3
             src:
-              volumeSnapshotClassName: csi-ceph-blockpool               
+              volumeSnapshotClassName: ceph-filesystem               
               enabled: true
               schedule: "0 3 * * *"  
             dest:
-              volumeSnapshotClassName: csi-ceph-blockpool               
+              volumeSnapshotClassName: ceph-filesystem              
               enabled: true
     cnpg:
       main:
