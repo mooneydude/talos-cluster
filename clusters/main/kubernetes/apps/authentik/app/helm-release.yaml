@@ -47,6 +47,9 @@ spec:
         encrKey: "${MINIO_S3KEY}"       
     persistence:
       media:
+        storageClass: ceph-filesystem
+        accessModes:
+          - ReadWriteMany        
         volsync:
           - name: b2
             type: restic
@@ -59,6 +62,9 @@ spec:
               volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true
       templates:
+        storageClass: ceph-filesystem
+        accessModes:
+          - ReadWriteMany       
         volsync:
           - name: b2
             type: restic
@@ -71,6 +77,9 @@ spec:
               volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true
       blueprints:
+        storageClass: ceph-filesystem
+        accessModes:
+          - ReadWriteMany       
         volsync:
           - name: b2
             type: restic
@@ -83,6 +92,9 @@ spec:
               volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true
       certs:
+        storageClass: ceph-filesystem
+        accessModes:
+          - ReadWriteMany       
         volsync:
           - name: b2
             type: restic
@@ -95,6 +107,9 @@ spec:
               volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true
       geoip:
+        storageClass: ceph-filesystem
+        accessModes:
+          - ReadWriteMany       
         volsync:
           - name: b2
             type: restic
