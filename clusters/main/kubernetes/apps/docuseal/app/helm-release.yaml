@@ -53,7 +53,8 @@ spec:
       OAUTH2_AUTHORIZE_URL: "https://auth.${DOMAIN_1}/application/o/authorize/"
       OAUTH2_TOKEN_URL: "https://auth.${DOMAIN_1}/application/o/token/"
       OAUTH2_USERINFO_URL: "https://auth.${DOMAIN_1}/application/o/userinfo/"
-      OAUTH2_CALLBACK_URL: "https://sign.${DOMAIN_4}/oauth2/callback"
+      OAUTH2_CALLBACK_URL: "https://sign.rocketlifeinsurance.com/oauth2/callback"
+      OAUTH2_ALTERNATIVE_CALLBACK_URL: "https://sign.rocketlifeinsurance.com/auth/callback"
       SKIP_SETUP: "true"
       SKIP_LOGIN: "true"
     ingress:
