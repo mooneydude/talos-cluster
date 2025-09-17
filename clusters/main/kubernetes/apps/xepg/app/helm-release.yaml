@@ -37,9 +37,9 @@ spec:
       requests:
         cpu: 10m
     image:
-      repository: docker.io/mooneydude/xepg
+      repository: docker.io/mooneydude/myxepg
       pullPolicy: IfNotPresent
-      tag: latest@sha256:40dd0c82282337f22fb444ab32556ac83f9d46fe16dc3c4430c10f1b4568ed1d
+      tag: latest
     securityContext:
       container:
         readOnlyRootFilesystem: false
