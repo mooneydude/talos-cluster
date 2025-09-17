@@ -60,7 +60,7 @@ spec:
               enabled: true
               schedule: "0 3 * * *"  
             dest:
-              volumeSnapshotClassName: csi-ceph-blockpool               
+              volumeSnapshotClassName: ceph-filesystem                
               enabled: true
       templates:
         storageClass: ceph-filesystem
