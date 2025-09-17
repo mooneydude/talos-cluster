@@ -44,11 +44,11 @@ spec:
       requests:
         cpu: 10m
     env:
-      # Disable native authentication
-      DISABLE_REGISTRATION: "true"
-      DISABLE_LOGIN: "true"
-      # Force Authentik as the only authentication method
-      AUTHENTICATION_METHOD: "external"
+      # Explicitly set authentication configuration
+      SKIP_SETUP: "true"
+      SKIP_LOGIN: "true"
+      AUTHENTICATION_PROVIDER: "authentik"
+      AUTHENTIK_PROVIDER_URL: "https://auth.${DOMAIN_1}/application/o/docuseal/"
     ingress:
       main:
         enabled: true
@@ -58,6 +58,10 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+        annotations:
+          # Explicitly configure Authentik authentication
+          nginx.ingress.kubernetes.io/auth-url: "https://auth.${DOMAIN_1}/outpost.goauthentik.io/auth/nginx"
+          nginx.ingress.kubernetes.io/auth-signin: "https://auth.${DOMAIN_1}/login?rd=$escaped_request_uri"
         integrations:
           certManager:
             enabled: true
@@ -68,12 +72,20 @@ spec:
               type: "authentik"
               internalHost: "authentik-http.authentik.svc.cluster.local:10230"
               externalHost: "sign.${DOMAIN_4}"
+    # Explicitly configure Authentik integration
     authentik:
       enabled: true
       outpost:
         type: proxy
         serviceName: authentik-outpost
         servicePort: 9000
+      proxy:
+        enabled: true
+        entrypoint: 
+          command: 
+            - "/bin/sh"
+            - "-c"
+            - "exec authentik-proxy-outpost --config /etc/authentik/config.yml"
     persistence:
       data:
         storageClass: ceph-filesystem
