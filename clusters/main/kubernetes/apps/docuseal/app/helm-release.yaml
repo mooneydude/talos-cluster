@@ -60,6 +60,7 @@ spec:
             enabled: true
             auth:
               type: "authentik"
+              disableSignIn: true
               internalHost: "authentik-http.authentik.svc.cluster.local:10230"
               externalHost: "sign.${DOMAIN_4}"                   
     persistence:
