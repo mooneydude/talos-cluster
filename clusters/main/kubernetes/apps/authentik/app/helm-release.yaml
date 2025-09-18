@@ -170,7 +170,7 @@ spec:
             paths:
               - path: /outpost.goauthentik.io
                 pathType: ImplementationSpecific
-          - host: "radarr.${DOMAIN_1}"
+          - host: "sign.${DOMAIN_1}"
             paths:
               - path: /outpost.goauthentik.io
                 pathType: ImplementationSpecific                
