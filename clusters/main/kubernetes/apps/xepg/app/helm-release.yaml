@@ -67,7 +67,7 @@ spec:
                 SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
                 CRON: "5 0 * * *"
                 CRON2: "10 0 * * *"
-                CRON3: "20 0 * * *"
+                CRON3: "30 0 * * *"
                 MAX_CONNECTIONS: "1"
                 DAYS: "3"
                 DELAY: "500"
