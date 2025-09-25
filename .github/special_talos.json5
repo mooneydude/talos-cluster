@@ -7,6 +7,13 @@
         "automerge": false,
         "matchPackageNames": ["ghcr.io/home-operations/charts-mirror/ingress-nginx"],
         "labels": ["type/minor"]  
-      }
+      },
+      {
+        "description": ["Block automerge for app template"],
+        "matchUpdateTypes": ["minor"],
+        "automerge": false,
+        "matchPackageNames": ["oci.trueforge.org/truecharts/app-template"],
+        "labels": ["type/minor"]
+      }      
     ]
   }
