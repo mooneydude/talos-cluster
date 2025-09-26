@@ -69,7 +69,7 @@ spec:
                 CRON2: "10 0 * * *"
                 CRON3: "20 0 * * *"
                 MAX_CONNECTIONS: "1"
-                DAYS: "2"
+                DAYS: "1"
                 DELAY: "500"
                 TIMEOUT: "5000"
                 # SITE: "zap2it.com"             
