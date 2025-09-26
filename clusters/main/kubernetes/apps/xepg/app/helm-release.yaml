@@ -38,8 +38,8 @@ spec:
         cpu: 10m
     image:
       repository: docker.io/mooneydude/myxepg
-      pullPolicy: Always
-      tag: latest
+      # pullPolicy: Always
+      tag: latest@sha256:7ec7d329b2ecbef43eb64722f7905cbb9564e4388335f315644c2f12bdec4922
     securityContext:
       container:
         readOnlyRootFilesystem: false
