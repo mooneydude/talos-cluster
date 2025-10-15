@@ -33,7 +33,14 @@ spec:
     global:
       stopAll: false
     TZ: America/Chicago
-
+    credentials:
+      s3:
+        type: s3
+        url: "${MINIO_S3URL}"
+        bucket: "${MINIO_S3PREFIX}-filebrowser"
+        accessKey: "${MINIO_S3ID}"
+        secretKey: "${MINIO_S3KEY}"
+        encrKey: "${MINIO_S3KEY}"       
     ingress:
       main:
         enabled: true
