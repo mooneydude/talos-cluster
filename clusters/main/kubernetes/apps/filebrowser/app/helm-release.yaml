@@ -32,5 +32,50 @@ spec:
   values:
     global:
       stopAll: false
-
     TZ: America/Chicago
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: external
+        hosts:
+          - host: files.${DOMAIN_1}
+        integrations:
+          certManager:
+            enabled: true
+            certificateIssuer: domain-0-le-prod
+    persistence:
+      config:
+        storageClass: ceph-filesystem
+        size: 1Gi
+        accessModes:
+          - ReadWriteMany        
+        volsync:
+          - name: prf
+            type: restic
+            credentials: s3
+            dest:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+            src:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+      database:
+        storageClass: ceph-filesystem
+        size: 1Gi
+        accessModes:
+          - ReadWriteMany        
+        volsync:
+          - name: prf
+            type: restic
+            credentials: s3
+            dest:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+            src:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+      data:
+        type: nfs
+        server: ${TRUENAS_IP}
+        path: /mnt/data1/filebrowser/data
