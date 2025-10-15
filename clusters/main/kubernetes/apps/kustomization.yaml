@@ -18,3 +18,4 @@ resources:
   - joplin/ks.yaml  
   # - authentik/ks.yaml
   # - rdgen/ks.yaml
+  - filebrowser/ks.yaml
