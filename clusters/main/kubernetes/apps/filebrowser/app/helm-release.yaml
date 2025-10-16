@@ -85,4 +85,4 @@ spec:
       data:
         type: nfs
         server: ${TRUENAS_IP}
-        path: /mnt/data1/filebrowser/data
+        path: /mnt/data1/filebrowser
