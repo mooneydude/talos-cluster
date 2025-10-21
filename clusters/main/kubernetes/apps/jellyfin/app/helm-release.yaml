@@ -69,3 +69,11 @@ spec:
             src:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
+      workload:
+        main:
+          podSpec:
+            containers:
+              main:
+                resources:
+                  limits:
+                    gpu.intel.com/i915: 1
