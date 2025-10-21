@@ -148,3 +148,5 @@ spec:
               resources:
                 limits:
                   gpu.intel.com/i915: 1
+    autodiscovery:
+      enabled: true                  
