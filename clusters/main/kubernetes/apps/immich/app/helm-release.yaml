@@ -35,8 +35,6 @@ spec:
     resources:    
       limits:
         memory: 1Gi
-        # nvidia.com/gpu: 1   
-        intel.com/gpu: 1     
       requests:
         cpu: 500m
         memory: 512Mi
@@ -142,16 +140,11 @@ spec:
           credentials: s3
           revision: "1"
 
-    # immich:
-    #   enable_ml: true
-    #   mlImageType: mlOpenvinoImage
-    #   log_level: log
-
-    # workload:
-    #   machinelearning:
-    #     podSpec:
-    #       containers:
-    #         machinelearning:
-    #           resources:
-    #             limits:
-    #               gpu.intel.com/i915: 1
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              resources:
+                limits:
+                  gpu.intel.com/i915: 1
