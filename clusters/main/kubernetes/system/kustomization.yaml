@@ -13,3 +13,5 @@ resources:
   - system-upgrade-controller/ks.yaml
   - volsync/ks.yaml
   - rook-ceph/ks.yaml
+  - intel-device-plugin-gpu/ks.yaml
+  - intel-device-plugin-operator/ks.yaml
