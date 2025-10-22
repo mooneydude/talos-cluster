@@ -33,12 +33,8 @@ spec:
       stopAll: false
     TZ: America/Chicago
     resources:    
-      limits:
-        cpu: 2000m
-        memory: 1Gi
       requests:
-        cpu: 500m
-        memory: 512Mi
+        cpu: 50m
     credentials:
       s3:
         type: s3
@@ -149,5 +145,3 @@ spec:
               resources:
                 limits:
                   gpu.intel.com/i915: 1
-    autodiscovery:
-      enabled: true                  
