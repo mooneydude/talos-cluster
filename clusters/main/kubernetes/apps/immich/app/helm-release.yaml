@@ -141,7 +141,7 @@ spec:
       main:
         podSpec:
           containers:
-            main:
+            microservices:
               resources:
                 limits:
                   gpu.intel.com/i915: 1
