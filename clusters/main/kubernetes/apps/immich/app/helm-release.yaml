@@ -151,5 +151,6 @@ spec:
     resources:
       limits:
         gpu.intel.com/i915: 1
+        cpu: 1000m
     # podOptions:
     #   runtimeClassName: nvidia    
