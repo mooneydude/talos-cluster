@@ -138,10 +138,10 @@ spec:
           revision: "1"
 
     workload:
-      main:
+      microservices:
         podSpec:
           containers:
-            microservices:
+            main:
               resources:
                 limits:
                   gpu.intel.com/i915: 1
