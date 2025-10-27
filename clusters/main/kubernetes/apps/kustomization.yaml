@@ -11,7 +11,7 @@ resources:
   - xepg/ks.yaml
   - xteve/ks.yaml
   - nextcloud/ks.yaml
-  - speedtest-tracker/ks.yaml
+  # - speedtest-tracker/ks.yaml
   - stun-turn/ks.yaml
   - rustdesk/ks.yaml
   - docuseal/ks.yaml
