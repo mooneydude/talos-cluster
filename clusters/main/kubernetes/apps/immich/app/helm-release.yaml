@@ -152,6 +152,6 @@ spec:
     #     gpu.intel.com/i915: 1
     #     cpu: 1000m
 
-    # workload:
-    #   main:
-    #     replicas: 0    
+    workload:
+      main:
+        replicas: 0    
