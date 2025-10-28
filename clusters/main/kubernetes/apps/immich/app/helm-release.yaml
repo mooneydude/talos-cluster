@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: immich
-      version: 24.13.2
+      version: 25.0.0
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -126,31 +126,30 @@ spec:
 
     cnpg:
       main:
-        type: vectorchord
         mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
         backups:
           enabled: false  # Set to 'false' when performing new install (recovery)
           credentials: s3
           retentionPolicy: "7d"
-          revision: "2"
+          revision: "3"
         recovery:
           method: object_store
           credentials: s3
-          revision: "1"
+          revision: "2"
 
-    # workload:
-    #   microservices:
-    #     podSpec:
-    #       containers:
-    #         main:
-    #           resources:
-    #             limits:
-    #               gpu.intel.com/i915: 1
+    workload:
+      microservices:
+        podSpec:
+          containers:
+            main:
+              resources:
+                limits:
+                  gpu.intel.com/i915: 1
     
-    resources:
-      limits:
-        gpu.intel.com/i915: 1
-        cpu: 1000m
+    # resources:
+    #   limits:
+    #     gpu.intel.com/i915: 1
+    #     cpu: 1000m
 
     # workload:
     #   main:
