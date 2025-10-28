@@ -126,8 +126,8 @@ spec:
 
     cnpg:
       main:
-        type: vectorchord
-        # mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
+        # type: vectorchord
+        mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
         backups:
           enabled: false  # Set to 'false' when performing new install (recovery)
           credentials: s3
@@ -152,6 +152,6 @@ spec:
     #     gpu.intel.com/i915: 1
     #     cpu: 1000m
 
-    workload:
-      main:
-        replicas: 0    
+    # workload:
+    #   main:
+    #     replicas: 0    
