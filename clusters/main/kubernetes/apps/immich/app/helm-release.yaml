@@ -126,7 +126,7 @@ spec:
 
     cnpg:
       main:
-        # type: vectorchord
+        type: vectorchord
         mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
         backups:
           enabled: false  # Set to 'false' when performing new install (recovery)
