@@ -154,3 +154,7 @@ spec:
         cpu: 1000m
     # podOptions:
     #   runtimeClassName: nvidia    
+
+    workload:
+      main:
+        replicas: 0    
