@@ -147,15 +147,11 @@ spec:
     #             limits:
     #               gpu.intel.com/i915: 1
     
-    # immich:
-    #   mlImageType: mlCudaImage
-    resources:
-      limits:
-        gpu.intel.com/i915: 1
-        cpu: 1000m
-    # podOptions:
-    #   runtimeClassName: nvidia    
+    # resources:
+    #   limits:
+    #     gpu.intel.com/i915: 1
+    #     cpu: 1000m
 
-    # workload:
-    #   main:
-    #     replicas: 0    
+    workload:
+      main:
+        replicas: 0    
