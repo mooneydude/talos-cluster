@@ -126,7 +126,7 @@ spec:
 
     cnpg:
       main:
-        type: vectorchord
+        # type: vectorchord
         mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
         backups:
           enabled: true  # Set to 'false' when performing new install (recovery)
@@ -156,6 +156,6 @@ spec:
     # podOptions:
     #   runtimeClassName: nvidia    
 
-    workload:
-      main:
-        replicas: 0    
+    # workload:
+    #   main:
+    #     replicas: 0    
