@@ -137,14 +137,14 @@ spec:
           credentials: s3
           revision: "2"
 
-    # workload:
-    #   microservices:
-    #     podSpec:
-    #       containers:
-    #         main:
-    #           resources:
-    #             limits:
-    #               gpu.intel.com/i915: 1
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              resources:
+                limits:
+                  gpu.intel.com/i915: 1
     
     # resources:
     #   limits:
