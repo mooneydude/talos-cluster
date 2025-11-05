@@ -43,7 +43,19 @@ spec:
     TZ: America/Chicago
     resources:
       requests:
-        cpu: 10m    
+        cpu: 10m   
+    service:
+      main:
+        type: LoadBalancer
+        loadBalancerIP: ${JOPLIN_IP}
+        integrations:
+          metallb:
+            enabled: true
+        ports:
+          main:
+            port: 22300
+            targetPort: 22300
+            protocol: tcp           
     ingress:
       main:
         enabled: true
