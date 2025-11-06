@@ -69,14 +69,11 @@ spec:
           - name: prf
             type: restic
             credentials: s3
-            dest:
-              volumeSnapshotClassName: ceph-filesystem
-              enabled: true
-              trigger:
-                schedule: "0 1 * * *"
             src:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
+            trigger:
+              schedule: "0 1 * * *"
       thumbs:
         storageClass: ceph-filesystem
         size: 50Gi
@@ -86,14 +83,11 @@ spec:
           - name: thn
             type: restic
             credentials: s3
-            dest:
-              volumeSnapshotClassName: ceph-filesystem
-              enabled: true
-              trigger:
-                schedule: "0 1 * * *"
             src:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
+            trigger:
+              schedule: "0 1 * * *"
       # thumbs:
       #   type: nfs
       #   server: ${TRUENAS_IP}
