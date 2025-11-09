@@ -44,26 +44,34 @@ spec:
         secretKey: "${MINIO_S3KEY}"
         encrKey: "${MINIO_S3KEY}"       
 
-    # service:
-    #   main:
-    #     enabled: true
-    #     loadBalancerIP: ${HASS_IP}
-    #     type: LoadBalancer
-    #     integrations:
-    #       metallb:
-    #         enabled: true
-    #     ports:
-    #       main:
-    #         enabled: true
-    #         port: 8123
-    #         protocol: tcp
-    #         targetPort: 8123
+    service:
+      main:
+        ports:
+          main:
+            port: 10254
+          dav:
+            enabled: true
+            port: 37358
+            protocol: tcp
+            targetPort: 37358
+
     ingress:
       main:
         enabled: true
         ingressClassName: external
         hosts:
           - host: etesync.${DOMAIN_1}
+        integrations:
+          certManager:
+            enabled: true
+            certificateIssuer: domain-0-le-prod
+      dav:
+        enabled: true
+        ingressClassName: external
+        hosts:
+          - host: etesync-dav.${DOMAIN_1}
+        targetSelector:
+          main: dav
         integrations:
           certManager:
             enabled: true
@@ -88,11 +96,29 @@ spec:
         size: 1Gi
         accessModes:
           - ReadWriteMany
+        volsync:
+          enabled: true
+          type: restic
+          credentials: s3
+          src:
+            volumeSnapshotClassName: ceph-filesystem
+            enabled: true
+          trigger:
+            schedule: "0 1 * * *"
       secret:
         storageClass: ceph-filesystem
         size: 1Gi
         accessModes:
           - ReadWriteMany
+        volsync:
+          enabled: true
+          type: restic
+          credentials: s3
+          src:
+            volumeSnapshotClassName: ceph-filesystem
+            enabled: true
+          trigger:
+            schedule: "0 1 * * *"
       dav-data:
         enabled: true
         storageClass: ceph-filesystem
@@ -103,35 +129,15 @@ spec:
           etesync-dav:
             etesync-dav:
               mountPath: /data
-
-    volsync:
-      app:
-        enabled: true
-        type: restic
-        credentials: s3
-        src:
-          volumeSnapshotClassName: ceph-filesystem
+        volsync:
           enabled: true
-        trigger:
-          schedule: "0 1 * * *"
-      secret:
-        enabled: true
-        type: restic
-        credentials: s3
-        src:
-          volumeSnapshotClassName: ceph-filesystem
-          enabled: true
-        trigger:
-          schedule: "0 1 * * *"
-      dav-data:
-        enabled: true
-        type: restic
-        credentials: s3
-        src:
-          volumeSnapshotClassName: ceph-filesystem
-          enabled: true
-        trigger:
-          schedule: "0 1 * * *"
+          type: restic
+          credentials: s3
+          src:
+            volumeSnapshotClassName: ceph-filesystem
+            enabled: true
+          trigger:
+            schedule: "0 1 * * *"
 
     workload:
       main:
