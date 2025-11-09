@@ -93,6 +93,16 @@ spec:
         size: 1Gi
         accessModes:
           - ReadWriteMany
+      dav-data:
+        enabled: true
+        storageClass: ceph-filesystem
+        size: 1Gi
+        accessModes:
+          - ReadWriteMany
+        targetSelector:
+          etesync-dav:
+            etesync-dav:
+              mountPath: /data
 
     volsync:
       app:
@@ -105,6 +115,15 @@ spec:
         trigger:
           schedule: "0 1 * * *"
       secret:
+        enabled: true
+        type: restic
+        credentials: s3
+        src:
+          volumeSnapshotClassName: ceph-filesystem
+          enabled: true
+        trigger:
+          schedule: "0 1 * * *"
+      dav-data:
         enabled: true
         type: restic
         credentials: s3
