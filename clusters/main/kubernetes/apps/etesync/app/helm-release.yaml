@@ -136,6 +136,8 @@ spec:
     workload:
       main:
         podSpec:
+          securityContext:
+            fsGroup: 373
           containers:
             main:
               env:
