@@ -156,7 +156,7 @@ spec:
           containers:
             main:
               env:
-                ALLOWED_HOSTS: "etesync.${DOMAIN_1}"
+                ALLOWED_HOSTS: "etesync.${DOMAIN_1},etesync-dav.${DOMAIN_1}"
                 SECRET_KEY: ${NEXTCLOUD_PWD}
             etesync-dav:
               enabled: true
