@@ -97,28 +97,28 @@ spec:
         accessModes:
           - ReadWriteMany
         volsync:
-          enabled: true
-          type: restic
-          credentials: s3
-          src:
-            volumeSnapshotClassName: ceph-filesystem
-            enabled: true
-          trigger:
-            schedule: "0 1 * * *"
+          - name: app
+            type: restic
+            credentials: s3
+            src:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+              trigger:
+                schedule: "0 1 * * *"
       secret:
         storageClass: ceph-filesystem
         size: 1Gi
         accessModes:
           - ReadWriteMany
         volsync:
-          enabled: true
-          type: restic
-          credentials: s3
-          src:
-            volumeSnapshotClassName: ceph-filesystem
-            enabled: true
-          trigger:
-            schedule: "0 1 * * *"
+          - name: secret
+            type: restic
+            credentials: s3
+            src:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+              trigger:
+                schedule: "0 1 * * *"
       dav-data:
         enabled: true
         storageClass: ceph-filesystem
@@ -130,14 +130,14 @@ spec:
             etesync-dav:
               mountPath: /data
         volsync:
-          enabled: true
-          type: restic
-          credentials: s3
-          src:
-            volumeSnapshotClassName: ceph-filesystem
-            enabled: true
-          trigger:
-            schedule: "0 1 * * *"
+          - name: dav-data
+            type: restic
+            credentials: s3
+            src:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+              trigger:
+                schedule: "0 1 * * *"
 
     workload:
       main:
