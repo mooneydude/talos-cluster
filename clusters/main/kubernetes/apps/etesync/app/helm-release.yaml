@@ -146,6 +146,9 @@ spec:
             etesync-dav:
               enabled: true
               imageSelector: davImage
+              securityContext:
+                runAsUser: 0
+                runAsGroup: 0
               probes:
                 liveness:
                   enabled: false
