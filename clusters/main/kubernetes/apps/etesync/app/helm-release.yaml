@@ -122,3 +122,18 @@ spec:
               env:
                 ALLOWED_HOSTS: "etesync.${DOMAIN_1}"
                 SECRET_KEY: ${NEXTCLOUD_PWD}
+            etesync-dav:
+              enabled: true
+              imageSelector: davImage
+              probes:
+                liveness:
+                  enabled: false
+                readiness:
+                  enabled: false
+                startup:
+                  enabled: false
+
+    davImage:
+      repository: etesync/etesync-dav
+      tag: latest
+      pullPolicy: IfNotPresent
