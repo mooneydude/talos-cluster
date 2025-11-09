@@ -19,3 +19,4 @@ resources:
   # - authentik/ks.yaml
   # - rdgen/ks.yaml
   - filebrowser/ks.yaml
+  - etesync/ks.yaml
