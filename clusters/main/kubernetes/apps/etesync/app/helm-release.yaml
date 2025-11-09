@@ -114,9 +114,11 @@ spec:
         trigger:
           schedule: "0 1 * * *"
 
-    # workload:
-    #   main:
-    #     podSpec:
-    #       containers:
-    #         main:
-    #           ALLOWED_HOST: "my.domain.tld"
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                ALLOWED_HOST: "etesync.${DOMAIN_1}"
+                SECRET_KEY: ${NEXTCLOUD_PWD}
