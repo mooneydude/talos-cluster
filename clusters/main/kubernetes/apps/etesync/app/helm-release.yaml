@@ -87,30 +87,32 @@ spec:
         storageClass: ceph-filesystem
         size: 1Gi
         accessModes:
-          - ReadWriteMany        
-        volsync:
-          - name: app
-            type: restic
-            credentials: s3
-            src:
-              volumeSnapshotClassName: ceph-filesystem
-              enabled: true
-            trigger:
-              schedule: "0 1 * * *"              
+          - ReadWriteMany
       secret:
         storageClass: ceph-filesystem
         size: 1Gi
         accessModes:
-          - ReadWriteMany        
-        volsync:
-          - name: secret
-            type: restic
-            credentials: s3
-            src:
-              volumeSnapshotClassName: ceph-filesystem
-              enabled: true
-            trigger:
-              schedule: "0 1 * * *"               
+          - ReadWriteMany
+
+    volsync:
+      app:
+        enabled: true
+        type: restic
+        credentials: s3
+        src:
+          volumeSnapshotClassName: ceph-filesystem
+          enabled: true
+        trigger:
+          schedule: "0 1 * * *"
+      secret:
+        enabled: true
+        type: restic
+        credentials: s3
+        src:
+          volumeSnapshotClassName: ceph-filesystem
+          enabled: true
+        trigger:
+          schedule: "0 1 * * *"
 
     # workload:
     #   main:
