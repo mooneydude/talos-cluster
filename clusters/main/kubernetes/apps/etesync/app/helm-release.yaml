@@ -89,7 +89,7 @@ spec:
         accessModes:
           - ReadWriteMany        
         volsync:
-          - name: prf
+          - name: app
             type: restic
             credentials: s3
             src:
@@ -103,7 +103,7 @@ spec:
         accessModes:
           - ReadWriteMany        
         volsync:
-          - name: prf
+          - name: secret
             type: restic
             credentials: s3
             src:
