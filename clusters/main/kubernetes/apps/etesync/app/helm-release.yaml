@@ -1,0 +1,120 @@
+---
+# yaml-language-server: schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: etesync
+  namespace: etesync
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: etesync
+      version: 13.23.9
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 15m
+  timeout: 20m
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
+  values:
+    global:
+      stopAll: false
+
+    TZ: America/Chicago
+
+    credentials:
+      s3:
+        type: s3
+        url: "${MINIO_S3URL}"
+        bucket: "${MINIO_S3PREFIX}-etesync"
+        accessKey: "${MINIO_S3ID}"
+        secretKey: "${MINIO_S3KEY}"
+        encrKey: "${MINIO_S3KEY}"       
+
+    # service:
+    #   main:
+    #     enabled: true
+    #     loadBalancerIP: ${HASS_IP}
+    #     type: LoadBalancer
+    #     integrations:
+    #       metallb:
+    #         enabled: true
+    #     ports:
+    #       main:
+    #         enabled: true
+    #         port: 8123
+    #         protocol: tcp
+    #         targetPort: 8123
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: external
+        hosts:
+          - host: etesync.${DOMAIN_1}
+        integrations:
+          certManager:
+            enabled: true
+            certificateIssuer: domain-0-le-prod  
+
+    cnpg:
+      main:
+        # mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
+        backups:
+          enabled: true  # Set to 'false' when performing new install (recovery)
+          credentials: s3
+          retentionPolicy: "7d"
+          revision: "1"
+        recovery:
+          method: object_store
+          credentials: s3
+          revision: ""
+
+    persistence:
+      app:
+        storageClass: ceph-filesystem
+        size: 1Gi
+        accessModes:
+          - ReadWriteMany        
+        volsync:
+          - name: prf
+            type: restic
+            credentials: s3
+            src:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+            trigger:
+              schedule: "0 1 * * *"              
+      secret:
+        storageClass: ceph-filesystem
+        size: 1Gi
+        accessModes:
+          - ReadWriteMany        
+        volsync:
+          - name: prf
+            type: restic
+            credentials: s3
+            src:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+            trigger:
+              schedule: "0 1 * * *"               
+
+    # workload:
+    #   main:
+    #     podSpec:
+    #       containers:
+    #         main:
+    #           ALLOWED_HOST: "my.domain.tld"
