@@ -49,20 +49,20 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
+        ingressClassName: external
         hosts:
           - host: sign.${DOMAIN_4}
         integrations:
           certManager:
             enabled: true
             certificateIssuer: domain-0-le-prod   
-          nginx:
-            enabled: true
-            auth:
-              type: "authentik"
-              disableSignIn: true
-              internalHost: "authentik-http.authentik.svc.cluster.local:10230"
-              externalHost: "sign.${DOMAIN_4}"                   
+          # nginx:
+          #   enabled: true
+          #   auth:
+          #     type: "authentik"
+          #     disableSignIn: true
+          #     internalHost: "authentik-http.authentik.svc.cluster.local:10230"
+          #     externalHost: "sign.${DOMAIN_4}"                   
     persistence:
       data:
         storageClass: ceph-filesystem
