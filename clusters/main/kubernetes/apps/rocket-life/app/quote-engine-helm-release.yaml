@@ -42,9 +42,9 @@ spec:
         memory: 512Mi
 
     image:
-      repository: rocket-life/quote-engine
+      repository: docker-registry.registry.svc.cluster.local:5000/rocket-life/quote-engine
       tag: latest
-      pullPolicy: Never  # Only use locally loaded images
+      pullPolicy: Always
 
     securityContext:
       container:
