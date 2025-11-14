@@ -45,9 +45,9 @@ spec:
         memory: 512Mi
 
     image:
-      repository: rocket-life/chatbot
+      repository: docker-registry.registry.svc.cluster.local:5000/rocket-life/chatbot
       tag: latest
-      pullPolicy: Never  # Only use locally loaded images
+      pullPolicy: Always
 
     securityContext:
       container:
