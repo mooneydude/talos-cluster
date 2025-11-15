@@ -62,7 +62,7 @@ spec:
             targetPort: 3001
             protocol: http
 
-    # Ingress configuration for www.rocketlifeinsurance.com and dev.rocketlifeinsurance.com
+    # Ingress configuration for www.${DOMAIN_4} and dev.${DOMAIN_4}
     ingress:
       main:
         enabled: true

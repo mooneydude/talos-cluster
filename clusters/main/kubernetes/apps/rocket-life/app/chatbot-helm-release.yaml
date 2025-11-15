@@ -65,7 +65,7 @@ spec:
             targetPort: 3000
             protocol: http
 
-    # Ingress configuration for app.rocketlifeinsurance.com
+    # Ingress configuration for app.${DOMAIN_4}
     ingress:
       main:
         enabled: true
@@ -86,7 +86,7 @@ spec:
           containers:
             main:
               env:
-                NEXT_PUBLIC_QUOTE_API_URL: "http://rocket-quote-engine:8000"
+                NEXT_PUBLIC_QUOTE_API_URL: "https://api.${DOMAIN_4}"
                 NEXT_PUBLIC_SUPABASE_URL: "${ROCKET_SUPABASE_URL}"
                 NEXT_PUBLIC_SUPABASE_ANON_KEY: "${ROCKET_SUPABASE_ANON_KEY}"
               probes:

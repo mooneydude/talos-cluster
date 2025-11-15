@@ -62,6 +62,21 @@ spec:
             targetPort: 8000
             protocol: http
 
+    # Ingress configuration for api.${DOMAIN_4}
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: external
+        hosts:
+          - host: api.${DOMAIN_4}
+            paths:
+              - path: /
+                pathType: Prefix
+        integrations:
+          certManager:
+            enabled: true
+            certificateIssuer: domain-0-le-prod
+
     # CloudNativePG database configuration
     cnpg:
       main:
