@@ -107,6 +107,8 @@ spec:
                 DOCUSEAL_API_KEY: "${ROCKET_DOCUSEAL_API_KEY}"
                 DOCUSEAL_BASE_URL: "${ROCKET_DOCUSEAL_BASE_URL}"
                 DOCUSEAL_EAPP_TEMPLATE_ID: "${ROCKET_DOCUSEAL_EAPP_TEMPLATE_ID}"
+                FRONTEND_URL: "https://app.${DOMAIN_4}"
+                BACKEND_URL: "https://api.${DOMAIN_4}"
               probes:
                 liveness:
                   enabled: true
