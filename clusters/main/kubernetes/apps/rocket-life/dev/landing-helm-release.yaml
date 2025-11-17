@@ -82,6 +82,8 @@ spec:
         podSpec:
           containers:
             main:
+              env:
+                NEXT_PUBLIC_APP_URL: "https://app-dev.${DOMAIN_4}"
               probes:
                 liveness:
                   enabled: true

@@ -81,8 +81,8 @@ spec:
     cnpg:
       main:
         enabled: true
-        database: rocketlife
-        user: rocketuser
+        database: rocketlife_dev
+        user: rocketuser_dev
         mode: standalone
         backups:
           enabled: false  # Disabled - enable after configuring S3 credentials
