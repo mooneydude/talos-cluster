@@ -20,5 +20,5 @@ resources:
   # - rdgen/ks.yaml
   - filebrowser/ks.yaml
   - etesync/ks.yaml
-  - rocket-life/ks.yaml
+  # - rocket-life/ks.yaml
   - registry/ks.yaml
