@@ -2,6 +2,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - namespace.yaml
-  - quote-engine-helm-release.yaml
   - chatbot-helm-release.yaml
   - landing-helm-release.yaml
+  - quote-engine-helm-release.yaml
