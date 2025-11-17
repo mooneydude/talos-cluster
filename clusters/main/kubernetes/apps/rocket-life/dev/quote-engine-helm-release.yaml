@@ -98,7 +98,7 @@ spec:
                     name: cnpg-main-urls
                     key: std
                 OPENAI_API_KEY: "${ROCKET_OPENAI_API_KEY}"
-                OPENAI_MODEL: "${ROCKET_OPENAI_MODEL}"
+                OPENAI_MODEL: "gpt-5-mini"
                 SUPABASE_URL: "${ROCKET_SUPABASE_URL}"
                 SUPABASE_ANON_KEY: "${ROCKET_SUPABASE_ANON_KEY}"
                 SUPABASE_JWT_SECRET: "${ROCKET_SUPABASE_JWT_SECRET}"
