@@ -1,0 +1,122 @@
+---
+# yaml-language-server: schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rocket-quote-engine-prod
+  namespace: rocket-life-prod
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 15.24.41
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 15m
+  timeout: 20m
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
+  values:
+    global:
+      stopAll: false
+    TZ: America/Chicago
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        memory: 512Mi
+
+    image:
+      repository: 192.168.2.207:30500/rocket-life/quote-engine
+      tag: prod
+      pullPolicy: Always
+
+    securityContext:
+      container:
+        readOnlyRootFilesystem: false
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+
+    service:
+      main:
+        type: ClusterIP
+        ports:
+          main:
+            port: 8000
+            targetPort: 8000
+            protocol: http
+
+    # Ingress configuration for api.${DOMAIN_4}
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: external
+        hosts:
+          - host: api.${DOMAIN_4}
+            paths:
+              - path: /
+                pathType: Prefix
+        integrations:
+          certManager:
+            enabled: true
+            certificateIssuer: domain-0-le-prod
+
+    # CloudNativePG database configuration
+    cnpg:
+      main:
+        enabled: true
+        database: rocketlife
+        user: rocketuser
+        mode: standalone
+        backups:
+          enabled: false  # Disabled - enable after configuring S3 credentials
+
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                DATABASE_URL:
+                  secretKeyRef:
+                    name: cnpg-main-urls
+                    key: std
+                OPENAI_API_KEY: "${ROCKET_OPENAI_API_KEY}"
+                OPENAI_MODEL: "${ROCKET_OPENAI_MODEL}"
+                SUPABASE_URL: "${ROCKET_PROD_SUPABASE_URL}"
+                SUPABASE_ANON_KEY: "${ROCKET_PROD_SUPABASE_ANON_KEY}"
+                SUPABASE_JWT_SECRET: "${ROCKET_PROD_SUPABASE_JWT_SECRET}"
+                SUPABASE_SERVICE_KEY: "${ROCKET_PROD_SUPABASE_SERVICE_KEY}"
+                HUBSPOT_ACCESS_TOKEN: "${ROCKET_HUBSPOT_ACCESS_TOKEN}"
+                DOCUSEAL_API_KEY: "${ROCKET_DOCUSEAL_API_KEY}"
+                DOCUSEAL_BASE_URL: "${ROCKET_DOCUSEAL_BASE_URL}"
+                DOCUSEAL_EAPP_TEMPLATE_ID: "${ROCKET_DOCUSEAL_EAPP_TEMPLATE_ID}"
+                FRONTEND_URL: "https://app.${DOMAIN_4}"
+                BACKEND_URL: "https://api.${DOMAIN_4}"
+              probes:
+                liveness:
+                  enabled: true
+                  type: http
+                  path: /health
+                  port: 8000
+                readiness:
+                  enabled: true
+                  type: http
+                  path: /health
+                  port: 8000
