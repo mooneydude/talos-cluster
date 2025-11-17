@@ -81,11 +81,11 @@ spec:
     cnpg:
       main:
         enabled: true
-        database: rocketlife
-        user: rocketuser
+        database: rocketlife_prod
+        user: rocketuser_prod
         mode: standalone
         backups:
-          enabled: false  # Disabled - enable after configuring S3 credentials
+          enabled: true  # Enable backups for production
 
     workload:
       main:
