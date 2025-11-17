@@ -85,7 +85,7 @@ spec:
         user: rocketuser_prod
         mode: standalone
         backups:
-          enabled: true  # Enable backups for production
+          enabled: false  # Disabled - enable after configuring S3 credentials
 
     workload:
       main:
