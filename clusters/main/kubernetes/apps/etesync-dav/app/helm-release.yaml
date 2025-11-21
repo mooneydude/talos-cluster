@@ -49,7 +49,21 @@ spec:
           main:
             port: 37358
             targetPort: 37358
-            protocol: http     
+            protocol: http  
+    persistence:
+      data:
+        size: 1Gi
+        volsync:
+          - name: data
+            type: restic
+            credentials: s3
+            src:
+              volumeSnapshotClassName: csi-ceph-blockpool               
+              enabled: true
+              schedule: "0 0 * * *"  
+            dest:
+              volumeSnapshotClassName: csi-ceph-blockpool               
+              enabled: true              
     workload:
       main:
         podSpec:
