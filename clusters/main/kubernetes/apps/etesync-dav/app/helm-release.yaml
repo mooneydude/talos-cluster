@@ -58,14 +58,14 @@ spec:
             targetPort: 37358
             protocol: http  
     persistence:
-      app:
+      data:
         enabled: true
         storageClass: ceph-filesystem
         size: 1Gi
         accessModes:
           - ReadWriteMany
         volsync:
-          - name: app
+          - name: data
             type: restic
             credentials: s3
             dest:
