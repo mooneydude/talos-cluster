@@ -58,19 +58,23 @@ spec:
             targetPort: 37358
             protocol: http  
     persistence:
-      data:
+      app:
+        storageClass: ceph-filesystem
         size: 1Gi
+        accessModes:
+          - ReadWriteMany
         volsync:
-          - name: data
+          - name: app
             type: restic
             credentials: s3
-            src:
-              volumeSnapshotClassName: csi-ceph-blockpool               
-              enabled: true
-              schedule: "0 0 * * *"  
             dest:
-              volumeSnapshotClassName: csi-ceph-blockpool               
-              enabled: true              
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true            
+            src:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+              trigger:
+                schedule: "0 1 * * *"
     workload:
       main:
         podSpec:
