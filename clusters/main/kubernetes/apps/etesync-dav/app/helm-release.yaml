@@ -59,6 +59,7 @@ spec:
             protocol: http  
     persistence:
       app:
+        enabled: true
         storageClass: ceph-filesystem
         size: 1Gi
         accessModes:
