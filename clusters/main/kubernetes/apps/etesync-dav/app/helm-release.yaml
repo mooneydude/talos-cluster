@@ -32,7 +32,14 @@ spec:
   values:
     global:
       stopAll: false
-
+    credentials:
+      s3:
+        type: s3
+        url: "${MINIO_S3URL}"
+        bucket: "${MINIO_S3PREFIX}-etesyncdav"
+        accessKey: "${MINIO_S3ID}"
+        secretKey: "${MINIO_S3KEY}"
+        encrKey: "${MINIO_S3KEY}" 
     TZ: America/Chicago
     image:
       repository: docker.io/etesync/etesync-dav
