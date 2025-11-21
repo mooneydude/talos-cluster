@@ -49,11 +49,6 @@ spec:
         ports:
           main:
             port: 10254
-          dav:
-            enabled: true
-            port: 37358
-            protocol: tcp
-            targetPort: 37358
 
     ingress:
       main:
@@ -65,17 +60,6 @@ spec:
           certManager:
             enabled: true
             certificateIssuer: domain-0-le-prod
-      dav:
-        enabled: true
-        ingressClassName: external
-        hosts:
-          - host: etesync-dav.${DOMAIN_1}
-        targetSelector:
-          main: dav
-        integrations:
-          certManager:
-            enabled: true
-            certificateIssuer: domain-0-le-prod  
 
     cnpg:
       main:
@@ -156,23 +140,5 @@ spec:
           containers:
             main:
               env:
-                ALLOWED_HOSTS: "etesync.${DOMAIN_1},etesync-dav.${DOMAIN_1}"
+                ALLOWED_HOSTS: "etesync.${DOMAIN_1}"
                 SECRET_KEY: ${NEXTCLOUD_PWD}
-            etesync-dav:
-              enabled: true
-              imageSelector: davImage
-              securityContext:
-                runAsUser: 0
-                runAsGroup: 0
-              probes:
-                liveness:
-                  enabled: false
-                readiness:
-                  enabled: false
-                startup:
-                  enabled: false
-
-    davImage:
-      repository: etesync/etesync-dav
-      tag: latest
-      pullPolicy: IfNotPresent
