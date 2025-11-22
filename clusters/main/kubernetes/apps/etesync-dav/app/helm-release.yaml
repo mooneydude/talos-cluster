@@ -94,4 +94,4 @@ spec:
             main:
               env:
                 ETESYNC_URL: "http://etesync.etesync.svc.cluster.local:10254"
-                ETESYNC_LISTEN_ADDRESS: "${ETESYNCDAV_IP}"      
+                ETESYNC_LISTEN_ADDRESS: "${ETESYNCDAV_IP},etesync-dav.${DOMAIN_1}"      
