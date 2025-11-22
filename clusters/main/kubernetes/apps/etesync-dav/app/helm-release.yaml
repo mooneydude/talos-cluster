@@ -103,7 +103,10 @@ spec:
                 - /bin/sh
                 - -c
                 - |
-                  sed -i 's/app.config\["TRUSTED_HOSTS"\] = LISTEN_ADDRESS/app.config["TRUSTED_HOSTS"] = None/' /usr/local/lib/python3.10/site-packages/etesync_dav/webui.py
+                  mkdir -p /tmp/etesync_dav_override
+                  cp -r /usr/local/lib/python3.10/site-packages/etesync_dav/* /tmp/etesync_dav_override/
+                  sed -i 's/app.config\["TRUSTED_HOSTS"\] = LISTEN_ADDRESS/app.config["TRUSTED_HOSTS"] = None/' /tmp/etesync_dav_override/webui.py
+                  export PYTHONPATH="/tmp:${PYTHONPATH}"
                   exec etesync-dav
               env:
                 ETESYNC_URL: "http://etesync.etesync.svc.cluster.local:10254"      
