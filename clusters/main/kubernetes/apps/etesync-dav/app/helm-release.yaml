@@ -84,4 +84,4 @@ spec:
             main:
               env:
                 ETESYNC_SERVER_URL: "https://etesync.${DOMAIN_1}"
-                ETESYNC_ALLOWED_HOSTS: "${ETESYNCDAV_IP},${ETESYNCDAV_IP}:37358"      
+                ETESYNC_ALLOWED_HOSTS: "*"      
