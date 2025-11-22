@@ -140,5 +140,5 @@ spec:
           containers:
             main:
               env:
-                ALLOWED_HOSTS: "etesync.${DOMAIN_1}"
+                ALLOWED_HOSTS: "etesync.${DOMAIN_1},etesync.etesync.svc.cluster.local,etesync.etesync.svc,etesync"
                 SECRET_KEY: ${NEXTCLOUD_PWD}
