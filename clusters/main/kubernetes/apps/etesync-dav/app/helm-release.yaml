@@ -56,7 +56,17 @@ spec:
           main:
             port: 37358
             targetPort: 37358
-            protocol: http  
+            protocol: http
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: external
+        hosts:
+          - host: etesync-dav.${DOMAIN_1}
+        integrations:
+          certManager:
+            enabled: true
+            certificateIssuer: domain-0-le-prod
     persistence:
       data:
         enabled: true
