@@ -83,5 +83,4 @@ spec:
           containers:
             main:
               env:
-                ETESYNC_SERVER_URL: "https://etesync.${DOMAIN_1}"
-                ETESYNC_ALLOWED_HOSTS: "*"      
+                ETESYNC_URL: "https://etesync.${DOMAIN_1}"      
