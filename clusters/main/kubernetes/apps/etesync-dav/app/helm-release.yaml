@@ -92,6 +92,18 @@ spec:
         podSpec:
           containers:
             main:
+              probes:
+                liveness:
+                  enabled: false
+                readiness:
+                  enabled: false
+                startup:
+                  enabled: false
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  sed -i 's/app.config\["TRUSTED_HOSTS"\] = LISTEN_ADDRESS/app.config["TRUSTED_HOSTS"] = None/' /usr/local/lib/python3.10/site-packages/etesync_dav/webui.py
+                  exec etesync-dav
               env:
-                ETESYNC_URL: "http://etesync.etesync.svc.cluster.local:10254"
-                ETESYNC_LISTEN_ADDRESS: "localhost,127.0.0.1,${ETESYNCDAV_IP},etesync-dav.${DOMAIN_1}"      
+                ETESYNC_URL: "http://etesync.etesync.svc.cluster.local:10254"      
