@@ -47,7 +47,6 @@ spec:
         ingressClassName: external
         hosts:
           - host: files.${DOMAIN_1}
-          - host: test1.${DOMAIN_1}
         integrations:
           certManager:
             enabled: true
