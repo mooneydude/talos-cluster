@@ -13,7 +13,7 @@ resources:
   - nextcloud/ks.yaml
   - speedtest-tracker/ks.yaml
   - stun-turn/ks.yaml
-  - rustdesk/ks.yaml
+  # - rustdesk/ks.yaml
   - docuseal/ks.yaml
   - joplin/ks.yaml  
   # - authentik/ks.yaml
