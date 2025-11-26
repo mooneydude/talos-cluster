@@ -22,5 +22,5 @@ resources:
   - etesync/ks.yaml
   - registry/ks.yaml
   # - rocket-life-dev/ks.yaml
-  # - rocket-life-prod/ks.yaml
+  - rocket-life-prod/ks.yaml
   - etesync-dav/ks.yaml
