@@ -42,7 +42,7 @@ spec:
         memory: 256Mi
 
     image:
-      repository: 192.168.2.207:30500/rocket-life/landing
+      repository: 192.168.2.218:5000/rocket-life/landing
       tag: dev
       pullPolicy: Always
 
