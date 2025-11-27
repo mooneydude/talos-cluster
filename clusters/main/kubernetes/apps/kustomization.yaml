@@ -24,3 +24,4 @@ resources:
   # - rocket-life-dev/ks.yaml
   # - rocket-life-prod/ks.yaml
   - etesync-dav/ks.yaml
+  - dockerregistry/ks.yaml
