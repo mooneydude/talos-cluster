@@ -33,11 +33,6 @@ spec:
     global:
       stopAll: false
 
-    # operator:
-    #   verify:
-    #     redis:
-    #       enabled: false
-
     TZ: America/Chicago
 
     credentials:
