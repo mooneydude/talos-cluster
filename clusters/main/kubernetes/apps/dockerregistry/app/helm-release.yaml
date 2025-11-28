@@ -37,14 +37,24 @@ spec:
     service:
       main:
         enabled: true
-        type: LoadBalancer
-        loadBalancerIP: ${REGISTRY_IP}
-        integrations:
-          metallb:
-            enabled: true
+        type: ClusterIP
         ports:
           main:
             enabled: true
             port: 5000
-            protocol: tcp
-            targetPort: 5000    
+            protocol: http
+            targetPort: 5000
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: internal
+        hosts:
+          - host: docker.${DOMAIN_1}
+            paths:
+              - path: /
+                pathType: Prefix
+        integrations:
+          certManager:
+            enabled: true
+            certificateIssuer: domain-0-le-prod    
