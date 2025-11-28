@@ -42,7 +42,7 @@ spec:
         memory: 256Mi
 
     image:
-      repository: dockerregistry.dockerregistry.svc.cluster.local:5000/rocket-life/landing
+      repository: docker.${DOMAIN_1}/rocket-life/landing
       tag: dev
       pullPolicy: Always
 
