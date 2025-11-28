@@ -42,7 +42,7 @@ spec:
         memory: 512Mi
 
     image:
-      repository: 192.168.2.218:5000/rocket-life/quote-engine
+      repository: docker.${DOMAIN_1}/rocket-life/quote-engine
       tag: prod
       pullPolicy: Always
 
