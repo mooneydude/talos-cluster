@@ -91,10 +91,10 @@ spec:
               enabled: true
               trigger:
                 schedule: "30 14 * * *"      
-      zigbeedongle:
-        enabled: true
-        type: device
-        hostPath: /dev/serial/by-id/usb-Silicon_Labs_CP2102N_USB_to_UART_Bridge_Controller_0001-if00-port0              
+      # zigbeedongle:
+      #   enabled: true
+      #   type: device
+      #   hostPath: /dev/serial/by-id/usb-Silicon_Labs_CP2102N_USB_to_UART_Bridge_Controller_0001-if00-port0              
 
     # workload:
     #   main:
