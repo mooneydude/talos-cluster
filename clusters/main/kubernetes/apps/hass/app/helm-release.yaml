@@ -90,7 +90,24 @@ spec:
               volumeSnapshotClassName: ceph-filesystem 
               enabled: true
               trigger:
-                schedule: "30 14 * * *"      
+                schedule: "30 14 * * *"
+      init:
+        storageClass: ceph-filesystem
+        size: 1Gi
+        accessModes:
+          - ReadWriteMany        
+        volsync:
+          - name: b2-init
+            type: restic
+            credentials: s3
+            dest:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+            src:
+              volumeSnapshotClassName: ceph-filesystem 
+              enabled: true
+              trigger:
+                schedule: "30 14 * * *"                       
       # zigbeedongle:
       #   enabled: true
       #   type: device
