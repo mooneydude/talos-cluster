@@ -73,8 +73,6 @@ spec:
       trusted_proxies:
       - 172.16.0.0/16
       - 172.17.0.0/16
-    postgresqlClient:
-      enabled: true
     persistence:
       config:
         storageClass: ceph-filesystem
@@ -110,18 +108,18 @@ spec:
               enabled: true
               trigger:
                 schedule: "30 14 * * *"                       
-      # zigbeedongle:
-      #   enabled: true
-      #   type: device
-      #   hostPath: /dev/serial/by-id/usb-Silicon_Labs_CP2102N_USB_to_UART_Bridge_Controller_0001-if00-port0              
+      zigbeedongle:
+        enabled: true
+        type: device
+        hostPath: /dev/serial/by-id/usb-Silicon_Labs_CP2102N_USB_to_UART_Bridge_Controller_0001-if00-port0              
 
-    # workload:
-    #   main:
-    #     # type: Deployment
-    #     # strategy: RollingUpdate #ToDo install a second zigbee dongle 
-    #     # replicas: 2      
-    #     podSpec:
-    #       nodeSelector:
-    #         feature.node.kubernetes.io/usb-ff_10c4_ea60.present: "true"
+    workload:
+      main:
+        # type: Deployment
+        # strategy: RollingUpdate #ToDo install a second zigbee dongle 
+        # replicas: 2      
+        podSpec:
+          nodeSelector:
+            feature.node.kubernetes.io/usb-ff_10c4_ea60.present: "true"
             
          
