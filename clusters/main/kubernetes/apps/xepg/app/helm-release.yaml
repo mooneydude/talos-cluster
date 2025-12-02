@@ -37,9 +37,9 @@ spec:
       requests:
         cpu: 10m
     image:
-      repository: docker.io/mooneydude/myxepg
-      # pullPolicy: Always
-      tag: latest@sha256:7ec7d329b2ecbef43eb64722f7905cbb9564e4388335f315644c2f12bdec4922
+      repository: docker.${DOMAIN_1}/epg
+      tag: prod
+      # pullPolicy: Always    
     securityContext:
       container:
         readOnlyRootFilesystem: false
