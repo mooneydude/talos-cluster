@@ -97,6 +97,18 @@ spec:
               enabled: true
               trigger:
                 schedule: "30 14 * * *"
+    cnpg:
+      main:
+        # mode: recovery # Set to 'recovery' when recovery from S3, also change the revisions
+        backups:
+          enabled: true
+          credentials: s3
+          retentionPolicy: "14d"
+          revision: "1"
+        recovery:
+          credentials: s3
+          revision: ""  
+                        
     #   zigbeedongle:
     #     enabled: true
     #     type: device
