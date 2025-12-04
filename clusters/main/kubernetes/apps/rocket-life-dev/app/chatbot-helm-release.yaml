@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: rocket-life-dev
+  name: rocket-chatbot-dev
   namespace: rocket-life-dev
 spec:
   interval: 15m
@@ -29,6 +29,9 @@ spec:
   uninstall:
     keepHistory: false
 
+  dependsOn:
+    - name: rocket-quote-engine-dev
+
   values:
     global:
       stopAll: false
@@ -42,7 +45,7 @@ spec:
         memory: 512Mi
 
     image:
-      repository: docker.${DOMAIN_1}/rocket-life/app
+      repository: docker.${DOMAIN_1}/rocket-life/chatbot
       tag: dev
       pullPolicy: Always
 
@@ -55,35 +58,19 @@ spec:
 
     service:
       main:
-        enabled: true
         type: ClusterIP
         ports:
           main:
-            enabled: true
-            port: 8080
-            targetPort: 3001
-          quote-engine:
-            enabled: true
-            port: 8000
-            targetPort: 8000
-          chatbot:
-            enabled: true
             port: 3000
             targetPort: 3000
+            protocol: http
 
+    # Ingress configuration for app-dev.${DOMAIN_4}
     ingress:
       main:
         enabled: true
         ingressClassName: external
         hosts:
-          - host: dev.${DOMAIN_4}
-            paths:
-              - path: /
-                pathType: Prefix
-          - host: api-dev.${DOMAIN_4}
-            paths:
-              - path: /
-                pathType: Prefix
           - host: app-dev.${DOMAIN_4}
             paths:
               - path: /
@@ -93,43 +80,16 @@ spec:
             enabled: true
             certificateIssuer: domain-0-le-prod
 
-    cnpg:
-      main:
-        enabled: true
-        database: rocketlife_dev
-        user: rocketuser_dev
-        mode: standalone
-        backups:
-          enabled: false
-
     workload:
       main:
         podSpec:
           containers:
             main:
               env:
-                DATABASE_URL:
-                  secretKeyRef:
-                    name: cnpg-main-urls
-                    key: std
-                OPENAI_API_KEY: "${ROCKET_OPENAI_API_KEY}"
-                OPENAI_MODEL: "gpt-5-mini"
-                SUPABASE_URL: "${ROCKET_SUPABASE_URL}"
-                SUPABASE_ANON_KEY: "${ROCKET_SUPABASE_ANON_KEY}"
-                SUPABASE_JWT_SECRET: "${ROCKET_SUPABASE_JWT_SECRET}"
-                SUPABASE_SERVICE_KEY: "${ROCKET_SUPABASE_SERVICE_KEY}"
-                HUBSPOT_ACCESS_TOKEN: "${ROCKET_HUBSPOT_ACCESS_TOKEN}"
-                DOCUSEAL_API_KEY: "${ROCKET_DOCUSEAL_API_KEY}"
-                DOCUSEAL_BASE_URL: "${ROCKET_DOCUSEAL_BASE_URL}"
-                DOCUSEAL_EAPP_TEMPLATE_ID: "${ROCKET_DOCUSEAL_EAPP_TEMPLATE_ID}"
-                FRONTEND_URL: "https://app-dev.${DOMAIN_4}"
-                BACKEND_URL: "https://api-dev.${DOMAIN_4}"
+                NEXT_PUBLIC_QUOTE_API_URL: "https://api-dev.${DOMAIN_4}"
+                NEXT_PUBLIC_SUPABASE_URL: "${ROCKET_SUPABASE_URL}"
+                NEXT_PUBLIC_SUPABASE_ANON_KEY: "${ROCKET_SUPABASE_ANON_KEY}"
               probes:
-                startup:
-                  enabled: true
-                  type: http
-                  path: /
-                  port: 3000
                 liveness:
                   enabled: true
                   type: http
