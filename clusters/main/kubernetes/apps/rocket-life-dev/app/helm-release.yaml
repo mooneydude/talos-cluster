@@ -3,14 +3,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: rocket-quote-engine-dev
+  name: rocket-life-dev
   namespace: rocket-life-dev
 spec:
   interval: 15m
   chart:
     spec:
       chart: app-template
-      version: 15.29.8
+      version: 15.29.6
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -36,15 +36,10 @@ spec:
 
     resources:
       requests:
-        cpu: 100m
+        cpu: 50m
         memory: 256Mi
       limits:
         memory: 512Mi
-
-    image:
-      repository: docker.${DOMAIN_1}/rocket-life/quote-engine
-      tag: dev
-      pullPolicy: Always
 
     securityContext:
       container:
@@ -57,18 +52,33 @@ spec:
       main:
         type: ClusterIP
         ports:
-          main:
+          landing:
+            port: 3001
+            targetPort: 3001
+            protocol: http
+          quote-engine:
             port: 8000
             targetPort: 8000
             protocol: http
+          chatbot:
+            port: 3000
+            targetPort: 3000
+            protocol: http
 
-    # Ingress configuration for api-dev.${DOMAIN_4}
     ingress:
       main:
         enabled: true
         ingressClassName: external
         hosts:
+          - host: dev.${DOMAIN_4}
+            paths:
+              - path: /
+                pathType: Prefix
           - host: api-dev.${DOMAIN_4}
+            paths:
+              - path: /
+                pathType: Prefix
+          - host: app-dev.${DOMAIN_4}
             paths:
               - path: /
                 pathType: Prefix
@@ -77,7 +87,6 @@ spec:
             enabled: true
             certificateIssuer: domain-0-le-prod
 
-    # CloudNativePG database configuration
     cnpg:
       main:
         enabled: true
@@ -85,13 +94,42 @@ spec:
         user: rocketuser_dev
         mode: standalone
         backups:
-          enabled: false  # Disabled - enable after configuring S3 credentials
+          enabled: false
 
     workload:
       main:
         podSpec:
           containers:
-            main:
+            landing:
+              image:
+                repository: docker.${DOMAIN_1}/rocket-life/landing
+                tag: dev
+                pullPolicy: Always
+              ports:
+                - containerPort: 3001
+                  protocol: http
+              env:
+                NEXT_PUBLIC_APP_URL: "https://app-dev.${DOMAIN_4}"
+              probes:
+                liveness:
+                  enabled: true
+                  type: http
+                  path: /
+                  port: 3001
+                readiness:
+                  enabled: true
+                  type: http
+                  path: /
+                  port: 3001
+
+            quote-engine:
+              image:
+                repository: docker.${DOMAIN_1}/rocket-life/quote-engine
+                tag: dev
+                pullPolicy: Always
+              ports:
+                - containerPort: 8000
+                  protocol: http
               env:
                 DATABASE_URL:
                   secretKeyRef:
@@ -120,3 +158,27 @@ spec:
                   type: http
                   path: /health
                   port: 8000
+
+            chatbot:
+              image:
+                repository: docker.${DOMAIN_1}/rocket-life/chatbot
+                tag: dev
+                pullPolicy: Always
+              ports:
+                - containerPort: 3000
+                  protocol: http
+              env:
+                NEXT_PUBLIC_QUOTE_API_URL: "https://api-dev.${DOMAIN_4}"
+                NEXT_PUBLIC_SUPABASE_URL: "${ROCKET_SUPABASE_URL}"
+                NEXT_PUBLIC_SUPABASE_ANON_KEY: "${ROCKET_SUPABASE_ANON_KEY}"
+              probes:
+                liveness:
+                  enabled: true
+                  type: http
+                  path: /
+                  port: 3000
+                readiness:
+                  enabled: true
+                  type: http
+                  path: /
+                  port: 3000
