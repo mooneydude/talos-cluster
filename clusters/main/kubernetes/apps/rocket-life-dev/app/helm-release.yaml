@@ -101,6 +101,7 @@ spec:
         podSpec:
           containers:
             landing:
+              enabled: true
               image:
                 repository: docker.${DOMAIN_1}/rocket-life/landing
                 tag: dev
@@ -123,6 +124,7 @@ spec:
                   port: 3001
 
             quote-engine:
+              enabled: true
               image:
                 repository: docker.${DOMAIN_1}/rocket-life/quote-engine
                 tag: dev
@@ -160,6 +162,7 @@ spec:
                   port: 8000
 
             chatbot:
+              enabled: true
               image:
                 repository: docker.${DOMAIN_1}/rocket-life/chatbot
                 tag: dev
