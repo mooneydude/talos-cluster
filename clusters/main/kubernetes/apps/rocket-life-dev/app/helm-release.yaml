@@ -53,29 +53,18 @@ spec:
         enabled: true
         type: ClusterIP
         ports:
-          http:
+          main:
             enabled: true
             port: 8080
             targetPort: 3001
-            protocol: http
-      quote-engine:
-        enabled: true
-        type: ClusterIP
-        ports:
-          http:
+          quote-engine:
             enabled: true
             port: 8000
             targetPort: 8000
-            protocol: http
-      chatbot:
-        enabled: true
-        type: ClusterIP
-        ports:
-          http:
+          chatbot:
             enabled: true
             port: 3000
             targetPort: 3000
-            protocol: http
 
     ingress:
       main:
@@ -83,23 +72,14 @@ spec:
         ingressClassName: external
         hosts:
           - host: dev.${DOMAIN_4}
-            service:
-              name: rocket-life-dev-main
-              port: http
             paths:
               - path: /
                 pathType: Prefix
           - host: api-dev.${DOMAIN_4}
-            service:
-              name: rocket-life-dev-quote-engine
-              port: http
             paths:
               - path: /
                 pathType: Prefix
           - host: app-dev.${DOMAIN_4}
-            service:
-              name: rocket-life-dev-chatbot
-              port: http
             paths:
               - path: /
                 pathType: Prefix
