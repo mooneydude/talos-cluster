@@ -3,8 +3,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: rocket-life-dev
-  namespace: rocket-life-dev
+  name: rocket-life-prod
+  namespace: rocket-life-prod
 spec:
   interval: 15m
   chart:
@@ -29,6 +29,8 @@ spec:
   uninstall:
     keepHistory: false
 
+  dependsOn: []
+
   values:
     global:
       stopAll: false
@@ -43,7 +45,7 @@ spec:
 
     image:
       repository: docker.${DOMAIN_1}/rocket-life/app
-      tag: dev
+      tag: prod
       pullPolicy: Always
 
     securityContext:
@@ -55,36 +57,23 @@ spec:
 
     service:
       main:
-        enabled: true
         type: ClusterIP
         ports:
           main:
-            enabled: true
-            port: 8080
-            targetPort: 3001
-          quote-engine:
-            enabled: true
-            port: 8000
-            targetPort: 8000
-          chatbot:
-            enabled: true
             port: 3000
             targetPort: 3000
+            protocol: http
 
     ingress:
       main:
         enabled: true
         ingressClassName: external
         hosts:
-          - host: dev.${DOMAIN_4}
+          - host: app.${DOMAIN_4}
             paths:
               - path: /
                 pathType: Prefix
-          - host: api-dev.${DOMAIN_4}
-            paths:
-              - path: /
-                pathType: Prefix
-          - host: app-dev.${DOMAIN_4}
+          - host: www.${DOMAIN_4}
             paths:
               - path: /
                 pathType: Prefix
@@ -92,15 +81,6 @@ spec:
           certManager:
             enabled: true
             certificateIssuer: domain-0-le-prod
-
-    cnpg:
-      main:
-        enabled: true
-        database: rocketlife_dev
-        user: rocketuser_dev
-        mode: standalone
-        backups:
-          enabled: false
 
     workload:
       main:
@@ -113,17 +93,17 @@ spec:
                     name: cnpg-main-urls
                     key: std
                 OPENAI_API_KEY: "${ROCKET_OPENAI_API_KEY}"
-                OPENAI_MODEL: "gpt-5-mini"
-                SUPABASE_URL: "${ROCKET_SUPABASE_URL}"
-                SUPABASE_ANON_KEY: "${ROCKET_SUPABASE_ANON_KEY}"
-                SUPABASE_JWT_SECRET: "${ROCKET_SUPABASE_JWT_SECRET}"
-                SUPABASE_SERVICE_KEY: "${ROCKET_SUPABASE_SERVICE_KEY}"
+                OPENAI_MODEL: "gpt-5.1"
+                SUPABASE_URL: "${ROCKET_PROD_SUPABASE_URL}"
+                SUPABASE_ANON_KEY: "${ROCKET_PROD_SUPABASE_ANON_KEY}"
+                SUPABASE_JWT_SECRET: "${ROCKET_PROD_SUPABASE_JWT_SECRET}"
+                SUPABASE_SERVICE_KEY: "${ROCKET_PROD_SUPABASE_SERVICE_KEY}"
                 HUBSPOT_ACCESS_TOKEN: "${ROCKET_HUBSPOT_ACCESS_TOKEN}"
                 DOCUSEAL_API_KEY: "${ROCKET_DOCUSEAL_API_KEY}"
                 DOCUSEAL_BASE_URL: "${ROCKET_DOCUSEAL_BASE_URL}"
                 DOCUSEAL_EAPP_TEMPLATE_ID: "${ROCKET_DOCUSEAL_EAPP_TEMPLATE_ID}"
-                FRONTEND_URL: "https://app-dev.${DOMAIN_4}"
-                BACKEND_URL: "https://api-dev.${DOMAIN_4}"
+                FRONTEND_URL: "https://app.${DOMAIN_4}"
+                BACKEND_URL: "https://api.${DOMAIN_4}"
               probes:
                 startup:
                   enabled: true
@@ -140,3 +120,12 @@ spec:
                   type: http
                   path: /
                   port: 3000
+
+    cnpg:
+      main:
+        enabled: true
+        database: rocketlife_prod
+        user: rocketuser_prod
+        mode: standalone
+        backups:
+          enabled: false
