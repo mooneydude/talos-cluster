@@ -104,7 +104,7 @@ spec:
           containers:
             main:
               env:
-                X_FRAME_OPTIONS: "ALLOWALL"
+                ALLOW_IFRAME_HOSTING: "true"
                 HOST: "https://sign-dev.${DOMAIN_4}"
                 APP_URL: "https://sign-dev.${DOMAIN_4}"
                 FORCE_SSL: "true"
