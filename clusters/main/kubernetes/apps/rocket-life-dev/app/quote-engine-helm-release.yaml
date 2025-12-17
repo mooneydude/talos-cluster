@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 15.29.18
+      version: 15.29.11
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -104,9 +104,9 @@ spec:
                 SUPABASE_JWT_SECRET: "${ROCKET_SUPABASE_JWT_SECRET}"
                 SUPABASE_SERVICE_KEY: "${ROCKET_SUPABASE_SERVICE_KEY}"
                 HUBSPOT_ACCESS_TOKEN: "${ROCKET_HUBSPOT_ACCESS_TOKEN}"
-                DOCUSEAL_API_KEY: "${ROCKET_DOCUSEAL_API_KEY}"
-                DOCUSEAL_BASE_URL: "${ROCKET_DOCUSEAL_BASE_URL}"
-                DOCUSEAL_EAPP_TEMPLATE_ID: "${ROCKET_DOCUSEAL_EAPP_TEMPLATE_ID}"
+                DOCUSEAL_API_KEY: "${ROCKET_DEV_DOCUSEAL_API_KEY}"
+                DOCUSEAL_BASE_URL: "${ROCKET_DEV_DOCUSEAL_BASE_URL}"
+                DOCUSEAL_EAPP_TEMPLATE_ID: "${ROCKET_DEV_DOCUSEAL_EAPP_TEMPLATE_ID}"
                 FRONTEND_URL: "https://app-dev.${DOMAIN_4}"
                 BACKEND_URL: "https://api-dev.${DOMAIN_4}"
               probes:
