@@ -105,4 +105,5 @@ spec:
             main:
               env:
                 X_FRAME_OPTIONS: "ALLOWALL"
+                HOST: "https://sign-dev.${DOMAIN_4}"
 
