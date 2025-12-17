@@ -50,6 +50,10 @@ spec:
       main:
         enabled: true
         ingressClassName: external
+        annotations:
+          nginx.ingress.kubernetes.io/configuration-snippet: |
+            proxy_hide_header X-Frame-Options;
+            add_header Content-Security-Policy "frame-ancestors 'self' https://app-dev.${DOMAIN_4} https://*.${DOMAIN_4}";
         hosts:
           - host: sign-dev.${DOMAIN_4}
         integrations:
