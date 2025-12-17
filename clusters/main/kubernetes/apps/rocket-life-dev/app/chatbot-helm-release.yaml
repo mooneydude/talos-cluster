@@ -45,7 +45,7 @@ spec:
         memory: 512Mi
 
     image:
-      repository: docker.${DOMAIN_1}/rocket-life/chatbot
+      repository: docker.${DOMAIN_1}/rocket-life/chatbot-v2
       tag: dev
       pullPolicy: Always
 
