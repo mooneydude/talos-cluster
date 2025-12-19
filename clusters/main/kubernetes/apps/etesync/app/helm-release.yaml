@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: etesync
-      version: 13.27.2
+      version: 13.27.3
       sourceRef:
         kind: HelmRepository
         name: truecharts
