@@ -136,6 +136,7 @@ spec:
           containers:
             main:
               env:
+                SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
                 ADMIN_USER: "admin"
                 ADMIN_PASSWORD: "testme"
        
