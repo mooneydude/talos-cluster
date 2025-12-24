@@ -25,4 +25,4 @@ resources:
   - etesync-dav/ks.yaml
   - dockerregistry/ks.yaml
   - docuseal-dev/ks.yaml
-  - trueconf/ks.yaml
+  # - trueconf/ks.yaml
