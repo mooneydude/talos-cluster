@@ -99,10 +99,8 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: ceph-filesystem
+        storageClass: ceph-block
         size: 10Gi
-        accessModes:
-          - ReadWriteMany
         targetSelector:
           main:
             main:
