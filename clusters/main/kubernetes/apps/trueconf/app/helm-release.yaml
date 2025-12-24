@@ -89,16 +89,16 @@ spec:
           certManager:
             enabled: true
             certificateIssuer: domain-0-le-prod  
-    # persistence:
-    #   config:
-    #     storageClass: ceph-filesystem
-    #     size: 10Gi
-    #     accessModes:
-    #       - ReadWriteMany
-    #     targetSelector:
-    #       main:
-    #         main:
-    #           mountPath: /opt/trueconf/server/var/lib
+    persistence:
+      config:
+        storageClass: ceph-filesystem
+        size: 10Gi
+        accessModes:
+          - ReadWriteMany
+        targetSelector:
+          main:
+            main:
+              mountPath: /opt/trueconf/server/var/lib
     #     volsync:
     #       - name: b2
     #         type: restic
