@@ -103,7 +103,7 @@ spec:
         enabled: true
         ingressClassName: external
         hosts:
-          - host: conf.${DOMAIN_1}
+          - host: talk.${DOMAIN_1}
         integrations:
           certManager:
             enabled: true
