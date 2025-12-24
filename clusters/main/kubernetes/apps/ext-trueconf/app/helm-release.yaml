@@ -36,7 +36,7 @@ spec:
     service:
       main:
         type: ExternalIP
-        externalIP: ${TRUECONF_IP}
+        externalIP: "192.168.2.51"
         integrations:
           metallb:
             enabled: true
