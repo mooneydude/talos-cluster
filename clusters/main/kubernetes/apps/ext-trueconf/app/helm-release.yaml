@@ -37,9 +37,10 @@ spec:
       main:
         type: ExternalIP
         externalIP: "192.168.2.51"
-        integrations:
-          metallb:
-            enabled: true
+        useSlice: true
+        # integrations:
+        #   metallb:
+        #     enabled: true
         ports:
           main:
             protocol: https
