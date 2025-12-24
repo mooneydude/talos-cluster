@@ -43,17 +43,12 @@ spec:
         #     enabled: true
         ports:
           main:
-            protocol: https
-            port: 443
-          # http:
-          #   protocol: http
-          #   port: 80
+            protocol: http
+            port: 80
     ingress:
       main:
         enabled: true
         ingressClassName: external
-        annotations:
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         hosts:
           - host: trueconf.${DOMAIN_1}
         integrations:
