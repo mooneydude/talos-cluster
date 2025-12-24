@@ -57,4 +57,3 @@ spec:
           certManager:
             enabled: true
             certificateIssuer: domain-0-le-prod
-            # note
