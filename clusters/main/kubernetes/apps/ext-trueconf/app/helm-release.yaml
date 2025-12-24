@@ -42,7 +42,7 @@ spec:
             enabled: true
         ports:
           main:
-            protocol: http
+            protocol: https
             port: 443
           # http:
           #   protocol: http
