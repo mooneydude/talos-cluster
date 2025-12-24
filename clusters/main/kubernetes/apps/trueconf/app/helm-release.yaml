@@ -63,7 +63,12 @@ spec:
         encrKey: "${MINIO_S3KEY}"
     service:
       main:
-        type: ClusterIP
+        enabled: true
+        loadBalancerIP: ${TRUECONF_IP}
+        type: LoadBalancer
+        integrations:
+          metallb:
+            enabled: true
         ports:
           # main:
           #   enabled: true
