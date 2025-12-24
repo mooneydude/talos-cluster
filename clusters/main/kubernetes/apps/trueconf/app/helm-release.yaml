@@ -122,6 +122,13 @@ spec:
     #     recovery:
     #       credentials: s3
     #       revision: ""  
-
-            
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                ADMIN_USER: "admin"
+                ADMIN_PASSWORD: "testme"
+       
          
