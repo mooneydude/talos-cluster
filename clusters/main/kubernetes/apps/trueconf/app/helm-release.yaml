@@ -87,7 +87,11 @@ spec:
             targetPort: 4307
       webrtc:
         enabled: true
+        loadBalancerIP: ${TRUECONF_IP}
         type: LoadBalancer
+        integrations:
+          metallb:
+            enabled: true
         ports:
           webrtc:
             enabled: true
