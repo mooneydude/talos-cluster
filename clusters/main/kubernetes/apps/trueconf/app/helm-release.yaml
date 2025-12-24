@@ -99,7 +99,7 @@ spec:
     persistence:
       config:
         enabled: true
-        storageClass: ceph-block
+        storageClass: ceph-nvme
         size: 10Gi
         targetSelector:
           main:
