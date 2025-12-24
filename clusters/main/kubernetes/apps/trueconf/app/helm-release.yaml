@@ -92,6 +92,7 @@ spec:
             certificateIssuer: domain-0-le-prod  
     persistence:
       config:
+        enabled: true
         storageClass: ceph-filesystem
         size: 10Gi
         accessModes:
