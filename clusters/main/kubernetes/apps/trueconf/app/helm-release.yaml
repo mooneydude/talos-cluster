@@ -70,7 +70,7 @@ spec:
           metallb:
             enabled: true
         ports:
-          # main:
+          # https:
           #   enabled: true
           #   port: 443
           #   protocol: https
