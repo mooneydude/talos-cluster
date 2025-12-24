@@ -33,7 +33,7 @@ spec:
     image:
       repository: docker.io/trueconf/trueconf-server
       pullPolicy: IfNotPresent
-      tag: 5.3.8.10022@sha256:ab3f3ba07dadf726a097fd758e084ecdc181bec075075b1f6fc7ca7492b23081
+      tag: 5.5.2.10903@sha256:bf772f9b5d1cf15ef71b3c99c49127f3f2dd1c62b87b3c5563ee3568d16c7fa7
 
     ## Enable host networking for direct network access. True breaks K8s security.
     # hostNetwork: true
