@@ -40,7 +40,8 @@ spec:
     TZ: America/Chicago 
     resources:
       requests:
-        cpu: 10m      
+        cpu: 10m
+        memory: 100Mi      
     global:
       stopAll: false 
     credentials:
