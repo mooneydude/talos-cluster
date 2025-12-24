@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: dockerregistry
-      version: 9.13.4
+      version: 9.13.5
       sourceRef:
         kind: HelmRepository
         name: truecharts
