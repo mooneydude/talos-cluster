@@ -41,7 +41,13 @@ spec:
     resources:
       requests:
         cpu: 10m
-        memory: 100Mi      
+        memory: 100Mi
+    securityContext:
+      container:
+        readOnlyRootFilesystem: false
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
     global:
       stopAll: false 
     credentials:
