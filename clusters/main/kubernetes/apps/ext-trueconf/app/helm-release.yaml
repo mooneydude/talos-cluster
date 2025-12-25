@@ -43,8 +43,8 @@ spec:
         #     enabled: true
         ports:
           main:
-            protocol: http
-            port: 80
+            protocol: tcp
+            port: 443
     ingress:
       main:
         enabled: true
