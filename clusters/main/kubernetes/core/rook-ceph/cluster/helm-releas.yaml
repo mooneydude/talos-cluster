@@ -61,6 +61,14 @@ spec:
               memory: 512Mi
             limits:
               memory: 2Gi
+          # Increase operator memory to prevent OOMKilled crashes
+          operator:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
           mon:
             requests:
               cpu: 50m
