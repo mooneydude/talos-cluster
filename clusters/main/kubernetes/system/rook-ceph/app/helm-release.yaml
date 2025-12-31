@@ -33,11 +33,17 @@ spec:
             enabled: false
         monitoring:
             enabled: true
+        logCollector:
+            enabled: true
+            period: 24h
+        imagePullSecrets: []
+        logs:
+          level: WARN
         resources:
             requests:
                 cpu: 100m
                 memory: 128Mi
             limits:
-                cpu: 1000m
+                cpu: 500m
                 memory: 256Mi
                 
