@@ -39,6 +39,14 @@ spec:
         bluestore_compression_required_ratio = .875
         rbd_default_stripe_unit = 65536
         rbd_default_stripe_count = 16
+        # Memory optimization settings
+        [osd]
+        # Limit OSD memory usage to 512Mi base target
+        osd_memory_target = 536870912
+        # Enable automatic memory tuning to adapt to workload
+        osd_memory_target_autotune = true
+        # Control number of PGs to reduce memory overhead
+        mon_max_pg_per_osd = 200
       cephClusterSpec:
         mgr:
           count: 1
@@ -62,9 +70,9 @@ spec:
           osd:
             requests:
               cpu: 500m
-              memory: 1Gi
+              memory: 512Mi
             limits:
-              memory: 4Gi
+              memory: 2Gi
           prepareosd:
             limits:
               cpu: 100m
