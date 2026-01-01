@@ -25,3 +25,8 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    resources:
+      limits:
+        memory: 512Mi  # was 8Gi!
+      requests:
+        memory: 256Mi
