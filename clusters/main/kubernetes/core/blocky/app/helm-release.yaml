@@ -79,3 +79,9 @@ spec:
     cnpg:
       main:
         enabled: false
+        
+    resources:
+      limits:
+        memory: 512Mi  # was 4.8Gi
+      requests:
+        memory: 256Mi
