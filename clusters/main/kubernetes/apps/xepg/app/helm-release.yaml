@@ -39,7 +39,7 @@ spec:
     image:
       repository: docker.${DOMAIN_1}/epg
       tag: prod
-      # pullPolicy: Always    
+      pullPolicy: Always    
     securityContext:
       container:
         readOnlyRootFilesystem: false
