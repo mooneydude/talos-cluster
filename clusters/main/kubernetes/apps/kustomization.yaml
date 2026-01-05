@@ -8,7 +8,7 @@ resources:
   - jellyfin/ks.yaml
   - immich/ks.yaml
   - vaultwarden/ks.yaml
-  - xepg/ks.yaml
+  # - xepg/ks.yaml
   - xteve/ks.yaml
   - nextcloud/ks.yaml
   - speedtest-tracker/ks.yaml
@@ -24,6 +24,4 @@ resources:
   - rocket-life-prod/ks.yaml
   - etesync-dav/ks.yaml
   - dockerregistry/ks.yaml
-  - docuseal-dev/ks.yaml
-  # - trueconf/ks.yaml
-  # - ext-trueconf/ks.yaml
+  # - docuseal-dev/ks.yaml
