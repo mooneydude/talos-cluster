@@ -4,7 +4,7 @@ resources:
   # - kubernetes-dashboard/ks.yaml
   - cloudflared/ks.yaml
   # - ext-cow/ks.yaml
-  # - hass/ks.yaml
+  - hass/ks.yaml
   - jellyfin/ks.yaml
   - immich/ks.yaml
   - vaultwarden/ks.yaml
