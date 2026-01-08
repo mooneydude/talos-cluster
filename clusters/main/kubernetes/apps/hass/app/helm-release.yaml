@@ -104,10 +104,10 @@ spec:
           enabled: true
           credentials: s3
           retentionPolicy: "14d"
-          revision: "1"
+          revision: "2"
         recovery:
           credentials: s3
-          revision: ""  
+          revision: "1"  
 
     #   zigbeedongle:
     #     enabled: true
