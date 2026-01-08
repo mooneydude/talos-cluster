@@ -20,8 +20,8 @@ resources:
   # - rdgen/ks.yaml
   - filebrowser/ks.yaml
   - etesync/ks.yaml
-  - rocket-life-dev/ks.yaml
-  - rocket-life-prod/ks.yaml
+  # - rocket-life-dev/ks.yaml
+  # - rocket-life-prod/ks.yaml
   - etesync-dav/ks.yaml
   - dockerregistry/ks.yaml
   - trueconf/ks.yaml
