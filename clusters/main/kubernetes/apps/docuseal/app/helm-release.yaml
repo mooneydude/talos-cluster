@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: docuseal
-      version: 5.15.10
+      version: 5.15.12
       sourceRef:
         kind: HelmRepository
         name: truecharts
