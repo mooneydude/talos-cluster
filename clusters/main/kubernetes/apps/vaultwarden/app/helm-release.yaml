@@ -67,7 +67,7 @@ spec:
         smtp:
           enabled: true
           host: smtp.gmail.com
-          from: ${DOMAIN_7_EMAIL}
+          from: ${DOMAIN_1_EMAIL}
           fromName: MooneyDude
           security: starttls
           port: 587
@@ -75,7 +75,7 @@ spec:
           timeout: 15
           invalidHostname: false
           invalidCertificate: false
-          user: ${DOMAIN_7_EMAIL}
+          user: ${DOMAIN_1_EMAIL}
           password: ${VAULT_SMTP_PWD}          
     persistence:
       data:
