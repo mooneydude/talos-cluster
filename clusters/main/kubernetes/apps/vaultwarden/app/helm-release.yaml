@@ -66,7 +66,7 @@ spec:
           token: ${VW_TOKEN}
         smtp:
           enabled: true
-          host: smtp.gmail.com
+          host: ${VAULT_SMTP}
           from: ${DOMAIN_1_EMAIL}
           fromName: MooneyDude
           security: starttls
