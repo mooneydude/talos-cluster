@@ -61,6 +61,10 @@ spec:
       main:
         enabled: true
         ingressClassName: external
+        annotations:
+          nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
+          nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+          nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
         hosts:
           - host: etesync-dav.${DOMAIN_1}
         integrations:
