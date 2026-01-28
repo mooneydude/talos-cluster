@@ -37,9 +37,6 @@ spec:
       main:
         type: ExternalIP
         externalIP: "192.168.2.52"
-        integrations:
-          metallb:
-            enabled: true
         ports:
           main:
             port: 3000
