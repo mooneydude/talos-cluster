@@ -1,0 +1,56 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ext-rocketdev
+  namespace: ext-rockedev
+  interval: 15m
+  chart:
+    spec:
+      chart: external-service
+      version: 16.14.12
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 15m
+  timeout: 20m
+  maxHistory: 3
+  driftDetection:
+    mode: warn
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    TZ: America/Chicago
+    global:
+      stopAll: false
+    service:
+      main:
+        type: ExternalIP
+        externalIP: ${LAPTOP}
+        integrations:
+          metallb:
+            enabled: true
+        ports:
+          main:
+            port: 3000
+            targetPort: 3000
+            protocol: http
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: external
+        hosts:
+          - host: app-dev.${DOMAIN_4}
+        integrations:
+          certManager:
+            enabled: true
+            certificateIssuer: domain-0-le-prod
