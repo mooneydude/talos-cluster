@@ -24,6 +24,6 @@ resources:
   # - rocket-life-prod/ks.yaml
   - etesync-dav/ks.yaml
   - dockerregistry/ks.yaml
-  - trueconf/ks.yaml
+  # - trueconf/ks.yaml
   - docuseal-dev/ks.yaml
   - ext-rocketdev/ks.yaml
