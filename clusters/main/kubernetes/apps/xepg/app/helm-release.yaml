@@ -37,7 +37,7 @@ spec:
       requests:
         cpu: 10m
     image:
-      repository: docker.${DOMAIN_1}/epg
+      repository: dockerregistry.dockerregistry.svc.cluster.local:5000/epg
       tag: prod
       pullPolicy: Always    
     securityContext:
