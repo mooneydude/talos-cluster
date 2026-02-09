@@ -29,12 +29,14 @@ spec:
   uninstall:
     keepHistory: false
   values:
-
     image:
       repository: docker.io/homeassistant/home-assistant
       pullPolicy: IfNotPresent
       tag: 2025.12.5@sha256:9a5a3eb4a213dfb25932dee9dc6815c9305f78cecb5afa716fa2483163d8fb5b
-
+    matterServerImage:
+      repository: ghcr.io/home-assistant-libs/python-matter-server
+      pullPolicy: IfNotPresent
+      tag: stable
     ## Enable host networking for direct network access. True breaks K8s security.
     # hostNetwork: true
     TZ: America/Chicago 
@@ -97,6 +99,22 @@ spec:
               enabled: true
               trigger:
                 schedule: "30 14 * * *"
+      matter:
+        enabled: true
+        targetSelector:
+          main:
+            matter:
+              mountPath: /data
+        volsync:
+          - credentials: s3
+            dest:
+              enabled: true
+            name: matter
+            src:
+              enabled: true
+              trigger:
+                schedule: 45 0 * * *
+            type: restic                
     cnpg:
       main:
         mode: recovery # Set to 'recovery' when recovery from S3, also change the revisions
@@ -124,3 +142,31 @@ spec:
     #         feature.node.kubernetes.io/usb-ff_10c4_ea60.present: "true"
             
          
+    workload:
+      main:
+        podSpec:
+          # nodeSelector:
+          #   zigbee: "true"
+          hostNetwork: true
+          containers:
+            matter:
+              enabled: true
+              imageSelector: matterServerImage
+              securityContext:
+                readOnlyRootFilesystem: false
+              probes:
+                readiness:
+                  enabled: true
+                  type: http
+                  port: 5580
+                  path: /
+                liveness:
+                  enabled: true
+                  type: http
+                  port: 5580
+                  path: /
+                startup:
+                  enabled: true
+                  type: http
+                  port: 5580
+                  path: /
