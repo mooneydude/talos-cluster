@@ -60,9 +60,6 @@ spec:
           - name: onfi
             type: restic
             credentials: s3
-            dest:
-              volumeSnapshotClassName: ceph-filesystem
-              enabled: true
             src:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
@@ -72,14 +69,11 @@ spec:
         storageClass: ceph-filesystem
         size: 50Gi
         accessModes:
-          - ReadWriteMany        
+          - ReadWriteMany
         volsync:
           - name: metadata
             type: restic
             credentials: s3
-            dest:
-              volumeSnapshotClassName: ceph-filesystem
-              enabled: true
             src:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
