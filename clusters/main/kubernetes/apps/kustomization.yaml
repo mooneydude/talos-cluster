@@ -27,3 +27,4 @@ resources:
   # - trueconf/ks.yaml
   # - docuseal-dev/ks.yaml
   # - ext-rocketdev/ks.yaml
+  - audiobookshelf/ks.yaml
