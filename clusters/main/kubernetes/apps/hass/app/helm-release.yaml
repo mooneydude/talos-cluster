@@ -29,10 +29,10 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    # image:
-    #   repository: docker.io/homeassistant/home-assistant
-    #   pullPolicy: IfNotPresent
-    #   tag: 2025.12.5@sha256:9a5a3eb4a213dfb25932dee9dc6815c9305f78cecb5afa716fa2483163d8fb5b
+    image:
+      repository: docker.io/homeassistant/home-assistant
+      pullPolicy: IfNotPresent
+      tag: 2025.12.5@sha256:9a5a3eb4a213dfb25932dee9dc6815c9305f78cecb5afa716fa2483163d8fb5b
     matterServerImage:
       repository: ghcr.io/home-assistant-libs/python-matter-server
       pullPolicy: IfNotPresent
@@ -153,13 +153,13 @@ spec:
             matter:
               enabled: true
               imageSelector: matterServerImage
-              args:
-                - --storage-path
-                - /data
-                - --paa-root-cert-dir
-                - /data/credentials
-                - --primary-interface
-                - ens18
+              # args:
+              #   - --storage-path
+              #   - /data
+              #   - --paa-root-cert-dir
+              #   - /data/credentials
+              #   - --primary-interface
+              #   - ens18
               securityContext:
                 readOnlyRootFilesystem: false
               probes:
