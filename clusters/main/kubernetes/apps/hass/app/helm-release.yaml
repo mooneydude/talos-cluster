@@ -153,6 +153,13 @@ spec:
             matter:
               enabled: true
               imageSelector: matterServerImage
+              args:
+                - --storage-path
+                - /data
+                - --paa-root-cert-dir
+                - /data/credentials
+                - --primary-interface
+                - ens18
               securityContext:
                 readOnlyRootFilesystem: false
               probes:
