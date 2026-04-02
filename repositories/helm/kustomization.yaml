@@ -13,4 +13,5 @@ resources:
   - rook-ceph.yaml
   - spegel.yaml
   - truecharts.yaml
+  - metallb.yaml
 # more goes here!
