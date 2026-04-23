@@ -35,7 +35,7 @@ spec:
   values:
     publicURL: https://talk.${DOMAIN_1}
     tz: America/Chicago
-    enableAuth: false
+    enableAuth: true
     enableGuests: true
 
     web:
@@ -59,6 +59,12 @@ spec:
 
     prosody:
       replicaCount: 1
+      # User accounts are stored in prosody's data dir; persist so moderators
+      # survive pod restarts. Register users via `prosodyctl register`.
+      persistence:
+        enabled: true
+        size: 3G
+        storageClassName: ceph-filesystem
 
     jicofo:
       replicaCount: 1
