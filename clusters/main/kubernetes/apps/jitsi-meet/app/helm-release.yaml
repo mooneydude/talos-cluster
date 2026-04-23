@@ -89,6 +89,8 @@ spec:
 
     jicofo:
       replicaCount: 1
+      xmpp:
+        password: "${JICOFO_AUTH_PASSWORD}"
 
     # JVB handles media (UDP/10000). Must stay at replicaCount: 1 unless
     # OCTO relay is enabled. MetalLB pins the LB IP via annotation.
@@ -98,6 +100,9 @@ spec:
       publicIPs:
         - ${WAN_IP}
         - ${JITSI_IP}
+      xmpp:
+        user: "${JVB_AUTH_USER}"
+        password: "${JVB_AUTH_PASSWORD}"
       service:
         type: LoadBalancer
         annotations:
