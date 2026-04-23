@@ -51,8 +51,7 @@ spec:
         hosts:
           - host: talk.${DOMAIN_1}
             paths:
-              - path: /
-                pathType: Prefix
+              - /
         tls:
           - secretName: jitsi-meet-web-tls
             hosts:
@@ -65,11 +64,10 @@ spec:
       replicaCount: 1
 
     # JVB handles media (UDP/10000). Must stay at replicaCount: 1 unless
-    # OCTO relay is enabled. MetalLB assigns ${JITSI_IP} for the UDP service.
+    # OCTO relay is enabled. MetalLB pins the LB IP via annotation.
     jvb:
       replicaCount: 1
       service:
         type: LoadBalancer
-        loadBalancerIP: ${JITSI_IP}
-        port: 10000
-        protocol: UDP
+        annotations:
+          metallb.universe.tf/loadBalancerIPs: ${JITSI_IP}
