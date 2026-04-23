@@ -14,4 +14,5 @@ resources:
   - spegel.yaml
   - truecharts.yaml
   - metallb.yaml
+  - jitsi-contrib.yaml
 # more goes here!

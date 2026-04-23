@@ -28,3 +28,4 @@ resources:
   # - docuseal-dev/ks.yaml
   # - ext-rocketdev/ks.yaml
   - audiobookshelf/ks.yaml
+  - jitsi-meet/ks.yaml
