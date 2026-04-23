@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jitsi-meet-mooney-subfilter
+  namespace: jitsi-meet
+data:
+  01-mooney-rebrand.conf: |
+    # Rebrand: rewrite "Jitsi Meet" -> "Mooney Talk" in every text response.
+    # Mounted into /etc/nginx/conf.d/ so it's included at the http{} level.
+    sub_filter 'Jitsi Meet' 'Mooney Talk';
+    sub_filter_types text/html application/json application/javascript text/javascript;
+    sub_filter_once off;

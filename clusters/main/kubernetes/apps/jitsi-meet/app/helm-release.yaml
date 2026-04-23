@@ -51,10 +51,16 @@ spec:
         - name: custom-logo
           configMap:
             name: jitsi-meet-mooney-logo
+        - name: nginx-subfilter
+          configMap:
+            name: jitsi-meet-mooney-subfilter
       extraVolumeMounts:
         - name: custom-logo
           mountPath: /usr/share/jitsi-meet/images/watermark.svg
           subPath: watermark.svg
+        - name: nginx-subfilter
+          mountPath: /etc/nginx/conf.d/01-mooney-rebrand.conf
+          subPath: 01-mooney-rebrand.conf
       ingress:
         enabled: true
         ingressClassName: external
