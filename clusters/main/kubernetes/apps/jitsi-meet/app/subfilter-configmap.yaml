@@ -7,6 +7,9 @@ data:
   01-mooney-rebrand.conf: |
     # Rebrand: rewrite "Jitsi Meet" -> "Mooney Talk" in every text response.
     # Mounted into /etc/nginx/conf.d/ so it's included at the http{} level.
+    # sendfile off: required so the filter chain runs; otherwise static files
+    # are served via kernel sendfile() and sub_filter never sees them.
+    sendfile off;
     sub_filter 'Jitsi Meet' 'Mooney Talk';
     sub_filter_types text/html application/json application/javascript text/javascript;
     sub_filter_once off;
