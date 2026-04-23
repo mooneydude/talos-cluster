@@ -12,5 +12,8 @@ data:
     # are served via kernel sendfile() and sub_filter never sees them.
     sendfile off;
     sub_filter 'Jitsi Meet' 'Mooney Talk';
+    # Enlarge the corner watermark (both welcome page and in-meeting).
+    # Injects a <style> block just before </head> to override Jitsi's CSS.
+    sub_filter '</head>' '<style>.welcome-watermark .watermark.leftwatermark,.watermark.leftwatermark{width:220px !important;height:60px !important;max-width:220px !important;max-height:60px !important}</style></head>';
     sub_filter_types text/html application/json application/javascript text/javascript;
     sub_filter_once off;
