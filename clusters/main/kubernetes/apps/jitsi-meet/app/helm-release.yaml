@@ -65,8 +65,12 @@ spec:
 
     # JVB handles media (UDP/10000). Must stay at replicaCount: 1 unless
     # OCTO relay is enabled. MetalLB pins the LB IP via annotation.
+    # publicIPs are advertised as ICE candidates; clients pick the reachable one.
     jvb:
       replicaCount: 1
+      publicIPs:
+        - ${WAN_IP}
+        - ${JITSI_IP}
       service:
         type: LoadBalancer
         annotations:
