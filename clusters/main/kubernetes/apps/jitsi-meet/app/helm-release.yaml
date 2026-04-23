@@ -40,6 +40,13 @@ spec:
 
     web:
       replicaCount: 1
+      custom:
+        configs:
+          _custom_interface_config_js: |
+            var interfaceConfig = interfaceConfig || {};
+            interfaceConfig.APP_NAME = 'Mooney Talk';
+            interfaceConfig.NATIVE_APP_NAME = 'Mooney Talk';
+            interfaceConfig.JITSI_WATERMARK_LINK = 'https://talk.mooneybin.net';
       extraVolumes:
         - name: custom-logo
           configMap:
