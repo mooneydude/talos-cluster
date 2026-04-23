@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jitsi-meet-logo
+  namespace: jitsi-meet
+data:
+  watermark.svg: |
+    <?xml version="1.0" encoding="UTF-8"?>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 120" preserveAspectRatio="xMidYMid meet">
+      <text x="240" y="80"
+            font-family="'Helvetica Neue', Arial, sans-serif"
+            font-size="72"
+            font-weight="700"
+            letter-spacing="4"
+            text-anchor="middle"
+            fill="#FFFFFF">MOONEYBIN</text>
+    </svg>

@@ -40,6 +40,14 @@ spec:
 
     web:
       replicaCount: 1
+      extraVolumes:
+        - name: custom-logo
+          configMap:
+            name: jitsi-meet-logo
+      extraVolumeMounts:
+        - name: custom-logo
+          mountPath: /usr/share/jitsi-meet/images/watermark.svg
+          subPath: watermark.svg
       ingress:
         enabled: true
         ingressClassName: external
