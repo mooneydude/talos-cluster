@@ -50,7 +50,7 @@ spec:
       extraVolumes:
         - name: custom-logo
           configMap:
-            name: jitsi-meet-logo
+            name: jitsi-meet-mooney-logo
       extraVolumeMounts:
         - name: custom-logo
           mountPath: /usr/share/jitsi-meet/images/watermark.svg
