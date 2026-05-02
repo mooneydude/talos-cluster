@@ -149,6 +149,34 @@ spec:
               resources:
                 limits:
                   gpu.intel.com/i915: 1
+      machinelearning:
+        replicas: 2
+        podSpec:
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 100
+                  podAffinityTerm:
+                    labelSelector:
+                      matchLabels:
+                        pod.name: machinelearning
+                    topologyKey: kubernetes.io/hostname
+          containers:
+            machinelearning:
+              resources:
+                limits:
+                  cpu: 3000m
+                  memory: 4Gi
+                requests:
+                  cpu: 500m
+                  memory: 1Gi
+      microservices:
+        podSpec:
+          containers:
+            microservices:
+              env:
+                IMMICH_JOB_FACE_DETECTION_CONCURRENCY: "4"
+                IMMICH_JOB_SMART_SEARCH_CONCURRENCY: "4"
     
     # resources:
     #   limits:
