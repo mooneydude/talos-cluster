@@ -39,7 +39,7 @@ spec:
         externalIP: "192.168.2.54"
         ports:
           main:
-            port: 3000
+            port: 3456
             protocol: http
     ingress:
       main:
