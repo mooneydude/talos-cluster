@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - namespace.yaml
   - helm-release.yaml
+  - ceph-csi-driver-rbac.yaml
