@@ -73,12 +73,17 @@ spec:
             memory: 500Mi
           limits:
             memory: 2000Mi
-        # storageSpec:
-        #   volumeClaimTemplate:
-        #     spec:
-        #       resources:
-        #         requests:
-        #           storage: 60Gi
+        # Persist the TSDB on Ceph (RBD/ceph-nvme) instead of an emptyDir so it
+        # survives restarts and stops filling worker node ephemeral disk.
+        # Sized above retentionSize (50GB) for WAL/head + disableCompaction headroom.
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: ceph-nvme
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 70Gi
 
     prometheus-node-exporter:
       fullnameOverride: node-exporter
