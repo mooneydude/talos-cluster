@@ -153,13 +153,21 @@ spec:
             matter:
               enabled: true
               imageSelector: matterServerImage
-              args:
-                - --storage-path
-                - /data
-                - --paa-root-cert-dir
-                - /data/credentials
-                - --primary-interface
-                - ens18
+              # matter-server needs --primary-interface for mDNS, but the host NIC name
+              # differs per node (eno1 on worker-1/2, ens18 on worker-3) and this pod is
+              # not node-pinned. Detect the default-route interface at startup so matter
+              # works on whichever node it lands on, with no nodeSelector.
+              # NOTE: $$ escapes Flux postBuild var substitution (renders to a literal $).
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  IFACE="$$(ip -o -4 route show default | head -n1 | sed -n 's/.* dev \([^ ]*\).*/\1/p')"
+                  echo "matter-server: auto-detected primary interface: $${IFACE:-NONE}"
+                  exec matter-server \
+                    --storage-path /data \
+                    --paa-root-cert-dir /data/credentials \
+                    --primary-interface "$${IFACE}"
               securityContext:
                 readOnlyRootFilesystem: false
               probes:
