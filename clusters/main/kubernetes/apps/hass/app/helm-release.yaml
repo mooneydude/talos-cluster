@@ -158,12 +158,34 @@ spec:
               # not node-pinned. Detect the default-route interface at startup so matter
               # works on whichever node it lands on, with no nodeSelector.
               # NOTE: $$ escapes Flux postBuild var substitution (renders to a literal $).
+              # Background mdns-proxy: Avahi on pfSense does not reflect _matter._tcp from
+              # the IoT VLAN with a routable address, so matter-server can't discover the
+              # fish tank outlet (node 30) operationally. Publish a fake _matter._tcp record
+              # pointing at the device's static IPv4 so CASE sessions establish cross-VLAN.
+              # Update FABRIC/NODE if the fabric is ever reset or the device recommissioned.
               command:
                 - /bin/sh
                 - -c
                 - |
                   IFACE="$$(ip -o -4 route show default | head -n1 | sed -n 's/.* dev \([^ ]*\).*/\1/p')"
                   echo "matter-server: auto-detected primary interface: $${IFACE:-NONE}"
+                  python3 -c "
+                  import socket, time
+                  from zeroconf import Zeroconf, ServiceInfo
+                  svc = '9A2EAF8669398CC6-000000000000001E._matter._tcp.local.'
+                  ip  = '192.168.68.110'
+                  while True:
+                   try:
+                    zc = Zeroconf()
+                    zc.register_service(ServiceInfo('_matter._tcp.local.', svc, addresses=[socket.inet_aton(ip)], port=5540, properties={b'SII': b'5000', b'SAI': b'300'}, server='fish-tank-matter.local.'))
+                    print('[mdns-proxy] registered ' + svc, flush=True)
+                    while True: time.sleep(3600)
+                   except Exception as e:
+                    print('[mdns-proxy] restarting:', e, flush=True)
+                    try: zc.close()
+                    except: pass
+                    time.sleep(10)
+                  " &
                   exec matter-server \
                     --storage-path /data \
                     --paa-root-cert-dir /data/credentials \
