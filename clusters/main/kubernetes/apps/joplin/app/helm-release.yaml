@@ -129,4 +129,4 @@ spec:
                 MAILER_AUTH_USER: ${VAULT_SMTP}
                 MAILER_AUTH_PASSWORD: ${VAULT_SMTP_PWD}
                 MAILER_NOREPLY_NAME: MooneyDude
-                MAILER_NOREPLY_EMAIL: ${VAULT_SMTP_PWD}      
+                MAILER_NOREPLY_EMAIL: ${VAULT_SMTP}      
