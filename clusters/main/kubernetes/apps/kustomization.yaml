@@ -30,3 +30,4 @@ resources:
   - audiobookshelf/ks.yaml
   - jitsi-meet/ks.yaml
   - ext-ssys/ks.yaml
+  - nzbhydra2/ks.yaml
