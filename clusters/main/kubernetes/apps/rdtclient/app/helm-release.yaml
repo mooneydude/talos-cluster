@@ -63,6 +63,12 @@ spec:
               enabled: true
               trigger:
                 schedule: 0 3 * * *                    
+      mediacompleted:
+        enabled: true
+        path: /mnt/bigdata/plex/Downloads/Completed
+        mountPath: /media/downloads/completed
+        server: ${TRUENAS_IP}
+        type: nfs
     ingress:
       main:
         enabled: true
