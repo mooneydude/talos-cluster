@@ -30,8 +30,8 @@ resources:
   - audiobookshelf/ks.yaml
   - jitsi-meet/ks.yaml
   - ext-ssys/ks.yaml
-  - nzbhydra2/ks.yaml
   - sonarr/ks.yaml
   - rdtclient/ks.yaml
   - prowlarr/ks.yaml
   - flaresolverr/ks.yaml
+  - radarr/ks.yaml
