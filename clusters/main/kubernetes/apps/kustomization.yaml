@@ -32,3 +32,4 @@ resources:
   - ext-ssys/ks.yaml
   - nzbhydra2/ks.yaml
   - sonarr/ks.yaml
+  - rdtclient/ks.yaml
