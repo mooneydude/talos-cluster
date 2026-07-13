@@ -33,3 +33,4 @@ resources:
   - nzbhydra2/ks.yaml
   - sonarr/ks.yaml
   - rdtclient/ks.yaml
+  - prowlarr/ks.yaml
