@@ -34,3 +34,4 @@ resources:
   - sonarr/ks.yaml
   - rdtclient/ks.yaml
   - prowlarr/ks.yaml
+  - flaresolverr/ks.yaml
