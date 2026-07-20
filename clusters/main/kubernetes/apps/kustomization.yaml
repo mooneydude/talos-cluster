@@ -32,6 +32,7 @@ resources:
   - ext-ssys/ks.yaml
   - sonarr/ks.yaml
   - rdtclient/ks.yaml
+  - rdtclient-torbox/ks.yaml
   - prowlarr/ks.yaml
   - flaresolverr/ks.yaml
   - radarr/ks.yaml
