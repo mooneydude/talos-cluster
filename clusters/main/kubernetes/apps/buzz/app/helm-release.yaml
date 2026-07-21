@@ -21,7 +21,9 @@ spec:
   install:
     createNamespace: true
     remediation:
-      retries: 3
+      # 0 = leave a failed install in place for inspection. Remediation is an
+      # uninstall, which drops the CNPG cluster and its PVCs on every retry.
+      retries: 0
   upgrade:
     cleanupOnFail: true
     remediation:
@@ -120,7 +122,13 @@ spec:
               env:
                 SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
                 BUZZ_AUTO_MIGRATE: "true"
+                BUZZ_RELAY_URL: "wss://buzz.${DOMAIN_1}"
                 DATABASE_URL:
                   secretKeyRef:
                     name: cnpg-main-urls
-                    key: std               
+                    key: std
+                BUZZ_S3_ENDPOINT: "${MINIO_S3URL}"
+                BUZZ_S3_ACCESS_KEY: "${MINIO_S3ID}"
+                BUZZ_S3_SECRET_KEY: "${MINIO_S3KEY}"
+                BUZZ_S3_BUCKET: "${MINIO_S3PREFIX}-buzz"
+                BUZZ_S3_REGION: "us-east-1"               
