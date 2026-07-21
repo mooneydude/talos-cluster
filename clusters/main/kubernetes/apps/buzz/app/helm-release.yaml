@@ -79,6 +79,7 @@ spec:
             enabled: true                      
     cnpg:
       main:
+        enabled: true
         database: buzz
         user: buzz
         # mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
