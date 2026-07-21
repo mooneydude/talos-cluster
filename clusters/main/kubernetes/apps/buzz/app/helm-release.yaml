@@ -102,6 +102,10 @@ spec:
           revision: "1"
     persistence:
       config:
+        # app-template has no predefined persistence.config, so enabled/mountPath
+        # must be explicit (dedicated TrueCharts charts default these).
+        enabled: true
+        mountPath: /config
         size: 1Gi
         volsync:
           - name: config
