@@ -45,9 +45,20 @@ spec:
         readOnlyRootFilesystem: false
         runAsNonRoot: false
         runAsUser: 0
-        runAsGroup: 0      
+        runAsGroup: 0 
+    credentials:
+      s3:
+        type: s3
+        url: "${MINIO_S3URL}"
+        bucket: "${MINIO_S3PREFIX}-buzz"
+        accessKey: "${MINIO_S3ID}"
+        secretKey: "${MINIO_S3KEY}"
+        encrKey: "${MINIO_S3KEY}"             
     service:
       main:
+        integrations:
+          metallb:
+            enabled: true      
         ports:
           main:
             port: 3000
@@ -68,9 +79,24 @@ spec:
             enabled: true                      
     cnpg:
       main:
-        enabled: true
         database: buzz
         user: buzz
+        # mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
+        backups:
+          enabled: true  # Set to 'false' when performing new install (recovery)
+          credentials: s3
+          scheduledBackups:
+            - name: daily-backup
+              schedule: "0 0 0 * * *"
+              backupOwnerReference: self
+              immediate: true
+              suspend: false           
+          retentionPolicy: "7d"
+          revision: "1"
+        recovery:
+          method: object_store
+          credentials: s3
+          revision: "1"
     workload:
       main:
         podSpec:
