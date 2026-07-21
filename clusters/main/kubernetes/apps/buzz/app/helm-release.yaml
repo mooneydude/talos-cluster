@@ -66,10 +66,20 @@ spec:
           certManager:
             certificateIssuer: domain-0-le-prod
             enabled: true                      
+    cnpg:
+      main:
+        enabled: true
+        database: buzz
+        user: buzz
     workload:
       main:
         podSpec:
           containers:
             main:
               env:
-                SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"                 
+                SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
+                BUZZ_AUTO_MIGRATE: "true"
+                DATABASE_URL:
+                  secretKeyRef:
+                    name: cnpg-main-urls
+                    key: std               
