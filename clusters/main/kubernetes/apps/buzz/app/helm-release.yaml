@@ -84,7 +84,7 @@ spec:
         user: buzz
         # mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
         backups:
-          enabled: true  # Set to 'false' when performing new install (recovery)
+          enabled: false  # Set to 'false' when performing new install (recovery)
           credentials: s3
           scheduledBackups:
             - name: daily-backup
@@ -98,6 +98,20 @@ spec:
           method: object_store
           credentials: s3
           revision: "1"
+    persistence:
+      config:
+        size: 1Gi
+        volsync:
+          - name: config
+            type: restic
+            credentials: s3
+            src:
+              volumeSnapshotClassName: csi-ceph-blockpool               
+              enabled: true
+              schedule: "0 0 * * *"  
+            dest:
+              volumeSnapshotClassName: csi-ceph-blockpool               
+              enabled: true          
     workload:
       main:
         podSpec:
