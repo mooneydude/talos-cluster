@@ -126,7 +126,8 @@ spec:
               env:
                 SERVER_PORT: "{{ .Values.service.main.ports.main.port }}"
                 BUZZ_AUTO_MIGRATE: "true"
-                BUZZ_RELAY_URL: "wss://buzz.${DOMAIN_1}"
+                # Relay reads unprefixed RELAY_URL (like DATABASE_URL), not BUZZ_RELAY_URL
+                RELAY_URL: "wss://buzz.${DOMAIN_1}"
                 DATABASE_URL:
                   secretKeyRef:
                     name: cnpg-main-urls
