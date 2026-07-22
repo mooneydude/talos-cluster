@@ -139,4 +139,12 @@ spec:
                 BUZZ_S3_ACCESS_KEY: "${MINIO_S3ID}"
                 BUZZ_S3_SECRET_KEY: "${MINIO_S3KEY}"
                 BUZZ_S3_BUCKET: "${MINIO_S3PREFIX}-buzz"
-                BUZZ_S3_REGION: "us-east-1"               
+                BUZZ_S3_REGION: "us-east-1"
+                # Backs the shared admission rate limiter; without it the HTTP
+                # bridge returns 503 "shared admission unavailable" on /query and /events.
+                REDIS_URL:
+                  secretKeyRef:
+                    name: rediscreds
+                    key: url
+    redis:
+      enabled: true
