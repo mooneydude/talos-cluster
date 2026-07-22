@@ -142,9 +142,6 @@ spec:
                 BUZZ_S3_REGION: "us-east-1"
                 # Backs the shared admission rate limiter; without it the HTTP
                 # bridge returns 503 "shared admission unavailable" on /query and /events.
-                REDIS_URL:
-                  secretKeyRef:
-                    name: rediscreds
-                    key: url
-    redis:
-      enabled: true
+                # Literal, not a secretKeyRef: the chart only accepts references to
+                # chart-managed secrets, and redis.yaml is a plain manifest.
+                REDIS_URL: "redis://buzz-redis:6379/0"
