@@ -145,3 +145,6 @@ spec:
                 # Literal, not a secretKeyRef: the chart only accepts references to
                 # chart-managed secrets, and redis.yaml is a plain manifest.
                 REDIS_URL: "redis://buzz-redis:6379/0"
+                # TEMPORARY diagnostic: surfaces the underlying cause of
+                # "Redis ... Operation not permitted (os error 1)". Remove once fixed.
+                RUST_LOG: "info,buzz_pubsub=trace,redis=trace"
