@@ -128,6 +128,9 @@ spec:
                 BUZZ_AUTO_MIGRATE: "true"
                 # Relay reads unprefixed RELAY_URL (like DATABASE_URL), not BUZZ_RELAY_URL
                 RELAY_URL: "wss://buzz.${DOMAIN_1}"
+                # Without this, "/" falls through to the NIP-11 doc instead of the web UI.
+                # Only "true" or "1" enable it; gates the SPA routes / and /repos.
+                BUZZ_SERVE_GIT_WEB_GUI: "true"
                 DATABASE_URL:
                   secretKeyRef:
                     name: cnpg-main-urls
