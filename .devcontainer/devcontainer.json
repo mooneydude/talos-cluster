@@ -1,15 +1,33 @@
 {
-    "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
-    "name": "ClusterTool Cluster",
-    "image": "tccr.io/tccr/devcontainer:v4.0.1@sha256:57842f321e353c30c30dab45403926be65715b524253041f055b0f7008b14a59",
-    "initializeCommand": "docker pull tccr.io/tccr/devcontainer:v1.0.4",
-    "postCreateCommand": {
-      "setup": "bash ${containerWorkspaceFolder}/.devcontainer/postCreateCommand.sh"
-    },
-    "postStartCommand": {
-      "git": "git config --global --add safe.directory ${containerWorkspaceFolder}"
-    },
-    "postAttachCommand": "fish",
-    "updateRemoteUserUID": false,
-    "runArgs": ["--privileged"]
+  "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
+  "name": "TalosCluster",
+  "image": "oci.trueforge.org/containerforge/devcontainer:4.1.1@sha256:a28e262dabfb1d93bcbbb7f7f37579a50b0e351f08910c7dd6f647f506b0fdac",
+  "postStartCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "albert.TabOut",
+        "mikestead.dotenv",
+        "mitchdenny.ecdc",
+        "signageos.signageos-vscode-sops",
+        "EditorConfig.editorconfig",
+        "PKief.material-icon-theme",
+        "usernamehw.errorlens",
+        "redhat.vscode-yaml",
+        "weaveworks.vscode-gitops-tools",
+        "Tim-Koehler.helm-intellisense",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "sandipchitale.vscode-kubernetes-helm-extras",
+        "VadzimNestsiarenka.helm-template-preview-and-more",
+        "karyan40024.helmix",
+        "eamodio.gitlens",
+        "Codium.codium",
+        "mhutchie.git-graph",
+        "yzhang.markdown-all-in-one",
+        "DavidAnson.vscode-markdownlint",
+        "GitHub.copilot",
+        "blueglassblock.better-json5"
+      ]
+    }
   }
+}
