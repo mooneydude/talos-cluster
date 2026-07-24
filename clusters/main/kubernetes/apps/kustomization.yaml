@@ -17,7 +17,6 @@ resources:
   # - docuseal/ks.yaml
   - joplin/ks.yaml  
   # - authentik/ks.yaml
-  # - rdgen/ks.yaml
   - filebrowser/ks.yaml
   - etesync/ks.yaml
   # - rocket-life-dev/ks.yaml
