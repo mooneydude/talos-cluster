@@ -1,0 +1,17 @@
+---
+# Persistent workspace (nest) for cluster-Fizz, mounted at the container home so
+# cloned repos + OUTBOX + scratch survive pod restarts. NOTE: engram memory is
+# relay-side (NIP-AE via `buzz mem`), so it persists regardless — this PVC mainly
+# saves re-cloning (rocket-life is ~178 MB). ceph-nvme = Rook RBD, RWO, which is
+# correct for a single-replica agent; expand later with a larger `storage:`.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fizz-agent-nest
+  namespace: buzz
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: ceph-nvme
+  resources:
+    requests:
+      storage: 10Gi
