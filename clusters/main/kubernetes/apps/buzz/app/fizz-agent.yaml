@@ -39,6 +39,15 @@ spec:
       labels:
         app.kubernetes.io/name: fizz-agent
     spec:
+      # The relay binds each WS connection to a community by the request Host
+      # (an in-cluster svc name → 404). So Fizz connects to the PUBLIC relay
+      # host; hostAliases points that host at the internal ingress LB
+      # (${NGINX_INTERNAL_IP}) so traffic stays on-cluster with the right Host
+      # + valid TLS — same path the Desktop client uses.
+      hostAliases:
+        - ip: "${NGINX_INTERNAL_IP}"
+          hostnames:
+            - "buzz.${DOMAIN_1}"
       nodeSelector:
         kubernetes.io/arch: amd64          # image is linux/amd64
       securityContext:
@@ -62,11 +71,11 @@ spec:
               mountPath: /var/lib/buzz     # persist clones + OUTBOX + scratch (engram memory is relay-side)
           env:
             # ── buzz-acp : relay harness ───────────────────────────────────
-            # In-cluster relay svc — confirmed via `kubectl -n buzz get svc`:
-            # the app-template chart named it "buzz-app-template" (port 3000).
-            # Public fallback if ever needed: wss://buzz.${DOMAIN_1}
+            # Public relay host (NOT the in-cluster svc — the relay is
+            # multi-tenant and 404s any host that isn't a mapped community).
+            # hostAliases (above) keeps this on-cluster via the internal ingress.
             - name: BUZZ_RELAY_URL
-              value: "ws://buzz-app-template.buzz.svc.cluster.local:3000"
+              value: "wss://buzz.${DOMAIN_1}"
             - name: BUZZ_ACP_AGENT_COMMAND
               value: "buzz-agent"
             - name: BUZZ_ACP_AGENT_ARGS
@@ -75,6 +84,11 @@ spec:
               value: "2"
             - name: BUZZ_ACP_RESPOND_TO
               value: "owner-only"
+            # Owner pubkey (public hex) — REQUIRED for the owner-only gate, else
+            # buzz-acp resolves no owner and drops every event. (Same value as
+            # the relay's RELAY_OWNER_PUBKEY.)
+            - name: BUZZ_ACP_AGENT_OWNER
+              value: "1d17ef66780c2ffceaa4249490e9ec8f3d2084bf4928c21c0c8ac089f4aa77b0"
             # ── buzz-agent : brain → LLM ───────────────────────────────────
             - name: BUZZ_AGENT_PROVIDER
               value: "anthropic"
