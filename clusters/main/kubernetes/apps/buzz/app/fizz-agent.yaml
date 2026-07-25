@@ -1,0 +1,118 @@
+---
+# Fizz agent-host — always-on buzz-acp harness (+ buzz-agent brain + buzz CLI),
+# deployed BESIDE the relay HelmRelease as a plain Deployment (like redis.yaml),
+# in apps/buzz/app/. One Deployment per identity; replicas:1 + Recreate so two
+# Fizz hosts never overlap (= double replies).
+#
+# Option A: sole Fizz host — chat/ops + talos GitOps + git-mediated Rocket dev.
+# ⚠️ Fizz must NEVER push talos-cluster `main` (Flux tracks it → push = deploy).
+# Branch + let the owner merge. rocket-life: feature branches only.
+#
+# Image lives in the self-hosted registry (docker.${DOMAIN_1}) — same anonymous-
+# pull pattern as apps/xepg (no imagePullSecret needed).
+#
+# Secrets come from clusterenv (${...}) via Flux substituteFrom cluster-config —
+# owner adds ANTHROPIC_KEY, FIZZ_NSEC, GITHUB_TOKEN to clusters/main/clusterenv.yaml.
+# NOTE: like MINIO_S3KEY today, these render as plaintext in the in-cluster
+# cluster-config ConfigMap + this Deployment's env. If you'd rather FIZZ_NSEC /
+# GITHUB_TOKEN be k8s Secrets (secretKeyRef) instead, say so — easy swap.
+#
+# Add to apps/buzz/app/kustomization.yaml resources:
+#   - ./fizz-agent-pvc.yaml
+#   - ./fizz-agent.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fizz-agent
+  namespace: buzz
+  labels:
+    app.kubernetes.io/name: fizz-agent
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate                         # RWO PVC + one-host-per-identity
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: fizz-agent
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: fizz-agent
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64          # image is linux/amd64
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000                    # image creates uid/gid 1000 "buzz"
+        runAsGroup: 1000
+        fsGroup: 1000                      # so uid 1000 can write the PVC
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+        - name: nest
+          persistentVolumeClaim:
+            claimName: fizz-agent-nest
+      containers:
+        - name: agent-host
+          image: docker.${DOMAIN_1}/buzz-agent-host:prod
+          imagePullPolicy: Always          # :prod is a moving channel tag
+          workingDir: /var/lib/buzz        # the nest; REPOS is created here (real dir → clone-on-demand)
+          volumeMounts:
+            - name: nest
+              mountPath: /var/lib/buzz     # persist clones + OUTBOX + scratch (engram memory is relay-side)
+          env:
+            # ── buzz-acp : relay harness ───────────────────────────────────
+            # In-cluster relay svc — confirmed via `kubectl -n buzz get svc`:
+            # the app-template chart named it "buzz-app-template" (port 3000).
+            # Public fallback if ever needed: wss://buzz.${DOMAIN_1}
+            - name: BUZZ_RELAY_URL
+              value: "ws://buzz-app-template.buzz.svc.cluster.local:3000"
+            - name: BUZZ_ACP_AGENT_COMMAND
+              value: "buzz-agent"
+            - name: BUZZ_ACP_AGENT_ARGS
+              value: ""
+            - name: BUZZ_ACP_AGENTS
+              value: "2"
+            - name: BUZZ_ACP_RESPOND_TO
+              value: "owner-only"
+            # ── buzz-agent : brain → LLM ───────────────────────────────────
+            - name: BUZZ_AGENT_PROVIDER
+              value: "anthropic"
+            - name: ANTHROPIC_MODEL
+              value: "claude-sonnet-4-5"     # or an Opus API id
+            # ── secrets via clusterenv (${...} → Flux substituteFrom cluster-config) ──
+            - name: ANTHROPIC_API_KEY
+              value: "${ANTHROPIC_KEY}"       # owner adds ANTHROPIC_KEY to clusterenv.yaml
+            - name: BUZZ_PRIVATE_KEY
+              value: "${FIZZ_NSEC}"           # Fizz's existing nsec (keychain extract → clusterenv)
+            # ── git auth (Option A): token baked into the HTTPS rewrite ────
+            # Flux substitutes ${GITHUB_TOKEN} at reconcile; git then clones the
+            # repos' git@github.com: remotes over authenticated HTTPS. No shell
+            # $VARs here (they'd collide with Flux envsubst), no SSH keys.
+            - name: GIT_CONFIG_COUNT
+              value: "3"
+            - name: GIT_CONFIG_KEY_0
+              value: "user.name"
+            - name: GIT_CONFIG_VALUE_0
+              value: "Fizz"                   # CONFIRM commit attribution
+            - name: GIT_CONFIG_KEY_1
+              value: "user.email"
+            - name: GIT_CONFIG_VALUE_1
+              value: "fizz@mooneybin.net"     # CONFIRM
+            - name: GIT_CONFIG_KEY_2
+              value: "url.https://x-access-token:${GITHUB_TOKEN}@github.com/.insteadOf"
+              # ^ owner adds GITHUB_TOKEN to clusterenv.yaml (fine-grained PAT)
+            - name: GIT_CONFIG_VALUE_2
+              value: "git@github.com:"
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false    # buzz-acp writes logs + spawns subprocesses
+            capabilities:
+              drop: ["ALL"]
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "256Mi"
+            limits:
+              cpu: "1"
+              memory: "1Gi"
