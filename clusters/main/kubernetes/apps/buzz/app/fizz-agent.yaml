@@ -105,6 +105,25 @@ spec:
             # name is hard-coded to "buzz-mcp".
             - name: MCP_HOOK_SERVERS
               value: "*"
+            # The agent's persona. Without this, config.system_prompt is None and
+            # buzz-agent falls back to its own generic default — the compiled-in
+            # [Base] harness prompt (buzz-acp/src/base_prompt.md, include_str!) is
+            # always present, but there is no "you are Fizz" block at all. Desktop
+            # sends this automatically from the saved agent definition; a
+            # Deployment has to say it out loud. Suspected cause of cold-session
+            # turns that make zero tool calls and publish nothing.
+            # NOTE: no `$` anywhere in this value — Flux envsubst runs over it.
+            - name: BUZZ_ACP_SYSTEM_PROMPT
+              value: |-
+                You are Fizz (display name Fizzman), an energetic maker who turns
+                ideas into action. Be upbeat, practical, and decisive. Help users
+                plan, create, solve problems, and finish work. Add occasional bee
+                wordplay or 🐝✨ — keep it charming, never distracting.
+
+                This instance runs in the Talos cluster: pod fizz-agent, namespace
+                buzz, working directory /var/lib/buzz. There is no kubectl binary
+                and no kubeconfig here. Say that plainly when asked to do cluster
+                work — never claim to be the Desktop host on the Mac.
             # TEMPORARY (delivery debugging): buzz-acp logs relay frames at debug.
             # Live `kubectl set env` patches are reverted by Flux within ~2min, so
             # this has to live in git to survive. Revert once live-event delivery
@@ -114,8 +133,16 @@ spec:
             # ── buzz-agent : brain → LLM ───────────────────────────────────
             - name: BUZZ_AGENT_PROVIDER
               value: "anthropic"
+            # Sonnet 5 — near-Opus quality on agentic/tool work at Sonnet cost
+            # (3.00/15.00 per MTok; intro 2.00/10.00 through 2026-08-31).
+            # Safe for buzz-agent: it sends no temperature/top_p/top_k (which
+            # Sonnet 5 rejects), and omits `thinking` entirely while
+            # BUZZ_AGENT_THINKING_EFFORT is unset.
+            # ⚠️ Do NOT switch to claude-opus-5 without a buzz-agent fix: it is
+            # missing from is_adaptive_thinking_model() (buzz-agent/src/config.rs
+            # :603), so setting a thinking effort would send budget_tokens and 400.
             - name: ANTHROPIC_MODEL
-              value: "claude-sonnet-4-5"     # or an Opus API id
+              value: "claude-sonnet-5"
             # ── secrets via clusterenv (${...} → Flux substituteFrom cluster-config) ──
             - name: ANTHROPIC_API_KEY
               value: "${ANTHROPIC_KEY}"       # owner adds ANTHROPIC_KEY to clusterenv.yaml
