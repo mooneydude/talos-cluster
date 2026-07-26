@@ -12,7 +12,7 @@
 # pull pattern as apps/xepg (no imagePullSecret needed).
 #
 # Secrets come from clusterenv (${...}) via Flux substituteFrom cluster-config —
-# owner adds CLAUDE_CODE_OAUTH_TOKEN, HIVE_NSEC, GITHUB_TOKEN to
+# owner adds CLAUDE_CODE_OAUTH_TOKEN, BUZZ_PRIVATE_KEY, GITHUB_TOKEN to
 # clusters/main/clusterenv.yaml. clusterenv is SOPS-encrypted at rest (.sops.yaml),
 # but NOTE: like MINIO_S3KEY today, these render as plaintext in the in-cluster
 # cluster-config ConfigMap + this Deployment's env. If you'd rather HIVE_NSEC /
@@ -33,11 +33,15 @@ metadata:
   labels:
     app.kubernetes.io/name: fizz-agent
 spec:
-  # OFF as of 2026-07-26: pay-as-you-go API spend was not economical (~$8 for one
-  # debugging session, most of it duplicated by Desktop-Fizz answering the same
-  # mentions). Flux reverts a bare `kubectl scale`, so the off switch has to live
-  # here. Set back to 1 after the move to Claude Code / Max-plan auth.
-  replicas: 0
+  # Was 0 while the pod ran the metered API brain (~$8 for one debugging session,
+  # most of it duplicated by Desktop-Fizz answering the same mentions). Both
+  # causes are now gone: this is Claude Code on the subscription, under Hive's
+  # own nsec, so it no longer meters and no longer double-answers @Fizzman.
+  # Self-gating: this only takes effect once CLAUDE_CODE_OAUTH_TOKEN and
+  # BUZZ_PRIVATE_KEY exist in cluster-config. Until then Flux cannot render this
+  # Deployment at all, so nothing starts. Flux reverts a bare `kubectl scale` —
+  # the off switch has to live here.
+  replicas: 1
   strategy:
     type: Recreate                         # RWO PVC + one-host-per-identity
   selector:
@@ -173,8 +177,11 @@ spec:
             # Desktop meant every mention matched both hosts (the relay mention
             # filter is #p:[pubkey], buzz-acp/src/relay.rs:3182), so both answered
             # and both billed. Renaming could never fix that; only a second key.
+            # Left name = the env var buzz-acp reads in-container (fixed by the
+            # software). Right ${...} = the clusterenv key label (arbitrary); the
+            # owner named that key BUZZ_PRIVATE_KEY, so both sides read the same.
             - name: BUZZ_PRIVATE_KEY
-              value: "${HIVE_NSEC}"           # owner adds HIVE_NSEC to clusterenv.yaml
+              value: "${BUZZ_PRIVATE_KEY}"    # clusterenv key BUZZ_PRIVATE_KEY = Hive's nsec
             # ── git auth (Option A): token baked into the HTTPS rewrite ────
             # Flux substitutes ${GITHUB_TOKEN} at reconcile; git then clones the
             # repos' git@github.com: remotes over authenticated HTTPS. No shell
@@ -202,7 +209,12 @@ spec:
           resources:
             requests:
               cpu: "50m"
-              memory: "256Mi"
+              memory: "512Mi"
             limits:
               cpu: "1"
-              memory: "1Gi"
+              # Sized for the Rust brain; Claude Code is heavier. Measured on the
+              # real prod-0.3 image: 98 MiB RSS idle, BEFORE Claude Code spawns
+              # the 265 MB native CLI per turn — and BUZZ_ACP_AGENTS=2 means two
+              # concurrent turns. An OOMKill presents as a silent non-answer,
+              # which is the exact failure class that ate this project.
+              memory: "2Gi"
