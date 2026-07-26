@@ -89,6 +89,22 @@ spec:
             # the relay's RELAY_OWNER_PUBKEY.)
             - name: BUZZ_ACP_AGENT_OWNER
               value: "1d17ef66780c2ffceaa4249490e9ec8f3d2084bf4928c21c0c8ac089f4aa77b0"
+            # buzz-agent's ONLY built-in tool is load_skill. Shell, file r/w, rg,
+            # tree, todo — and therefore any ability to run the `buzz` CLI and
+            # post a reply — all arrive over MCP from the buzz-dev-mcp sidecar.
+            # Desktop sets this automatically for the buzz-agent runtime
+            # (desktop/.../managed_agents/discovery.rs → mcp_command:
+            # Some("buzz-dev-mcp")); a Deployment has to say it out loud.
+            # Without it the agent receives mentions, thinks, and cannot speak:
+            # turns end outcome="ok" having published nothing. Requires the
+            # buzz-dev-mcp binary in the image (>= prod-0.2).
+            - name: BUZZ_ACP_MCP_COMMAND
+              value: "buzz-dev-mcp"
+            # Enables the MCP hook tools (_Stop, _PostCompact). The buzz-agent
+            # runtime entry sets mcp_hooks: true; "*" matches because the server
+            # name is hard-coded to "buzz-mcp".
+            - name: MCP_HOOK_SERVERS
+              value: "*"
             # TEMPORARY (delivery debugging): buzz-acp logs relay frames at debug.
             # Live `kubectl set env` patches are reverted by Flux within ~2min, so
             # this has to live in git to survive. Revert once live-event delivery
