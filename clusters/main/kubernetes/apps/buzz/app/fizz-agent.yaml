@@ -104,22 +104,24 @@ spec:
             # the relay's RELAY_OWNER_PUBKEY.)
             - name: BUZZ_ACP_AGENT_OWNER
               value: "1d17ef66780c2ffceaa4249490e9ec8f3d2084bf4928c21c0c8ac089f4aa77b0"
-            # buzz-agent's ONLY built-in tool is load_skill. Shell, file r/w, rg,
-            # tree, todo — and therefore any ability to run the `buzz` CLI and
-            # post a reply — all arrive over MCP from the buzz-dev-mcp sidecar.
-            # Desktop sets this automatically for the buzz-agent runtime
-            # (desktop/.../managed_agents/discovery.rs → mcp_command:
-            # Some("buzz-dev-mcp")); a Deployment has to say it out loud.
-            # Without it the agent receives mentions, thinks, and cannot speak:
-            # turns end outcome="ok" having published nothing. Requires the
-            # buzz-dev-mcp binary in the image (>= prod-0.2).
-            - name: BUZZ_ACP_MCP_COMMAND
-              value: "buzz-dev-mcp"
-            # Enables the MCP hook tools (_Stop, _PostCompact). The buzz-agent
-            # runtime entry sets mcp_hooks: true; "*" matches because the server
-            # name is hard-coded to "buzz-mcp".
-            - name: MCP_HOOK_SERVERS
-              value: "*"
+            # ⚠️ BUZZ_ACP_MCP_COMMAND and MCP_HOOK_SERVERS are deliberately NOT
+            # set — they belong to the buzz-agent runtime, not this one.
+            #
+            # buzz-agent's only built-in tool is load_skill, so it needs the
+            # buzz-dev-mcp sidecar for shell/file tools and therefore for any
+            # ability to run the `buzz` CLI and post a reply. Claude Code has its
+            # own Bash/Read/Edit tools and reaches the `buzz` CLI directly on
+            # PATH (buzz-acp injects BUZZ_PRIVATE_KEY / BUZZ_RELAY_URL /
+            # BUZZ_AUTH_TAG into the agent subprocess).
+            #
+            # Desktop encodes exactly this split in the runtime catalog
+            # (desktop/src-tauri/src/managed_agents/discovery.rs):
+            #   id "claude"      → mcp_command: None,                mcp_hooks: false
+            #   id "buzz-agent"  → mcp_command: Some("buzz-dev-mcp"), mcp_hooks: true
+            # Attaching buzz-dev-mcp here would hand Claude Code a second,
+            # overlapping toolbelt and enable hook tools its runtime entry says
+            # it does not take. The binary stays in the image for the buzz-agent
+            # fallback path.
             # The agent's persona. Without this, config.system_prompt is None and
             # buzz-agent falls back to its own generic default — the compiled-in
             # [Base] harness prompt (buzz-acp/src/base_prompt.md, include_str!) is
