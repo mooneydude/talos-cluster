@@ -12,10 +12,10 @@
 # pull pattern as apps/xepg (no imagePullSecret needed).
 #
 # Secrets come from clusterenv (${...}) via Flux substituteFrom cluster-config —
-# owner adds CLAUDE_CODE_OAUTH_TOKEN, HIVE_NSEC, GITHUB_TOKEN to
+# owner adds CLAUDE_CODE_OAUTH_TOKEN, BUZZ_PRIVATE_KEY (= Hive's nsec), GITHUB_TOKEN to
 # clusters/main/clusterenv.yaml. clusterenv is SOPS-encrypted at rest (.sops.yaml),
 # but NOTE: like MINIO_S3KEY today, these render as plaintext in the in-cluster
-# cluster-config ConfigMap + this Deployment's env. If you'd rather HIVE_NSEC /
+# cluster-config ConfigMap + this Deployment's env. If you'd rather the nsec /
 # GITHUB_TOKEN be k8s Secrets (secretKeyRef) instead, say so — easy swap.
 #
 # ANTHROPIC_KEY and FIZZ_NSEC are no longer read by this Deployment: the brain
@@ -169,12 +169,20 @@ spec:
             # down with it.
             - name: CLAUDE_CODE_OAUTH_TOKEN
               value: "${CLAUDE_CODE_OAUTH_TOKEN}"
-            # Hive's OWN nsec — deliberately not FIZZ_NSEC. Sharing one key with
+            # Hive's OWN nsec — deliberately not Fizzman's. Sharing one key with
             # Desktop meant every mention matched both hosts (the relay mention
             # filter is #p:[pubkey], buzz-acp/src/relay.rs:3182), so both answered
             # and both billed. Renaming could never fix that; only a second key.
+            #
+            # Note the two names are different KINDS of name, not two secrets:
+            #   left  `name:`  = the env var buzz-acp reads inside the container
+            #                   (fixed by the software, cannot be changed)
+            #   right `${...}` = the clusterenv key holding the value
+            #                   (an arbitrary label we choose)
+            # They happen to match here because the clusterenv key is also called
+            # BUZZ_PRIVATE_KEY. There is only ever ONE secret value: Hive's nsec.
             - name: BUZZ_PRIVATE_KEY
-              value: "${HIVE_NSEC}"           # owner adds HIVE_NSEC to clusterenv.yaml
+              value: "${BUZZ_PRIVATE_KEY}"    # clusterenv key BUZZ_PRIVATE_KEY = Hive's nsec
             # ── git auth (Option A): token baked into the HTTPS rewrite ────
             # Flux substitutes ${GITHUB_TOKEN} at reconcile; git then clones the
             # repos' git@github.com: remotes over authenticated HTTPS. No shell
