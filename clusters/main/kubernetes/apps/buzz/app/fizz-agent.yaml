@@ -12,10 +12,15 @@
 # pull pattern as apps/xepg (no imagePullSecret needed).
 #
 # Secrets come from clusterenv (${...}) via Flux substituteFrom cluster-config —
-# owner adds ANTHROPIC_KEY, FIZZ_NSEC, GITHUB_TOKEN to clusters/main/clusterenv.yaml.
-# NOTE: like MINIO_S3KEY today, these render as plaintext in the in-cluster
-# cluster-config ConfigMap + this Deployment's env. If you'd rather FIZZ_NSEC /
+# owner adds CLAUDE_CODE_OAUTH_TOKEN, HIVE_NSEC, GITHUB_TOKEN to
+# clusters/main/clusterenv.yaml. clusterenv is SOPS-encrypted at rest (.sops.yaml),
+# but NOTE: like MINIO_S3KEY today, these render as plaintext in the in-cluster
+# cluster-config ConfigMap + this Deployment's env. If you'd rather HIVE_NSEC /
 # GITHUB_TOKEN be k8s Secrets (secretKeyRef) instead, say so — easy swap.
+#
+# ANTHROPIC_KEY and FIZZ_NSEC are no longer read by this Deployment: the brain
+# moved to Claude Code on the owner's subscription, and this pod now has its own
+# identity (Hive) rather than sharing Fizz's key with Buzz Desktop.
 #
 # Add to apps/buzz/app/kustomization.yaml resources:
 #   - ./fizz-agent-pvc.yaml
@@ -67,7 +72,7 @@ spec:
             claimName: fizz-agent-nest
       containers:
         - name: agent-host
-          image: docker.${DOMAIN_1}/buzz-agent-host:prod
+          image: docker.${DOMAIN_1}/buzz-agent-host:prod-0.3
           imagePullPolicy: Always          # :prod is a moving channel tag
           workingDir: /var/lib/buzz        # the nest; REPOS is created here (real dir → clone-on-demand)
           volumeMounts:
@@ -80,8 +85,14 @@ spec:
             # hostAliases (above) keeps this on-cluster via the internal ingress.
             - name: BUZZ_RELAY_URL
               value: "wss://buzz.${DOMAIN_1}"
+            # The brain. claude-agent-acp drives the Claude Code CLI, which
+            # authenticates against the owner's Claude subscription — not a
+            # metered API key. This is the same brain Buzz Desktop has always
+            # run (ps: buzz-acp → node .../node-tools/bin/claude-agent-acp).
+            # buzz-agent is still in the image as an API-key fallback.
+            # Requires >= prod-0.3 (node + @agentclientprotocol/claude-agent-acp).
             - name: BUZZ_ACP_AGENT_COMMAND
-              value: "buzz-agent"
+              value: "claude-agent-acp"
             - name: BUZZ_ACP_AGENT_ARGS
               value: ""
             - name: BUZZ_ACP_AGENTS
@@ -93,22 +104,24 @@ spec:
             # the relay's RELAY_OWNER_PUBKEY.)
             - name: BUZZ_ACP_AGENT_OWNER
               value: "1d17ef66780c2ffceaa4249490e9ec8f3d2084bf4928c21c0c8ac089f4aa77b0"
-            # buzz-agent's ONLY built-in tool is load_skill. Shell, file r/w, rg,
-            # tree, todo — and therefore any ability to run the `buzz` CLI and
-            # post a reply — all arrive over MCP from the buzz-dev-mcp sidecar.
-            # Desktop sets this automatically for the buzz-agent runtime
-            # (desktop/.../managed_agents/discovery.rs → mcp_command:
-            # Some("buzz-dev-mcp")); a Deployment has to say it out loud.
-            # Without it the agent receives mentions, thinks, and cannot speak:
-            # turns end outcome="ok" having published nothing. Requires the
-            # buzz-dev-mcp binary in the image (>= prod-0.2).
-            - name: BUZZ_ACP_MCP_COMMAND
-              value: "buzz-dev-mcp"
-            # Enables the MCP hook tools (_Stop, _PostCompact). The buzz-agent
-            # runtime entry sets mcp_hooks: true; "*" matches because the server
-            # name is hard-coded to "buzz-mcp".
-            - name: MCP_HOOK_SERVERS
-              value: "*"
+            # ⚠️ BUZZ_ACP_MCP_COMMAND and MCP_HOOK_SERVERS are deliberately NOT
+            # set — they belong to the buzz-agent runtime, not this one.
+            #
+            # buzz-agent's only built-in tool is load_skill, so it needs the
+            # buzz-dev-mcp sidecar for shell/file tools and therefore for any
+            # ability to run the `buzz` CLI and post a reply. Claude Code has its
+            # own Bash/Read/Edit tools and reaches the `buzz` CLI directly on
+            # PATH (buzz-acp injects BUZZ_PRIVATE_KEY / BUZZ_RELAY_URL /
+            # BUZZ_AUTH_TAG into the agent subprocess).
+            #
+            # Desktop encodes exactly this split in the runtime catalog
+            # (desktop/src-tauri/src/managed_agents/discovery.rs):
+            #   id "claude"      → mcp_command: None,                mcp_hooks: false
+            #   id "buzz-agent"  → mcp_command: Some("buzz-dev-mcp"), mcp_hooks: true
+            # Attaching buzz-dev-mcp here would hand Claude Code a second,
+            # overlapping toolbelt and enable hook tools its runtime entry says
+            # it does not take. The binary stays in the image for the buzz-agent
+            # fallback path.
             # The agent's persona. Without this, config.system_prompt is None and
             # buzz-agent falls back to its own generic default — the compiled-in
             # [Base] harness prompt (buzz-acp/src/base_prompt.md, include_str!) is
@@ -119,39 +132,49 @@ spec:
             # NOTE: no `$` anywhere in this value — Flux envsubst runs over it.
             - name: BUZZ_ACP_SYSTEM_PROMPT
               value: |-
-                You are Fizz (display name Fizzman), an energetic maker who turns
-                ideas into action. Be upbeat, practical, and decisive. Help users
-                plan, create, solve problems, and finish work. Add occasional bee
+                You are Hive, an energetic maker agent who turns ideas into
+                action. Be upbeat, practical, and decisive. Help the owner plan,
+                create, solve problems, and finish work. Add occasional bee
                 wordplay or 🐝✨ — keep it charming, never distracting.
 
-                This instance runs in the Talos cluster: pod fizz-agent, namespace
-                buzz, working directory /var/lib/buzz. There is no kubectl binary
-                and no kubeconfig here. Say that plainly when asked to do cluster
-                work — never claim to be the Desktop host on the Mac.
-            # TEMPORARY (delivery debugging): buzz-acp logs relay frames at debug.
-            # Live `kubectl set env` patches are reverted by Flux within ~2min, so
-            # this has to live in git to survive. Revert once live-event delivery
-            # to this pod is confirmed working.
-            - name: RUST_LOG
-              value: "buzz_acp=debug"
-            # ── buzz-agent : brain → LLM ───────────────────────────────────
-            - name: BUZZ_AGENT_PROVIDER
-              value: "anthropic"
-            # Sonnet 5 — near-Opus quality on agentic/tool work at Sonnet cost
-            # (3.00/15.00 per MTok; intro 2.00/10.00 through 2026-08-31).
-            # Safe for buzz-agent: it sends no temperature/top_p/top_k (which
-            # Sonnet 5 rejects), and omits `thinking` entirely while
-            # BUZZ_AGENT_THINKING_EFFORT is unset.
-            # ⚠️ Do NOT switch to claude-opus-5 without a buzz-agent fix: it is
-            # missing from is_adaptive_thinking_model() (buzz-agent/src/config.rs
-            # :603), so setting a thinking effort would send budget_tokens and 400.
+                You are the always-on agent, running as the fizz-agent pod in the
+                owner's Talos cluster (namespace buzz, working directory
+                /var/lib/buzz). You exist so mentions still get answered when the
+                owner's MacBook is asleep. You are usually reached from mobile.
+
+                You have no kubectl, no kubeconfig, no cluster admin access, and
+                no checkouts of the owner's git repositories. Do not offer to run
+                kubectl, inspect cluster state, edit manifests, or work in a repo.
+
+                Fizzman is the same maker persona on the owner's MacBook, with
+                kubectl, the repos, and the local dev environment. Anything
+                needing cluster access, repository work, or builds goes to
+                Fizzman — say so plainly rather than guessing. You and Fizzman
+                are separate agents with separate identities and separate
+                memory; never claim to be Fizzman or speak for them.
+            # ── brain → LLM ────────────────────────────────────────────────
+            # Read by the Claude Agent SDK that claude-agent-acp wraps. Sonnet 5
+            # rather than Opus: this agent answers mobile questions, and the
+            # subscription's limits are shared with the owner's own interactive
+            # Claude Code on the Mac.
             - name: ANTHROPIC_MODEL
               value: "claude-sonnet-5"
             # ── secrets via clusterenv (${...} → Flux substituteFrom cluster-config) ──
-            - name: ANTHROPIC_API_KEY
-              value: "${ANTHROPIC_KEY}"       # owner adds ANTHROPIC_KEY to clusterenv.yaml
+            # Long-lived subscription token from `claude setup-token`, NOT an API
+            # key. This is what takes the pod off metered pay-as-you-go billing.
+            # Owner adds CLAUDE_CODE_OAUTH_TOKEN to clusterenv.yaml (SOPS-encrypted).
+            # ⚠️ Do not add this Deployment back to git referencing a clusterenv
+            # key that does not exist yet — an unresolved substitution fails the
+            # whole `buzz` Kustomization, taking buzz-app-template and buzz-redis
+            # down with it.
+            - name: CLAUDE_CODE_OAUTH_TOKEN
+              value: "${CLAUDE_CODE_OAUTH_TOKEN}"
+            # Hive's OWN nsec — deliberately not FIZZ_NSEC. Sharing one key with
+            # Desktop meant every mention matched both hosts (the relay mention
+            # filter is #p:[pubkey], buzz-acp/src/relay.rs:3182), so both answered
+            # and both billed. Renaming could never fix that; only a second key.
             - name: BUZZ_PRIVATE_KEY
-              value: "${FIZZ_NSEC}"           # Fizz's existing nsec (keychain extract → clusterenv)
+              value: "${HIVE_NSEC}"           # owner adds HIVE_NSEC to clusterenv.yaml
             # ── git auth (Option A): token baked into the HTTPS rewrite ────
             # Flux substitutes ${GITHUB_TOKEN} at reconcile; git then clones the
             # repos' git@github.com: remotes over authenticated HTTPS. No shell
