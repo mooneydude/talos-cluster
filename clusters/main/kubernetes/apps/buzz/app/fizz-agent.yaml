@@ -28,7 +28,11 @@ metadata:
   labels:
     app.kubernetes.io/name: fizz-agent
 spec:
-  replicas: 1
+  # OFF as of 2026-07-26: pay-as-you-go API spend was not economical (~$8 for one
+  # debugging session, most of it duplicated by Desktop-Fizz answering the same
+  # mentions). Flux reverts a bare `kubectl scale`, so the off switch has to live
+  # here. Set back to 1 after the move to Claude Code / Max-plan auth.
+  replicas: 0
   strategy:
     type: Recreate                         # RWO PVC + one-host-per-identity
   selector:
