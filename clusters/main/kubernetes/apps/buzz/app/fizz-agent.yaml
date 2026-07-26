@@ -89,6 +89,12 @@ spec:
             # the relay's RELAY_OWNER_PUBKEY.)
             - name: BUZZ_ACP_AGENT_OWNER
               value: "1d17ef66780c2ffceaa4249490e9ec8f3d2084bf4928c21c0c8ac089f4aa77b0"
+            # TEMPORARY (delivery debugging): buzz-acp logs relay frames at debug.
+            # Live `kubectl set env` patches are reverted by Flux within ~2min, so
+            # this has to live in git to survive. Revert once live-event delivery
+            # to this pod is confirmed working.
+            - name: RUST_LOG
+              value: "buzz_acp=debug"
             # ── buzz-agent : brain → LLM ───────────────────────────────────
             - name: BUZZ_AGENT_PROVIDER
               value: "anthropic"
