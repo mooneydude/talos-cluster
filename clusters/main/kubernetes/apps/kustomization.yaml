@@ -36,3 +36,4 @@ resources:
   - flaresolverr/ks.yaml
   - radarr/ks.yaml
   - buzz/ks.yaml
+  - homepage/ks.yaml
