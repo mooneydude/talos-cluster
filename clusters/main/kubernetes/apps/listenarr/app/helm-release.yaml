@@ -99,3 +99,10 @@ spec:
           certManager:
             certificateIssuer: domain-0-le-prod
             enabled: true
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              env:
+                URLS: "http://*:5000"
