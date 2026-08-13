@@ -37,3 +37,4 @@ resources:
   - radarr/ks.yaml
   - buzz/ks.yaml
   - homepage/ks.yaml
+  - listenarr/ks.yaml
