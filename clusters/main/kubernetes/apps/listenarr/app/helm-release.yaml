@@ -35,6 +35,14 @@ spec:
     resources:
       requests:
         cpu: 10m
+    credentials:
+      s3:
+        type: s3
+        url: "${MINIO_S3URL}"
+        bucket: "${MINIO_S3PREFIX}-listenarr"
+        accessKey: "${MINIO_S3ID}"
+        secretKey: "${MINIO_S3KEY}"
+        encrKey: "${MINIO_S3KEY}"         
     image:
       repository: docker.io/therobbiedavis/listenarr
       tag: canary
@@ -53,7 +61,31 @@ spec:
         storageClass: ceph-filesystem
         size: 1Gi
         accessModes:
-          - ReadWriteMany
+          - ReadWriteMany       
+        volsync:
+          - name: b2
+            type: restic
+            credentials: s3
+            dest:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true                        
+            src:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+              trigger:
+                schedule: 0 3 * * *               
+      audiobooks:
+        enabled: true
+        path: "/mnt/bigdata/plex/Audio Books"
+        mountPath: /audiobooks
+        server: ${TRUENAS_IP}
+        type: nfs    
+      downloads:
+        enabled: true
+        path: /mnt/bigdata/plex/Downloads/Completed
+        mountPath: /media/downloads/completed
+        server: ${TRUENAS_IP}
+        type: nfs                              
     ingress:
       main:
         enabled: true
