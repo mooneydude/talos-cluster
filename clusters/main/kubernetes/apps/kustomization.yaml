@@ -39,3 +39,4 @@ resources:
   - homepage/ks.yaml
   - listenarr/ks.yaml
   - kavita/ks.yaml
+  - bookshelf/ks.yaml

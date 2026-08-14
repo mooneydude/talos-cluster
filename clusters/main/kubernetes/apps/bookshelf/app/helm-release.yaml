@@ -1,0 +1,113 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: bookshelf
+  namespace: bookshelf
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 15.38.8
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 15m
+  timeout: 20m
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    global:
+      stopAll: false
+    TZ: America/Chicago
+    resources:
+      requests:
+        cpu: 10m
+    credentials:
+      s3:
+        type: s3
+        url: "${MINIO_S3URL}"
+        bucket: "${MINIO_S3PREFIX}-bookshelf"
+        accessKey: "${MINIO_S3ID}"
+        secretKey: "${MINIO_S3KEY}"
+        encrKey: "${MINIO_S3KEY}"
+    # community revival of Readarr; :hardcover tag uses Hardcover metadata
+    # (better quality, fine for us since this is a fresh install anyway).
+    # :softcover uses Goodreads metadata instead if that's ever preferred.
+    image:
+      repository: ghcr.io/pennydreadful/bookshelf
+      tag: hardcover
+      pullPolicy: Always
+    securityContext:
+      container:
+        runAsUser: 3000
+        runAsGroup: 3000
+    service:
+      main:
+        ports:
+          main:
+            port: 8787
+            targetPort: 8787
+            protocol: http
+    persistence:
+      config:
+        enabled: true
+        mountPath: /config
+        storageClass: ceph-filesystem
+        size: 1Gi
+        accessModes:
+          - ReadWriteMany
+        volsync:
+          - name: b2
+            type: restic
+            credentials: s3
+            dest:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+            src:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+              trigger:
+                schedule: 0 3 * * *
+      books:
+        enabled: true
+        path: /mnt/bigdata/plex/Books
+        mountPath: /books
+        server: ${TRUENAS_IP}
+        type: nfs
+      downloads:
+        enabled: true
+        path: /mnt/bigdata/plex/Downloads/Completed
+        mountPath: /downloads
+        server: ${TRUENAS_IP}
+        type: nfs
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: internal
+        hosts:
+          - host: bookshelf.${DOMAIN_1}
+            paths:
+              - path: /
+                pathType: Prefix
+        integrations:
+          certManager:
+            certificateIssuer: domain-0-le-prod
+            enabled: true
+    workload:
+      main:
+        podSpec:
+          securityContext:
+            fsGroup: 3000
