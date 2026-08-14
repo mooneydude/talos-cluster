@@ -45,7 +45,7 @@ spec:
         encrKey: "${MINIO_S3KEY}"         
     image:
       repository: docker.io/therobbiedavis/listenarr
-      tag: canary
+      tag: canary-1.2.2
       pullPolicy: Always
     securityContext:
       container:
