@@ -65,7 +65,8 @@ spec:
             credentials: s3
             dest:
               volumeSnapshotClassName: ceph-filesystem
-              enabled: true
+              enabled: false # dataSourceRef is immutable on an existing bound PVC; toggling this back to true
+                             # requires deleting/recreating kavita-config, otherwise Helm upgrades fail
             src:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
