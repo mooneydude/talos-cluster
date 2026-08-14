@@ -96,7 +96,7 @@ spec:
       downloads:
         enabled: true
         path: /mnt/bigdata/plex/Downloads/Completed
-        mountPath: /downloads
+        mountPath: /media/downloads/completed
         server: ${TRUENAS_IP}
         type: nfs
     ingress:
