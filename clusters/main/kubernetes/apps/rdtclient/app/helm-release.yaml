@@ -34,6 +34,10 @@ spec:
     global:
       stopAll: false
     TZ: America/Chicago
+    image:
+      repository: docker.mooneybin.net/rdtclient
+      tag: 2.0.142-qbitfiles.1
+      pullPolicy: IfNotPresent
     resources:
       requests:
         cpu: 10m
