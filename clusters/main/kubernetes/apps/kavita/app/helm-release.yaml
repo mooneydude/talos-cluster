@@ -65,7 +65,7 @@ spec:
             credentials: s3
             dest:
               volumeSnapshotClassName: ceph-filesystem
-              enabled: false # temporarily disabled for clean re-install; re-enable after fresh admin setup
+              enabled: true
             src:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
