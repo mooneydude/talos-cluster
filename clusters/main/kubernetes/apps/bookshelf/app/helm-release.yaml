@@ -50,10 +50,16 @@ spec:
       repository: ghcr.io/pennydreadful/bookshelf
       tag: hardcover
       pullPolicy: Always
+    # LinuxServer.io (s6-overlay) image: needs to start as root with a
+    # writable rootfs so its own init can chown /config and drop privileges
+    # internally via PUID/PGID - it doesn't expect Kubernetes to force a
+    # non-root UID ahead of time (that breaks s6-applyuidgid's setgroups call).
     securityContext:
       container:
-        runAsUser: 3000
-        runAsGroup: 3000
+        readOnlyRootFilesystem: false
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
     service:
       main:
         ports:
@@ -109,5 +115,8 @@ spec:
     workload:
       main:
         podSpec:
-          securityContext:
-            fsGroup: 3000
+          containers:
+            main:
+              env:
+                PUID: "3000"
+                PGID: "3000"
