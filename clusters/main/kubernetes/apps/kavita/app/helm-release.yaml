@@ -70,7 +70,7 @@ spec:
             src:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
-        manga:
+        books:
           type: nfs
           server: ${TRUENAS_IP}
-          path: "/mnt/bigdata/plex/Manga"
+          path: "/mnt/bigdata/plex/Books"
