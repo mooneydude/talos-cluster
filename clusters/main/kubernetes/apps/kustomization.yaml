@@ -38,4 +38,4 @@ resources:
   - buzz/ks.yaml
   - homepage/ks.yaml
   - listenarr/ks.yaml
-  # - kavita/ks.yaml
+  - kavita/ks.yaml
