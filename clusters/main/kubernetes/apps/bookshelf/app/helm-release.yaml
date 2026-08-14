@@ -99,6 +99,12 @@ spec:
         mountPath: /media/downloads/completed
         server: ${TRUENAS_IP}
         type: nfs
+      audiobooks:
+        enabled: true
+        path: "/mnt/bigdata/plex/Audio Books"
+        mountPath: /audiobooks
+        server: ${TRUENAS_IP}
+        type: nfs
     ingress:
       main:
         enabled: true
