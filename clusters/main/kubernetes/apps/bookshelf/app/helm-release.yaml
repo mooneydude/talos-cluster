@@ -112,11 +112,6 @@ spec:
           certManager:
             certificateIssuer: domain-0-le-prod
             enabled: true
-    workload:
-      main:
-        podSpec:
-          containers:
-            main:
-              env:
-                PUID: "3000"
-                PGID: "3000"
+    # No manual PUID/PGID: app-template derives those itself from
+    # securityContext.container.runAsUser/runAsGroup above as chart-managed
+    # env vars, and errors if you also set them by hand (fixedEnv conflict).
