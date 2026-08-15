@@ -88,9 +88,11 @@ spec:
         server: ${TRUENAS_IP}
         path: "/mnt/bigdata/plex/Audio Books"
       books:
+        enabled: true
+        mountPath: /books
         type: nfs
         server: ${TRUENAS_IP}
-        path: "/mnt/bigdata/plex/Books"        
+        path: "/mnt/bigdata/plex/Books"
     securityContext:
       container:
         runAsUser: 3000
