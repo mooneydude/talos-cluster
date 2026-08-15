@@ -38,6 +38,5 @@ resources:
   - buzz/ks.yaml
   - homepage/ks.yaml
   - listenarr/ks.yaml
-  - kavita/ks.yaml
   - bookshelf/ks.yaml
   - rreading-glasses/ks.yaml
