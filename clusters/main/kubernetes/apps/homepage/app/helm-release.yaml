@@ -66,12 +66,18 @@ spec:
                 - Prowlarr:
                     href: https://prowlarr.${DOMAIN_1}
                     description: Indexer manager
+                    widget:
+                      type: prowlarr
+                      url: http://prowlarr.prowlarr.svc.cluster.local:9696
+                      key: ${PROWLARR_API_KEY}
                 - RDT-Client:
                     href: https://rdtclient.${DOMAIN_1}
                     description: Real-Debrid download client
+                    siteMonitor: https://real-debrid.com
                 - RDT-Client (TorBox):
                     href: https://rdtclient-torbox.${DOMAIN_1}
                     description: TorBox download client
+                    siteMonitor: https://torbox.app
     ingress:
       main:
         enabled: true
