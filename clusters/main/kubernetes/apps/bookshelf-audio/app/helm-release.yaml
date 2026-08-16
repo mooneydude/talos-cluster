@@ -3,8 +3,8 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: bookshelf
-  namespace: bookshelf
+  name: bookshelf-audio
+  namespace: bookshelf-audio
 spec:
   interval: 15m
   chart:
@@ -39,21 +39,18 @@ spec:
       s3:
         type: s3
         url: "${MINIO_S3URL}"
-        bucket: "${MINIO_S3PREFIX}-bookshelf"
+        bucket: "${MINIO_S3PREFIX}-bookshelf-audio"
         accessKey: "${MINIO_S3ID}"
         secretKey: "${MINIO_S3KEY}"
         encrKey: "${MINIO_S3KEY}"
-    # community revival of Readarr; :hardcover tag uses Hardcover metadata
-    # (better quality, fine for us since this is a fresh install anyway).
-    # :softcover uses Goodreads metadata instead if that's ever preferred.
+    # Second, audio-only bookshelf instance - split from the main (ebook)
+    # bookshelf so an audiobook grab and an ebook grab for the same title
+    # never share a book record. See bookshelf/app/helm-release.yaml for
+    # the sibling ebook-only instance and the LSIO root/PUID rationale.
     image:
       repository: ghcr.io/pennydreadful/bookshelf
       tag: hardcover
       pullPolicy: Always
-    # LinuxServer.io (s6-overlay) image: needs to start as root with a
-    # writable rootfs so its own init can chown /config and drop privileges
-    # internally via PUID/PGID - it doesn't expect Kubernetes to force a
-    # non-root UID ahead of time (that breaks s6-applyuidgid's setgroups call).
     securityContext:
       container:
         readOnlyRootFilesystem: false
@@ -87,10 +84,10 @@ spec:
               enabled: true
               trigger:
                 schedule: 0 3 * * *
-      books:
+      audiobooks:
         enabled: true
-        path: /mnt/bigdata/plex/Books
-        mountPath: /books
+        path: "/mnt/bigdata/plex/Audio Books"
+        mountPath: /audiobooks
         server: ${TRUENAS_IP}
         type: nfs
       downloads:
@@ -104,7 +101,7 @@ spec:
         enabled: true
         ingressClassName: external
         hosts:
-          - host: bookshelf.${DOMAIN_1}
+          - host: bookshelf-audio.${DOMAIN_1}
             paths:
               - path: /
                 pathType: Prefix

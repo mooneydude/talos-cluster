@@ -39,4 +39,5 @@ resources:
   - homepage/ks.yaml
   - listenarr/ks.yaml
   - bookshelf/ks.yaml
+  - bookshelf-audio/ks.yaml
   - rreading-glasses/ks.yaml
