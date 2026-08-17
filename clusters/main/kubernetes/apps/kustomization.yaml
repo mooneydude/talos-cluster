@@ -37,7 +37,7 @@ resources:
   - radarr/ks.yaml
   - buzz/ks.yaml
   - homepage/ks.yaml
-  - listenarr/ks.yaml
+  # - listenarr/ks.yaml
   - bookshelf/ks.yaml
   - bookshelf-audio/ks.yaml
   - rreading-glasses/ks.yaml
