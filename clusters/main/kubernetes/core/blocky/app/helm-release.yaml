@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: blocky
-      version: 22.19.5
+      version: 22.19.4
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -31,6 +31,13 @@ spec:
   values:
     ## set stopAll to "true" if you do not want to use blocky
     # and/or disable its service
+    blocking:
+      whitelist:
+        - name: default-ads
+          lists:
+            - |
+              viantinc.com
+              *.viantinc.com    
     global:
       stopAll: false
     service:
