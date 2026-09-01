@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(kubectl logs:*)",
+      "Bash(kubectl get ingress -n etesync-dav)",
+      "Bash(kubectl get:*)",
+      "Bash(flux get sources git:*)",
+      "Bash(talosctl -n 192.168.2.210 --talosconfig /Users/mooney/Projects/talos-cluster/clusters/main/talos/generated/talosconfig get members:*)",
+      "Bash(talosctl get:*)",
+      "Bash(talosctl -n 192.168.2.208 -e 192.168.2.210 --talosconfig /Users/mooney/Projects/talos-cluster/clusters/main/talos/generated/talosconfig logs machined:*)",
+      "Bash(talosctl apply-config:*)",
+      "Bash(kubectl describe:*)",
+      "Bash(kubectl exec:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(gh api *)",
+      "Bash(gh search *)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(launchctl list *)",
+      "Read(//Users/mooney/Library/Application Support/**)",
+      "Read(//Users/mooney/Library/Containers/**)",
+      "Read(//Users/mooney/Library/Preferences/**)"
+    ]
+  }
+}
