@@ -132,6 +132,8 @@ spec:
                 # Without it relay_members stays empty, so clients authenticate but
                 # have no standing and immediately disconnect.
                 RELAY_OWNER_PUBKEY: "1d17ef66780c2ffceaa4249490e9ec8f3d2084bf4928c21c0c8ac089f4aa77b0"
+                # Stable relay identity key so RELAY_OWNER_PUBKEY above actually matches on every boot.
+                BUZZ_RELAY_PRIVATE_KEY: "${BUZZ_PRIVATE_KEY}"
                 # Without this, "/" falls through to the NIP-11 doc instead of the web UI.
                 # Only "true" or "1" enable it; gates the SPA routes / and /repos.
                 BUZZ_SERVE_GIT_WEB_GUI: "true"
