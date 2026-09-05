@@ -2,7 +2,7 @@ clusterName: ${CLUSTERNAME}
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
 talosVersion: v1.13.10
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-kubernetesVersion: v1.37.0
+kubernetesVersion: v1.36.2
 endpoint: https://${VIP}:6443
 allowSchedulingOnControlPlanes: false
 additionalMachineCertSans:
@@ -58,29 +58,29 @@ nodes:
             gateway: ${GATEWAY}
         vip:
           ip: ${VIP}
-  - hostname: k8s-control-3
-    ipAddress: ${MASTER3IP_IP}
-    controlPlane: true
-    nameservers:
-      - 1.1.1.1
-      - 8.8.8.8
-    installDiskSelector:
-      size: <= 1TB
-    schematic:
-      customization:
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/qemu-guest-agent
-    networkInterfaces:
-      # suffix is the adapter mac adres.
-      - interface: eth0
-        addresses:
-          - ${MASTER3IP_CIDR}
-        routes:
-          - network: 0.0.0.0/0
-            gateway: ${GATEWAY}
-        vip:
-          ip: ${VIP}
+  # - hostname: k8s-control-3
+  #   ipAddress: ${MASTER3IP_IP}
+  #   controlPlane: true
+  #   nameservers:
+  #     - 1.1.1.1
+  #     - 8.8.8.8
+  #   installDiskSelector:
+  #     size: <= 1TB
+  #   schematic:
+  #     customization:
+  #       systemExtensions:
+  #         officialExtensions:
+  #           - siderolabs/qemu-guest-agent
+  #   networkInterfaces:
+  #     # suffix is the adapter mac adres.
+  #     - interface: eth0
+  #       addresses:
+  #         - ${MASTER3IP_CIDR}
+  #       routes:
+  #         - network: 0.0.0.0/0
+  #           gateway: ${GATEWAY}
+  #       vip:
+  #         ip: ${VIP}
   - hostname: k8s-worker-1
     ipAddress: 192.168.2.207
     nameservers:
