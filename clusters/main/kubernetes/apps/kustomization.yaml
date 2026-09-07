@@ -41,3 +41,4 @@ resources:
   - bookshelf/ks.yaml
   - bookshelf-audio/ks.yaml
   - rreading-glasses/ks.yaml
+  - navidrome/ks.yaml

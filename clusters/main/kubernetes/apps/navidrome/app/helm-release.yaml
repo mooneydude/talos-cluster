@@ -1,0 +1,84 @@
+---
+# yaml-language-server: schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: navidrome
+  namespace: navidrome
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: navidrome
+      version: 23.12.0
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 15m
+  timeout: 20m
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    global:
+      stopAll: false
+    TZ: America/Chicago
+    credentials:
+      s3:
+        type: s3
+        url: "${MINIO_S3URL}"
+        bucket: "${MINIO_S3PREFIX}-navidrome"
+        accessKey: "${MINIO_S3ID}"
+        secretKey: "${MINIO_S3KEY}"
+        encrKey: "${MINIO_S3KEY}"
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: external
+        hosts:
+          - host: music.${DOMAIN_1}
+        integrations:
+          certManager:
+            enabled: true
+            certificateIssuer: domain-0-le-prod
+    persistence:
+      data:
+        storageClass: ceph-filesystem
+        size: 5Gi
+        accessModes:
+          - ReadWriteMany
+        volsync:
+          - name: data
+            type: restic
+            credentials: s3
+            dest:
+              enabled: false
+            src:
+              volumeSnapshotClassName: ceph-filesystem
+              enabled: true
+            trigger:
+              schedule: "0 1 * * *"
+      music:
+        enabled: true
+        type: nfs
+        server: ${TRUENAS_IP}
+        path: "/mnt/bigdata/plex/Music"
+        mountPath: /music
+    securityContext:
+      container:
+        runAsUser: 3000
+        runAsGroup: 3000
+    workload:
+      main:
+        podSpec:
+          securityContext:
+            fsGroup: 3000
