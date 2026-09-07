@@ -40,14 +40,6 @@ spec:
       repository: docker.${DOMAIN_1}/epg
       tag: prod
       pullPolicy: Always
-    # Cloudflare WARP proxy sidecar image. tvtv.us sits behind Cloudflare bot
-    # management which 403s the cluster's datacenter egress IP; routing the
-    # grabber through WARP (a Cloudflare-owned egress) gets past it.
-    # TODO: pin to a released tag once verified (check ghcr.io/caomingjun/warp tags).
-    warpImage:
-      repository: ghcr.io/caomingjun/warp
-      tag: latest
-      pullPolicy: IfNotPresent
     securityContext:
       container:
         readOnlyRootFilesystem: false
@@ -78,50 +70,7 @@ spec:
                 CRON3: "20 0 * * *"
                 MAX_CONNECTIONS: "1"
                 DAYS: "1"
-                # WARP egress is a shared IP pool, so keep requests gentle.
-                DELAY: "2000"
+                DELAY: "500"
                 TIMEOUT: "5000"
-                # Route all outbound HTTP(S) through the warp sidecar's proxy.
-                HTTP_PROXY: "http://127.0.0.1:1080"
-                HTTPS_PROXY: "http://127.0.0.1:1080"
-                http_proxy: "http://127.0.0.1:1080"
-                https_proxy: "http://127.0.0.1:1080"
-                NO_PROXY: "localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc,.cluster.local"
-                no_proxy: "localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc,.cluster.local"
                 # SITE: "zap2it.com"
                 # SERVER_ROOT: "/html"
-            # Cloudflare WARP proxy: registers a free WARP account on start and
-            # exposes a combined SOCKS5/HTTP proxy on :1080 (gost). The main
-            # container reaches it over the shared pod network at 127.0.0.1:1080.
-            warp:
-              # Temporarily disabled: ghcr.io/caomingjun/warp is not public (403).
-              # Re-enabled in the follow-up commit that mirrors the Docker Hub
-              # image into docker.${DOMAIN_1}.
-              enabled: false
-              imageSelector: warpImage
-              env:
-                WARP_SLEEP: "2"
-                # GOST_ARGS: "-L :1080"   # default; combined socks5+http listener
-              securityContext:
-                # WARP's entrypoint runs `sysctl -w net.ipv4.conf.all.src_valid_mark=1`
-                # (net-namespaced) and brings up a userspace WireGuard tunnel;
-                # NET_ADMIN is required, no kubelet unsafe-sysctl allowlist needed.
-                capabilities:
-                  add:
-                    - NET_ADMIN
-                readOnlyRootFilesystem: false
-                runAsNonRoot: false
-                runAsUser: 0
-              probes:
-                liveness:
-                  enabled: false
-                readiness:
-                  enabled: false
-                startup:
-                  enabled: false
-              resources:
-                requests:
-                  cpu: 10m
-                  memory: 64Mi
-                limits:
-                  memory: 128Mi
