@@ -40,6 +40,14 @@ spec:
       repository: docker.${DOMAIN_1}/epg
       tag: prod
       pullPolicy: Always
+    # Cloudflare WARP proxy sidecar. tvtv.us's Cloudflare bot management 403s the
+    # cluster's datacenter egress IP; routing the grabber through WARP (a
+    # Cloudflare-owned egress) gets past it. Mirrored from Docker Hub
+    # (ghcr.io/caomingjun/warp is not public) into the local registry.
+    warpImage:
+      repository: docker.${DOMAIN_1}/caomingjun/warp
+      tag: 2026.7.1377.0-2.12.0
+      pullPolicy: IfNotPresent
     securityContext:
       container:
         readOnlyRootFilesystem: false
@@ -70,7 +78,40 @@ spec:
                 CRON3: "20 0 * * *"
                 MAX_CONNECTIONS: "1"
                 DAYS: "1"
-                DELAY: "500"
+                # WARP egress is a shared IP pool, so keep requests gentle.
+                DELAY: "2000"
                 TIMEOUT: "5000"
+                # Route all outbound HTTP(S) through the warp sidecar (gost on :1080).
+                HTTP_PROXY: "http://127.0.0.1:1080"
+                HTTPS_PROXY: "http://127.0.0.1:1080"
+                http_proxy: "http://127.0.0.1:1080"
+                https_proxy: "http://127.0.0.1:1080"
+                NO_PROXY: "localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc,.cluster.local"
+                no_proxy: "localhost,127.0.0.1,::1,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,.svc,.cluster.local"
                 # SITE: "zap2it.com"
                 # SERVER_ROOT: "/html"
+            # WARP proxy: warp-svc brings up a userspace tunnel and gost exposes a
+            # combined SOCKS5/HTTP proxy on :1080. Runs privileged so the
+            # entrypoint can create /dev/net/tun (namespace PSA = privileged).
+            warp:
+              enabled: true
+              imageSelector: warpImage
+              env:
+                WARP_SLEEP: "5"
+              securityContext:
+                privileged: true
+                readOnlyRootFilesystem: false
+                runAsNonRoot: false
+              probes:
+                liveness:
+                  enabled: false
+                readiness:
+                  enabled: false
+                startup:
+                  enabled: false
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 64Mi
+                limits:
+                  memory: 160Mi
