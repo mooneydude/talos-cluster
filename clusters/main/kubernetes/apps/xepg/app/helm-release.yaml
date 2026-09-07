@@ -94,7 +94,10 @@ spec:
             # exposes a combined SOCKS5/HTTP proxy on :1080 (gost). The main
             # container reaches it over the shared pod network at 127.0.0.1:1080.
             warp:
-              enabled: true
+              # Temporarily disabled: ghcr.io/caomingjun/warp is not public (403).
+              # Re-enabled in the follow-up commit that mirrors the Docker Hub
+              # image into docker.${DOMAIN_1}.
+              enabled: false
               imageSelector: warpImage
               env:
                 WARP_SLEEP: "2"
