@@ -172,12 +172,26 @@ spec:
                   cpu: 500m
                   memory: 1Gi
       microservices:
+        replicas: 2
         podSpec:
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 100
+                  podAffinityTerm:
+                    labelSelector:
+                      matchLabels:
+                        pod.name: microservices
+                    topologyKey: kubernetes.io/hostname
           containers:
             microservices:
               env:
                 IMMICH_JOB_FACE_DETECTION_CONCURRENCY: "4"
                 IMMICH_JOB_SMART_SEARCH_CONCURRENCY: "4"
+              resources:
+                excludeExtra: false
+                limits:
+                  gpu.intel.com/i915: 1
     
     # resources:
     #   limits:
