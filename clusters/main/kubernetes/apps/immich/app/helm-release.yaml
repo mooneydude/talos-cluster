@@ -145,7 +145,7 @@ spec:
       main:
         podSpec:
           containers:
-            immich:
+            main:
               resources:
                 limits:
                   gpu.intel.com/i915: 1
