@@ -147,6 +147,7 @@ spec:
           containers:
             main:
               resources:
+                excludeExtra: false
                 limits:
                   gpu.intel.com/i915: 1
       machinelearning:
