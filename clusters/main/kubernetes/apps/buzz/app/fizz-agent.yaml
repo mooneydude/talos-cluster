@@ -102,7 +102,16 @@ spec:
             - name: BUZZ_ACP_AGENTS
               value: "2"
             - name: BUZZ_ACP_RESPOND_TO
-              value: "owner-only"
+              value: "anyone"
+            # No human is watching to answer a permission prompt on a headless
+            # pod, so the real choice is bypass-permissions (default — full
+            # tool execution, no gate) vs dont-ask (reject anything requiring
+            # permission, no prompt) vs plan (no tool execution at all).
+            # respond-to: anyone means untrusted input can reach this agent,
+            # so dont-ask: reads/conversation still work, but Bash/Edit/Write
+            # and anything else permission-gated is refused outright.
+            - name: BUZZ_ACP_PERMISSION_MODE
+              value: "dont-ask"
             # Owner pubkey (public hex) — REQUIRED for the owner-only gate, else
             # buzz-acp resolves no owner and drops every event. (Same value as
             # the relay's RELAY_OWNER_PUBKEY.)
@@ -136,10 +145,9 @@ spec:
             # NOTE: no `$` anywhere in this value — Flux envsubst runs over it.
             - name: BUZZ_ACP_SYSTEM_PROMPT
               value: |-
-                You are Hive, an energetic maker agent who turns ideas into
+                You are Martybot, an energetic maker agent who turns ideas into
                 action. Be upbeat, practical, and decisive. Help the owner plan,
-                create, solve problems, and finish work. Add occasional bee
-                wordplay or 🐝✨ — keep it charming, never distracting.
+                create, solve problems, and finish work.
 
                 You are the always-on agent, running as the fizz-agent pod in the
                 owner's Talos cluster (namespace buzz, working directory
@@ -182,12 +190,15 @@ spec:
             # owner named that key BUZZ_PRIVATE_KEY, so both sides read the same.
             - name: BUZZ_PRIVATE_KEY
               value: "${BUZZ_PRIVATE_KEY}"    # clusterenv key BUZZ_PRIVATE_KEY = Hive's nsec
-            # ── git auth (Option A): token baked into the HTTPS rewrite ────
-            # Flux substitutes ${GITHUB_TOKEN} at reconcile; git then clones the
-            # repos' git@github.com: remotes over authenticated HTTPS. No shell
-            # $VARs here (they'd collide with Flux envsubst), no SSH keys.
+            # ── git auth: deliberately NOT configured ──────────────────────
+            # respond-to: anyone means this pod is reachable by anyone who can
+            # post to the relay. No GITHUB_TOKEN / HTTPS-rewrite here means no
+            # push credential for the agent to be tricked into using — git@
+            # github.com: remotes stay unauthenticated (public clone only).
+            # If Option A (git-mediated repo dev) comes back, this needs a
+            # read-only or narrowly-scoped PAT re-added, not the old one.
             - name: GIT_CONFIG_COUNT
-              value: "3"
+              value: "2"
             - name: GIT_CONFIG_KEY_0
               value: "user.name"
             - name: GIT_CONFIG_VALUE_0
@@ -196,11 +207,6 @@ spec:
               value: "user.email"
             - name: GIT_CONFIG_VALUE_1
               value: "fizz@mooneybin.net"     # CONFIRM
-            - name: GIT_CONFIG_KEY_2
-              value: "url.https://x-access-token:${GITHUB_TOKEN}@github.com/.insteadOf"
-              # ^ owner adds GITHUB_TOKEN to clusterenv.yaml (fine-grained PAT)
-            - name: GIT_CONFIG_VALUE_2
-              value: "git@github.com:"
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: false    # buzz-acp writes logs + spawns subprocesses
