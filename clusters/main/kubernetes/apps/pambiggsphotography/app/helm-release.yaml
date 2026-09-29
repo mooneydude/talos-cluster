@@ -1,0 +1,87 @@
+---
+# yaml-language-server: schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: pambiggsphotography
+  namespace: pambiggsphotography
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 15.38.8
+      sourceRef:
+        kind: HelmRepository
+        name: truecharts
+        namespace: flux-system
+      interval: 15m
+  timeout: 20m
+  maxHistory: 3
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+
+  values:
+    global:
+      stopAll: false
+    TZ: America/Chicago
+    resources:
+      requests:
+        cpu: 10m
+    image:
+      repository: docker.${DOMAIN_1}/pambiggsphotography
+      tag: prod
+      pullPolicy: Always
+    securityContext:
+      container:
+        readOnlyRootFilesystem: false
+        runAsUser: 101
+        runAsGroup: 101
+    service:
+      main:
+        type: ClusterIP
+        ports:
+          main:
+            port: 8080
+            targetPort: 8080
+            protocol: http
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: external
+        hosts:
+          - host: pambiggsphotography.com
+            paths:
+              - path: /
+                pathType: Prefix
+          - host: www.pambiggsphotography.com
+            paths:
+              - path: /
+                pathType: Prefix
+        integrations:
+          certManager:
+            enabled: true
+            certificateIssuer: domain-0-le-prod
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              probes:
+                liveness:
+                  type: http
+                  path: /healthz
+                readiness:
+                  type: http
+                  path: /healthz
+                startup:
+                  type: http
+                  path: /healthz
