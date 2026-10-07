@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: home-assistant
-      version: 30.12.6
+      version: 31.5.1
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -39,12 +39,12 @@ spec:
       tag: stable
     ## Enable host networking for direct network access. True breaks K8s security.
     # hostNetwork: true
-    TZ: America/Chicago 
+    TZ: America/Chicago
     resources:
       requests:
-        cpu: 10m      
+        cpu: 10m
     global:
-      stopAll: false 
+      stopAll: false
     credentials:
       s3:
         type: s3
@@ -76,18 +76,18 @@ spec:
         integrations:
           certManager:
             enabled: true
-            certificateIssuer: domain-0-le-prod  
+            certificateIssuer: domain-0-le-prod
     homeassistant:
       trusted_proxies:
-      - 172.16.0.0/16
-      - 172.17.0.0/16
-      - 192.168.2.0/24
+        - 172.16.0.0/16
+        - 172.17.0.0/16
+        - 192.168.2.0/24
     persistence:
       config:
         storageClass: ceph-filesystem
         size: 1Gi
         accessModes:
-          - ReadWriteMany        
+          - ReadWriteMany
         volsync:
           - name: b2
             type: restic
@@ -96,7 +96,7 @@ spec:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
             src:
-              volumeSnapshotClassName: ceph-filesystem 
+              volumeSnapshotClassName: ceph-filesystem
               enabled: true
               trigger:
                 schedule: "30 14 * * *"
@@ -115,7 +115,7 @@ spec:
               enabled: true
               trigger:
                 schedule: 45 0 * * *
-            type: restic                
+            type: restic
     cnpg:
       main:
         mode: recovery # Set to 'recovery' when recovery from S3, also change the revisions
@@ -126,23 +126,22 @@ spec:
           revision: "2"
         recovery:
           credentials: s3
-          revision: "1"  
+          revision: "1"
 
     #   zigbeedongle:
     #     enabled: true
     #     type: device
-    #     hostPath: /dev/serial/by-id/usb-Silicon_Labs_CP2102N_USB_to_UART_Bridge_Controller_0001-if00-port0              
+    #     hostPath: /dev/serial/by-id/usb-Silicon_Labs_CP2102N_USB_to_UART_Bridge_Controller_0001-if00-port0
 
     # workload:
     #   main:
     #     # type: Deployment
-    #     # strategy: RollingUpdate #ToDo install a second zigbee dongle 
-    #     # replicas: 2      
+    #     # strategy: RollingUpdate #ToDo install a second zigbee dongle
+    #     # replicas: 2
     #     podSpec:
     #       nodeSelector:
     #         feature.node.kubernetes.io/usb-ff_10c4_ea60.present: "true"
-            
-         
+
     workload:
       main:
         podSpec:
