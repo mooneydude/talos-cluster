@@ -51,6 +51,15 @@ spec:
         size: 1Gi
         accessModes:
           - ReadWriteOnce
+        volsync:
+          - name: b2
+            type: restic
+            credentials: s3
+            src:
+              volumeSnapshotClassName: csi-ceph-blockpool
+              enabled: true
+              trigger:
+                schedule: 0 3 * * *
       movies:
         enabled: true
         path: /mnt/bigdata/plex/Movies
