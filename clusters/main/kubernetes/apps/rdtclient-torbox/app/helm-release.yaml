@@ -69,6 +69,7 @@ spec:
         mountPath: /media/downloads/completed
         server: ${TRUENAS_IP}
         type: nfs
+        targetSelectAll: true
     ingress:
       main:
         enabled: true
@@ -76,8 +77,8 @@ spec:
         hosts:
           - host: rdtclient-torbox.${DOMAIN_1}
             paths:
-            - path: /
-              pathType: Prefix
+              - path: /
+                pathType: Prefix
         integrations:
           certManager:
             certificateIssuer: domain-0-le-prod

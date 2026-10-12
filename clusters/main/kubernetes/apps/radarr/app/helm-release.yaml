@@ -44,43 +44,43 @@ spec:
         bucket: "${MINIO_S3PREFIX}-radarr"
         accessKey: "${MINIO_S3ID}"
         secretKey: "${MINIO_S3KEY}"
-        encrKey: "${MINIO_S3KEY}"         
+        encrKey: "${MINIO_S3KEY}"
     persistence:
       config:
-        storageClass: ceph-filesystem
+        storageClass: ceph-nvme
         size: 1Gi
         accessModes:
-          - ReadWriteMany       
+          - ReadWriteOnce
         volsync:
           - name: b2
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: ceph-filesystem
-              enabled: true                        
+              volumeSnapshotClassName: csi-ceph-blockpool
+              enabled: true
             src:
-              volumeSnapshotClassName: ceph-filesystem
+              volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
               trigger:
-                schedule: 0 3 * * *  
+                schedule: 0 3 * * *
       movies:
         enabled: true
         path: /mnt/bigdata/plex/Movies
         mountPath: /Videos/Movies
         server: ${TRUENAS_IP}
-        type: nfs    
+        type: nfs
       mediacompleted:
         enabled: true
         path: /mnt/bigdata/plex/Downloads/Completed
         mountPath: /media/downloads/completed
         server: ${TRUENAS_IP}
-        type: nfs      
+        type: nfs
       recyclebin:
         enabled: true
         path: /mnt/bigdata/plex/Recyclebin
         mountPath: /Recyclebin
         server: ${TRUENAS_IP}
-        type: nfs                   
+        type: nfs
     ingress:
       main:
         enabled: true
@@ -88,9 +88,10 @@ spec:
         hosts:
           - host: radarr.${DOMAIN_1}
             paths:
-            - path: /
-              pathType: Prefix
-        integrations:      
+              - path: /
+                pathType: Prefix
+        integrations:
           certManager:
             certificateIssuer: domain-0-le-prod
-            enabled: true         
+            enabled: true
+
