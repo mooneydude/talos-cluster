@@ -32,7 +32,7 @@ spec:
     keepHistory: false
   values:
     global:
-      stopAll: false
+      stopAll: true
     TZ: America/Chicago
     resources:
       requests:
@@ -47,22 +47,10 @@ spec:
         encrKey: "${MINIO_S3KEY}"
     persistence:
       config:
-        storageClass: ceph-filesystem
+        storageClass: ceph-nvme
         size: 1Gi
         accessModes:
-          - ReadWriteMany
-        volsync:
-          - name: b2
-            type: restic
-            credentials: s3
-            dest:
-              volumeSnapshotClassName: ceph-filesystem
-              enabled: true
-            src:
-              volumeSnapshotClassName: cephy-fliesystem
-              enabled: true
-              trigger:
-                schedule: 0 3 * * *
+          - ReadWriteOnce
       movies:
         enabled: true
         path: /mnt/bigdata/plex/Movies
