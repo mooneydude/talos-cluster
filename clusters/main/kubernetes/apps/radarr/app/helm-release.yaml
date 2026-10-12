@@ -32,7 +32,7 @@ spec:
     keepHistory: false
   values:
     global:
-      stopAll: true
+      stopAll: false
     TZ: America/Chicago
     resources:
       requests:
