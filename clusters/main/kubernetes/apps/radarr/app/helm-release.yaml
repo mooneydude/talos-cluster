@@ -47,19 +47,19 @@ spec:
         encrKey: "${MINIO_S3KEY}"
     persistence:
       config:
-        storageClass: ceph-nvme
+        storageClass: ceph-filesystem
         size: 1Gi
         accessModes:
-          - ReadWriteOnce
+          - ReadWriteMany
         volsync:
           - name: b2
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: csi-ceph-blockpool
+              volumeSnapshotClassName: ceph-filesystem
               enabled: true
             src:
-              volumeSnapshotClassName: csi-ceph-blockpool
+              volumeSnapshotClassName: cephy-fliesystem
               enabled: true
               trigger:
                 schedule: 0 3 * * *
@@ -94,4 +94,3 @@ spec:
           certManager:
             certificateIssuer: domain-0-le-prod
             enabled: true
-
