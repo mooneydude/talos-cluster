@@ -55,6 +55,8 @@ spec:
           - name: b2
             type: restic
             credentials: s3
+            dest:
+              enabled: false
             src:
               volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
