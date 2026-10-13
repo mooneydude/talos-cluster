@@ -29,6 +29,13 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    defaultRules:
+      rules:
+        # Disabled: 30d/3d apiserver SLO rules time out (context deadline exceeded)
+        # and cause sustained ~90 MiB/s reads from the ceph-nvme volume.
+        kubeApiserverAvailability: false
+        kubeApiserverBurnrate: false
+        kubeApiserverSlos: false
     crds:
       enabled: true
       upgradeJob:
