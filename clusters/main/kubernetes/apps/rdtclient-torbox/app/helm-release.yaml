@@ -36,6 +36,33 @@ spec:
     TZ: America/Chicago
     aria2:
       rpc_secret: mysecret123
+    # Tune aria2's NFS write behaviour. Without this, aria2 preallocates the
+    # file and writes small unaligned chunks, which makes the NFS client do a
+    # read-modify-write per page. aria2 is single-threaded, so it stalls on
+    # those NFS reads and download speed collapses (~20-30 MiB/s vs ~120 MB/s).
+    # These settings live in /config/aria2.conf on the config PVC, which the
+    # image only generates when missing, so we patch it before /init runs.
+    workload:
+      aria2:
+        podSpec:
+          containers:
+            aria2:
+              command:
+                - /bin/bash
+                - -c
+                - |
+                  conf=/config/aria2.conf
+                  if [ -f "$conf" ]; then
+                    sed -i -E \
+                      -e 's@^[[:space:]]*#?[[:space:]]*split[[:space:]]*=.*@split=1@' \
+                      -e 's@^[[:space:]]*#?[[:space:]]*max-connection-per-server[[:space:]]*=.*@max-connection-per-server=1@' \
+                      -e 's@^[[:space:]]*#?[[:space:]]*file-allocation[[:space:]]*=.*@file-allocation=none@' \
+                      "$conf"
+                    grep -q '^split=' "$conf" || echo 'split=1' >> "$conf"
+                    grep -q '^max-connection-per-server=' "$conf" || echo 'max-connection-per-server=1' >> "$conf"
+                    grep -q '^file-allocation=' "$conf" || echo 'file-allocation=none' >> "$conf"
+                  fi
+                  exec /init
     resources:
       requests:
         cpu: 10m
