@@ -166,10 +166,10 @@ spec:
               resources:
                 limits:
                   cpu: 3000m
-                  memory: 4Gi
+                  memory: 2Gi
                 requests:
                   cpu: 500m
-                  memory: 1Gi
+                  memory: 256Mi
       microservices:
         replicas: 2
         podSpec:

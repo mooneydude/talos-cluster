@@ -41,9 +41,9 @@ spec:
         rbd_default_stripe_count = 16
         # Memory optimization settings
         [osd]
-        # Limit OSD memory usage to 512Mi base target
-        osd_memory_target = 536870912
-        # Enable automatic memory tuning to adapt to workload
+        # Autotune derives the target from host RAM, which works out to about
+        # 1.6GiB per OSD on these 16GiB nodes. Do not set osd_memory_target
+        # here: autotune overrides it, so a literal value would be ignored.
         osd_memory_target_autotune = true
         # Control number of PGs to reduce memory overhead
         mon_max_pg_per_osd = 200

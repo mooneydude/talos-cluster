@@ -91,6 +91,19 @@ spec:
               resources:
                 requests:
                   storage: 70Gi
+        # Keep Prometheus off k8s-worker-2, which carries the heaviest pod
+        # footprint (osd-1, mds-a). Either worker-1 or worker-3 is acceptable
+        # so a single node outage still allows scheduling.
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: kubernetes.io/hostname
+                      operator: In
+                      values:
+                        - k8s-worker-1
+                        - k8s-worker-3
 
     prometheus-node-exporter:
       fullnameOverride: node-exporter
