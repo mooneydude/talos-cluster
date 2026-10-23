@@ -39,7 +39,7 @@ spec:
         bucket: "${MINIO_S3PREFIX}-etesyncdav"
         accessKey: "${MINIO_S3ID}"
         secretKey: "${MINIO_S3KEY}"
-        encrKey: "${MINIO_S3KEY}" 
+        encrKey: "${MINIO_S3KEY}"
     TZ: America/Chicago
     image:
       repository: docker.io/etesync/etesync-dav
@@ -75,19 +75,19 @@ spec:
       data:
         enabled: true
         mountPath: /data
-        storageClass: ceph-filesystem
+        storageClass: ceph-nvme
         size: 1Gi
         accessModes:
-          - ReadWriteMany
+          - ReadWriteOnce
         volsync:
           - name: data
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: ceph-filesystem
-              enabled: true            
+              volumeSnapshotClassName: csi-ceph-blockpool
+              enabled: true
             src:
-              volumeSnapshotClassName: ceph-filesystem
+              volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
               trigger:
                 schedule: "0 1 * * *"
@@ -113,4 +113,5 @@ spec:
                   exec etesync-dav
               env:
                 ETESYNC_URL: "http://etesync.etesync.svc.cluster.local:10254"
-                PYTHONPATH: "/tmp"      
+                PYTHONPATH: "/tmp"
+

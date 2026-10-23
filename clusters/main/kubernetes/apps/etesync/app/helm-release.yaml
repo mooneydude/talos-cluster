@@ -85,10 +85,10 @@ spec:
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: ceph-nvme
+              volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
             src:
-              volumeSnapshotClassName: ceph-nvme
+              volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
               trigger:
                 schedule: "0 1 * * *"
@@ -102,10 +102,10 @@ spec:
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: ceph-nvme
+              volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
             src:
-              volumeSnapshotClassName: ceph-nvme
+              volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
               trigger:
                 schedule: "0 1 * * *"
@@ -124,10 +124,10 @@ spec:
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: ceph-nvme
+              volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
             src:
-              volumeSnapshotClassName: ceph-nvme
+              volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
               trigger:
                 schedule: "0 1 * * *"
