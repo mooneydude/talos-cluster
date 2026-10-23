@@ -93,3 +93,22 @@ spec:
           certManager:
             certificateIssuer: domain-0-le-prod
             enabled: true
+    # Container-level limits: the chart default gives every container a 2400Mi
+    # limit. The exportarr sidecar only uses ~16Mi, and the app peaks around
+    # 360Mi, so cap both rather than carrying 4.7Gi of pod limit.
+    workload:
+      main:
+        podSpec:
+          containers:
+            main:
+              resources:
+                limits:
+                  memory: 1536Mi
+                requests:
+                  memory: 192Mi
+            exportarr:
+              resources:
+                limits:
+                  memory: 256Mi
+                requests:
+                  memory: 32Mi
