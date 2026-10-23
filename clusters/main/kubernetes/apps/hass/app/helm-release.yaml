@@ -152,6 +152,14 @@ spec:
             matter:
               enabled: true
               imageSelector: matterServerImage
+              # Uses ~128Mi; the chart default limit of 2400Mi is pure OOM
+              # surface. The main container keeps its 2400Mi limit because HA
+              # was OOMKilled at that ceiling previously.
+              resources:
+                limits:
+                  memory: 512Mi
+                requests:
+                  memory: 64Mi
               # matter-server needs --primary-interface for mDNS, but the host NIC name
               # differs per node (eno1 on worker-1/2, ens18 on worker-3) and this pod is
               # not node-pinned. Detect the default-route interface at startup so matter
