@@ -87,8 +87,7 @@ spec:
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: csi-ceph-blockpool
-              enabled: true
+              enabled: false
             src:
               volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
