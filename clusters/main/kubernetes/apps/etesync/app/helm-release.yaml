@@ -42,7 +42,7 @@ spec:
         bucket: "${MINIO_S3PREFIX}-etesync"
         accessKey: "${MINIO_S3ID}"
         secretKey: "${MINIO_S3KEY}"
-        encrKey: "${MINIO_S3KEY}"       
+        encrKey: "${MINIO_S3KEY}"
 
     service:
       main:
@@ -63,9 +63,9 @@ spec:
 
     cnpg:
       main:
-        # mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
+        # mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions
         backups:
-          enabled: true  # Set to 'false' when performing new install (recovery)
+          enabled: true # Set to 'false' when performing new install (recovery)
           credentials: s3
           retentionPolicy: "7d"
           revision: "1"
@@ -76,45 +76,45 @@ spec:
 
     persistence:
       app:
-        storageClass: ceph-filesystem
+        storageClass: ceph-nvme
         size: 1Gi
         accessModes:
-          - ReadWriteMany
+          - ReadWriteOnce
         volsync:
           - name: app
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: ceph-filesystem
-              enabled: true            
+              volumeSnapshotClassName: ceph-nvme
+              enabled: true
             src:
-              volumeSnapshotClassName: ceph-filesystem
+              volumeSnapshotClassName: ceph-nvme
               enabled: true
               trigger:
                 schedule: "0 1 * * *"
       secret:
-        storageClass: ceph-filesystem
+        storageClass: ceph-nvme
         size: 1Gi
         accessModes:
-          - ReadWriteMany
+          - ReadWriteOnce
         volsync:
           - name: secret
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: ceph-filesystem
-              enabled: true            
+              volumeSnapshotClassName: ceph-nvme
+              enabled: true
             src:
-              volumeSnapshotClassName: ceph-filesystem
+              volumeSnapshotClassName: ceph-nvme
               enabled: true
               trigger:
                 schedule: "0 1 * * *"
       dav-data:
         enabled: true
-        storageClass: ceph-filesystem
+        storageClass: ceph-nvme
         size: 1Gi
         accessModes:
-          - ReadWriteMany
+          - ReadWriteOnce
         targetSelector:
           etesync-dav:
             etesync-dav:
@@ -124,10 +124,10 @@ spec:
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: ceph-filesystem
-              enabled: true            
+              volumeSnapshotClassName: ceph-nvme
+              enabled: true
             src:
-              volumeSnapshotClassName: ceph-filesystem
+              volumeSnapshotClassName: ceph-nvme
               enabled: true
               trigger:
                 schedule: "0 1 * * *"
