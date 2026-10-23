@@ -32,7 +32,7 @@ spec:
     global:
       stopAll: false
     TZ: America/Chicago
-    # resources:    
+    # resources:
     #   requests:
     #     cpu: 50m
     credentials:
@@ -42,7 +42,7 @@ spec:
         bucket: "${MINIO_S3PREFIX}-immich"
         accessKey: "${MINIO_S3ID}"
         secretKey: "${MINIO_S3KEY}"
-        encrKey: "${MINIO_S3KEY}"       
+        encrKey: "${MINIO_S3KEY}"
     ingress:
       main:
         enabled: true
@@ -58,13 +58,13 @@ spec:
           #   auth:
           #     type: "authentik"
           #     internalHost: "authentik-http.authentik.svc.cluster.local:10230"
-          #     externalHost: "pics.${DOMAIN_1}"              
+          #     externalHost: "pics.${DOMAIN_1}"
     persistence:
       profile:
         storageClass: ceph-filesystem
         size: 1Gi
         accessModes:
-          - ReadWriteMany        
+          - ReadWriteMany
         volsync:
           - name: prf
             type: restic
@@ -78,19 +78,19 @@ spec:
             trigger:
               schedule: "0 1 * * *"
       thumbs:
-        storageClass: ceph-filesystem
+        storageClass: ceph-nvme
         size: 50Gi
         accessModes:
-          - ReadWriteMany        
+          - ReadWriteOnce
         volsync:
           - name: thn
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: ceph-filesystem
+              volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
             src:
-              volumeSnapshotClassName: ceph-filesystem
+              volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
             trigger:
               schedule: "0 1 * * *"
@@ -130,9 +130,9 @@ spec:
 
     cnpg:
       main:
-        mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
+        mode: recovery # Set to 'recovery' when recovery from S3, also change the revisions
         backups:
-          enabled: true  # Set to 'false' when performing new install (recovery)
+          enabled: true # Set to 'false' when performing new install (recovery)
           credentials: s3
           retentionPolicy: "7d"
           revision: "3"
@@ -192,7 +192,7 @@ spec:
                 excludeExtra: false
                 limits:
                   gpu.intel.com/i915: 1
-    
+
     # resources:
     #   limits:
     #     gpu.intel.com/i915: 1
@@ -200,4 +200,4 @@ spec:
 
     # workload:
     #   main:
-    #     replicas: 0    
+    #     replicas: 0
