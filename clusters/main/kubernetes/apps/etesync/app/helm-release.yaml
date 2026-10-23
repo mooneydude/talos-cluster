@@ -85,8 +85,7 @@ spec:
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: csi-ceph-blockpool
-              enabled: true
+              enabled: false
             src:
               volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
@@ -102,30 +101,7 @@ spec:
             type: restic
             credentials: s3
             dest:
-              volumeSnapshotClassName: csi-ceph-blockpool
-              enabled: true
-            src:
-              volumeSnapshotClassName: csi-ceph-blockpool
-              enabled: true
-              trigger:
-                schedule: "0 1 * * *"
-      dav-data:
-        enabled: true
-        storageClass: ceph-nvme
-        size: 1Gi
-        accessModes:
-          - ReadWriteOnce
-        targetSelector:
-          etesync-dav:
-            etesync-dav:
-              mountPath: /data
-        volsync:
-          - name: dav-data
-            type: restic
-            credentials: s3
-            dest:
-              volumeSnapshotClassName: csi-ceph-blockpool
-              enabled: true
+              enabled: false
             src:
               volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
