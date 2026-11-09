@@ -56,11 +56,10 @@ spec:
     service:
       main:
         enabled: true
-        loadBalancerIP: ${HASS_IP}
-        type: LoadBalancer
-        integrations:
-          metallb:
-            enabled: true
+        # hostNetwork is enabled below, which forces this service to ClusterIP
+        # in the common chart regardless of what is requested here. HA is
+        # reachable on the node IP (192.168.2.205:8123) and via the ingress.
+        type: ClusterIP
         ports:
           main:
             enabled: true
@@ -148,6 +147,14 @@ spec:
           # nodeSelector:
           #   zigbee: "true"
           hostNetwork: true
+          # CoreDNS forwards to the node resolvers (1.1.1.1/8.8.8.8), so
+          # *.mooneybin.net inside the pod resolves to Cloudflare instead of
+          # the LAN ingress. Pin the external hostname to the nginx-external
+          # MetalLB VIP so HA can reach its own external URL.
+          hostAliases:
+            - ip: 192.168.2.212
+              hostnames:
+                - ha.mooneybin.net
           containers:
             matter:
               enabled: true
