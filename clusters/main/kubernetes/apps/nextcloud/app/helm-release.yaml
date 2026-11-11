@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: nextcloud
-      version: 46.10.13
+      version: 49.2.3
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -50,9 +50,9 @@ spec:
         hosts:
           - host: cloud.${DOMAIN_1}
             paths:
-            - path: /
-              pathType: Prefix
-        integrations:      
+              - path: /
+                pathType: Prefix
+        integrations:
           certManager:
             certificateIssuer: domain-0-le-prod
             enabled: true
@@ -61,7 +61,7 @@ spec:
         storageClass: ceph-filesystem
         size: 1Gi
         accessModes:
-          - ReadWriteMany        
+          - ReadWriteMany
         volsync:
           - name: config
             type: restic
@@ -78,7 +78,7 @@ spec:
         storageClass: ceph-filesystem
         size: 10Gi
         accessModes:
-          - ReadWriteMany        
+          - ReadWriteMany
         volsync:
           - name: html
             type: restic
@@ -106,7 +106,7 @@ spec:
               schedule: "0 45 7 * * *"
               backupOwnerReference: self
               immediate: true
-              suspend: false           
+              suspend: false
           retentionPolicy: "7d"
           revision: "1"
         recovery:
@@ -122,16 +122,16 @@ spec:
         default_phone_region: US
       previews:
         providers:
-        - BMP
-        - GIF
-        - JPEG
-        - Krita
-        - MarkDown
-        - MP3
-        - OpenDocument
-        - PNG
-        - TXT
-        - XBitmap
+          - BMP
+          - GIF
+          - JPEG
+          - Krita
+          - MarkDown
+          - MP3
+          - OpenDocument
+          - PNG
+          - TXT
+          - XBitmap
     # workload:
     #   main:
     #     type: Deployment
