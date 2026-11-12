@@ -87,7 +87,8 @@ spec:
             src:
               volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true
-              schedule: "0 0 * * *"  
+              trigger:
+                schedule: "0 0 * * *"  
             dest:
               volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true

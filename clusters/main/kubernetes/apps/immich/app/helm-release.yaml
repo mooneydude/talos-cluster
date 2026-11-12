@@ -75,8 +75,8 @@ spec:
             src:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
-            trigger:
-              schedule: "0 1 * * *"
+              trigger:
+                schedule: "0 1 * * *"
       thumbs:
         storageClass: ceph-nvme
         size: 50Gi
@@ -91,8 +91,8 @@ spec:
             src:
               volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
-            trigger:
-              schedule: "0 1 * * *"
+              trigger:
+                schedule: "0 1 * * *"
       # thumbs:
       #   type: nfs
       #   server: ${TRUENAS_IP}

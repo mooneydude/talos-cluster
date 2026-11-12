@@ -65,8 +65,8 @@ spec:
             src:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
-            trigger:
-              schedule: "0 1 * * *"
+              trigger:
+                schedule: "0 1 * * *"
       music:
         enabled: true
         type: nfs

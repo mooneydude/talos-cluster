@@ -77,7 +77,8 @@ spec:
             src:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
-              schedule: "0 16 * * *"  
+              trigger:
+                schedule: "0 16 * * *"  
             dest:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true

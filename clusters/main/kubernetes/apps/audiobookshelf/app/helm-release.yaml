@@ -65,8 +65,8 @@ spec:
             src:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
-            trigger:
-              schedule: "0 1 * * *"
+              trigger:
+                schedule: "0 1 * * *"
       metadata:
         storageClass: ceph-filesystem
         size: 50Gi
@@ -81,8 +81,8 @@ spec:
             src:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
-            trigger:
-              schedule: "0 1 * * *"
+              trigger:
+                schedule: "0 1 * * *"
       audiobooks:
         type: nfs
         server: ${TRUENAS_IP}
