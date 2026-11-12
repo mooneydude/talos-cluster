@@ -15,4 +15,9 @@ resources:
   - truecharts.yaml
   - metallb.yaml
   - jitsi-contrib.yaml
+  - cilium.yaml
+  - node-feature-discovery.yaml
+  - intel.yaml
+  - ingress-nginx.yaml
+  - openebs.yaml
 # more goes here!
