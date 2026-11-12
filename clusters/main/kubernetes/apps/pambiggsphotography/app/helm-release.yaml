@@ -38,7 +38,7 @@ spec:
         cpu: 10m
     image:
       repository: docker.mooneybin.net/pambiggsphotography
-      tag: latest@sha256:42b2b1991e966a4e432ff9a5be0193cade8276eecc4d86c6231b76c58f1583d0
+      tag: latest@sha256:91377148c77cde64fb68b37396d67701ebebbe4bbdf14445a3fcd581b33ba4ad
       pullPolicy: IfNotPresent
     securityContext:
       container:
