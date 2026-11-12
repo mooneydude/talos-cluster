@@ -15,5 +15,24 @@
         "matchPackageNames": ["oci.trueforge.org/truecharts/app-template"],
         "labels": ["type/minor"]
       }      
+    ],
+    "customManagers": [
+      {
+        "customType": "regex",
+        "description": [
+          "Image deps in HelmReleases that use the docker.${DOMAIN_1} registry variable.",
+          "The built-in flux manager skips these with skipReason=contains-variable, because it reads the literal file and refuses to resolve a depName containing a variable. Flux substitutes DOMAIN_1 at reconcile time, so the regex manager resolves the host from the cluster-config ConfigMap instead.",
+          "First pattern: digest-pinned tags, e.g. tag: latest@sha256:abc...",
+          "Second pattern: plain tags, e.g. tag: prod"
+        ],
+        "fileMatch": ["(^|/)clusters/.+\\.ya?ml$"],
+        "matchStrings": [
+          "repository: docker\\.\\$\\{DOMAIN_1\\}/(?<depName>[^\\s]+)\\n\\s+tag: (?<currentValue>[^@\\s]+)@(?<currentDigest>sha256:\\S+)",
+          "repository: docker\\.\\$\\{DOMAIN_1\\}/(?<depName>[^\\s]+)\\n\\s+tag: (?<currentValue>[^@\\s]+)\\n"
+        ],
+        "datasourceTemplate": "docker",
+        "registryUrlTemplate": "https://docker.mooneybin.net",
+        "versioningTemplate": "docker"
+      }
     ]
   }

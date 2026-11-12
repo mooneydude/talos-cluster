@@ -43,8 +43,8 @@ spec:
     TZ: America/Chicago
     image:
       repository: docker.io/etesync/etesync-dav
-      pullPolicy: Always
-      tag: latest
+      pullPolicy: IfNotPresent
+      tag: latest@sha256:88481d93354fbbc8958081f4df8250859c725fdd0243dba7a4cd302c1931d657
     service:
       main:
         type: LoadBalancer
