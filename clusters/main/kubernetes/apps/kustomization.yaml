@@ -19,7 +19,6 @@ resources:
   - etesync-dav/ks.yaml
   - dockerregistry/ks.yaml
   # - trueconf/ks.yaml
-  # - docuseal-dev/ks.yaml
   - audiobookshelf/ks.yaml
   - jitsi-meet/ks.yaml
   - sonarr/ks.yaml
