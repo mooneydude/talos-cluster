@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
   # - kubernetes-dashboard/ks.yaml
   - cloudflared/ks.yaml
-  # - ext-cow/ks.yaml
   - hass/ks.yaml
   # - jellyfin/ks.yaml
   - immich/ks.yaml
@@ -21,10 +20,8 @@ resources:
   - dockerregistry/ks.yaml
   # - trueconf/ks.yaml
   # - docuseal-dev/ks.yaml
-  # - ext-rocketdev/ks.yaml
   - audiobookshelf/ks.yaml
   - jitsi-meet/ks.yaml
-  # - ext-ssys/ks.yaml
   - sonarr/ks.yaml
   - rdtclient/ks.yaml
   - rdtclient-torbox/ks.yaml
