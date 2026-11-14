@@ -7,6 +7,11 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.15.0
   name: volumegroupsnapshotclasses.groupsnapshot.storage.k8s.io
 spec:
+  # Explicit None: no conversion webhook is deployed in this cluster.
+  # Without this, Server-Side Apply fails with
+  # 'spec.conversion.strategy: Required value' on a multi-version CRD.
+  conversion:
+    strategy: None
   group: groupsnapshot.storage.k8s.io
   names:
     kind: VolumeGroupSnapshotClass
