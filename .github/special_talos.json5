@@ -17,11 +17,12 @@
       },
       {
         "description": [
-          "Helm chart updates always need an explicit dashboard click, whatever the update type.",
+          "Helm chart minor and major updates need an explicit dashboard click. Chart patches fall through to the truecharts patch preset (automerge).",
           "Chart value schemas change between versions, and the truecharts defaults automerge patch and minor, so a merged bump can leave a HelmRelease unable to render. That broke immich, joplin-server, navidrome, vaultwarden, xteve and audiobookshelf on 2026-11-11 (volsync schema changes) and nextcloud on 2026-11-12 (chart 49.2.6 added a persistence.logs PVC).",
           "Scoped by depType so image updates, including the digest pins Renovate maintains for images built in this cluster, still automerge."
         ],
         "matchDepTypes": ["HelmChart"],
+        "matchUpdateTypes": ["minor", "major"],
         "automerge": false,
         "dependencyDashboardApproval": true
       }
