@@ -2,30 +2,30 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   # - kubernetes-dashboard/ks.yaml
+  - audiobookshelf/ks.yaml
+  - bookshelf/ks.yaml
+  - bookshelf-audio/ks.yaml
   - cloudflared/ks.yaml
+  - dockerregistry/ks.yaml
+  - etesync/ks.yaml
+  - etesync-dav/ks.yaml
+  - filebrowser/ks.yaml
+  - flaresolverr/ks.yaml
   - hass/ks.yaml
+  - homepage/ks.yaml
   - immich/ks.yaml
+  - jitsi-meet/ks.yaml
+  - joplin/ks.yaml
+  - navidrome/ks.yaml
+  - nextcloud/ks.yaml
+  - pambiggsphotography/ks.yaml
+  - prowlarr/ks.yaml
+  - radarr/ks.yaml
+  - rdtclient/ks.yaml
+  - rdtclient-torbox/ks.yaml
+  - rreading-glasses/ks.yaml
+  - sonarr/ks.yaml
+  - speedtest-tracker/ks.yaml
   - vaultwarden/ks.yaml
   - xepg/ks.yaml
   - xteve/ks.yaml
-  - nextcloud/ks.yaml
-  - speedtest-tracker/ks.yaml
-  - joplin/ks.yaml
-  - filebrowser/ks.yaml
-  - etesync/ks.yaml
-  - etesync-dav/ks.yaml
-  - dockerregistry/ks.yaml
-  - audiobookshelf/ks.yaml
-  - jitsi-meet/ks.yaml
-  - sonarr/ks.yaml
-  - rdtclient/ks.yaml
-  - rdtclient-torbox/ks.yaml
-  - prowlarr/ks.yaml
-  - flaresolverr/ks.yaml
-  - radarr/ks.yaml
-  - homepage/ks.yaml
-  - bookshelf/ks.yaml
-  - bookshelf-audio/ks.yaml
-  - rreading-glasses/ks.yaml
-  - navidrome/ks.yaml
-  - pambiggsphotography/ks.yaml
