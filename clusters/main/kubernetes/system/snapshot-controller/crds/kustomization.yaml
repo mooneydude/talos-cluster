@@ -1,0 +1,18 @@
+---
+# Group snapshot CRDs from external-snapshotter v8.7.0.
+#
+# These are managed here (not by the TrueCharts snapshot-controller chart) because
+# chart 6.2.4 ships a v8.7.0 snapshot-controller image but stale group-snapshot CRDs
+# that only serve v1beta1. The CephFS CSI driver runs its csi-snapshotter with
+# --feature-gates=CSIVolumeGroupSnapshot=true, which requests v1beta2. When v1beta2
+# is missing the informer cache never syncs, the snapshotter blocks, and every
+# CephFS VolumeSnapshot silently hangs at readyToUse=false forever.
+#
+# Upstream source:
+# https://github.com/kubernetes-csi/external-snapshotter/tree/v8.7.0/client/config/crd
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - groupsnapshot.storage.k8s.io_volumegroupsnapshotclasses.yaml
+  - groupsnapshot.storage.k8s.io_volumegroupsnapshotcontents.yaml
+  - groupsnapshot.storage.k8s.io_volumegroupsnapshots.yaml
