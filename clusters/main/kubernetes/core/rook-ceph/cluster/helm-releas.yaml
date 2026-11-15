@@ -153,7 +153,9 @@ spec:
         - name: ceph-nvme
           spec:
             failureDomain: host
-            deviceClass: nvme
+            # deviceClass intentionally unset: pinning the pool to default~nvme made it
+            # overlap with the default root used by every other pool, which disabled the
+            # pg_autoscaler cluster-wide. OSD device class is still set in storage.config.
             enableRBDStats: true
             parameters:
               compression_mode: aggressive
