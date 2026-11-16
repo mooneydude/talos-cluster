@@ -46,7 +46,9 @@ cephx server client.csi-cephfs-node: couldn't find entity name: client.csi-cephf
 
 Ceph docs do call this out ("rotating CSI keys disrupts existing PV
 connections"), but the practical effect is worse than "disrupted": the kernel
-client doesn't error out and release the mount, it hangs indefinitely. That hang:
+client doesn't error out and release the mount, it hangs indefinitely. Both
+**CephFS and RBD** (`ceph-nvme`) were affected, because `client.csi-rbd-node` was
+deleted the same way. That hang:
 
 - Blocked any pod I/O to a CephFS PVC on the affected node (DB writes, config
   reads, etc.) — e.g. audiobookshelf's `/login` POST writes a session row on a
@@ -80,7 +82,29 @@ remounts fresh using the new `.2` keys. Verified clean afterward:
 audiobookshelf login returning fast `401`s instead of hanging.
 
 This was needed node-by-node for every node that had CephFS/RBD PVCs mounted at
-rotation time (in this cluster: all three workers).
+rotation time (in this cluster: all three workers). Ordering and per-node
+preparation that turned out to matter:
+
+1. **Cordon, then drain before cutting power.** The drain is what gives
+   workloads a chance to stop cleanly. Expect it to hang on the pods with hung
+   Ceph mounts; once only those and the daemonsets remain, stop the drain and
+   cut power.
+2. **CNPG primaries must be moved off the node first.** The `*-cnpg-main-primary`
+   PDBs (`minAvailable: 1`) will otherwise block eviction forever. Patch
+   `spec.nodeMaintenanceWindow.inProgress: true` on each affected
+   `Cluster`, wait for `status.currentPrimary` to point at another node, drain,
+   and set it back to `false` afterwards. Patching a replica-only node needs
+   none of this.
+3. **Data integrity fallout on the last node.** One Postgres replica came back
+   with a corrupt WAL segment (`unexpected pageaddr ... in WAL segment`,
+   `Refusing to restore future timeline history file`) and sat forever at
+   `Consistent recovery state has not been reached`, because the segment was
+   written while the mount was frozen and then the power was cut mid-write.
+   A pod restart is not enough (it re-attaches the same broken PVC). Fix is to
+   re-clone the replica: scale the cluster to one instance, delete the stuck pod
+   and its data + `-wal` PVCs, then scale back to two so CNPG re-bootstraps it
+   with `pg_basebackup`. The primary is unaffected and remains the source of
+   truth.
 
 ## Rule for next time
 
@@ -102,6 +126,15 @@ reboot afterward," specifically:
 5. A fresh-mount test in a scratch namespace (what we did mid-incident) proves
    the *new* keys work. It proves nothing about *existing* mounts and should not
    be used as a signal that rotation is safe to leave as-is.
+
+## Unrelated issue seen during recovery
+
+`nextcloud` cron Job pods stuck in `ContainerCreating` with
+`FailedAttachVolume ... Volume is already used by pod(s) nextcloud-...`: the cron
+Job mounts the same RWO `ceph-nvme` PVC as the main Deployment but has no
+co-location constraint, so it fails whenever scheduler places them on different
+nodes. Pre-existing fragility, surfaced only because pod placement changed
+here; not caused by the rotation.
 
 ## Open item
 
