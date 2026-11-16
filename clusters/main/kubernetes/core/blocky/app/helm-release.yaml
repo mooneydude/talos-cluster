@@ -87,6 +87,23 @@ spec:
       main:
         enabled: false
 
+    redis:
+      enabled: true
+      persistence:
+        data:
+          enabled: true
+          mountPath: /bitnami/valkey
+          # Blocky's redis is a disposable cross-replica cache, and the chart
+          # sets redis.required: true (fatal at startup, see
+          # templates/_blockyConfig.tpl upstream), so redis availability matters
+          # for blocky restarts. With the default RWO ceph-nvme PVC the redis
+          # pod is pinned to whichever node holds the volume: if that node dies
+          # the pod stays Pending until the node returns. emptyDir lets redis
+          # reschedule onto a healthy node in seconds, so the window where a
+          # blocky restart would fail to connect stays inside blocky's own
+          # 10 x 3s connectionAttempts/Cooldown retry budget.
+          type: emptyDir
+
     resources:
       limits:
         memory: 512Mi # was 4.8Gi
