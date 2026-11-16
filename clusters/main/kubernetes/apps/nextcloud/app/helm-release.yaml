@@ -95,6 +95,17 @@ spec:
         type: nfs
         server: ${TRUENAS_IP}
         path: /mnt/data1/nc_userdata
+      # Holds /var/log/nextcloud, mounted by the main pod AND both cron jobs.
+      # It must be ReadWriteMany: with the chart default (ReadWriteOnce on the
+      # cluster default ceph-nvme class) the cron Jobs cannot attach the volume
+      # unless they happen to land on the same node as the main pod, and they
+      # then sit in ContainerCreating with
+      # "FailedAttachVolume ... Volume is already used by pod(s) nextcloud-...".
+      logs:
+        storageClass: ceph-filesystem
+        size: 2Gi
+        accessModes:
+          - ReadWriteMany
     cnpg:
       main:
         # mode: recovery
