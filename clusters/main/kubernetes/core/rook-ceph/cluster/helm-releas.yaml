@@ -49,11 +49,15 @@ spec:
         mon_max_pg_per_osd = 200
       cephClusterSpec:
         # CephX key migration to aes256k (Ceph Tentacle warns on legacy aes).
-        # Phase 1: allow both ciphers and rotate daemon + CSI keys to aes256k.
-        # Phase 2 (after all keys rotated and HEALTH_OK): set allowedCiphers to [aes256k].
+        # Phase 1 (done): rotated daemon + CSI keys to aes256k.
+        # Phase 2: allow only aes256k and rotate rbd-mirror-peer (no mirroring in use).
         security:
           cephx:
-            allowedCiphers: ["aes", "aes256k"]
+            allowedCiphers: ["aes256k"]
+            rbdMirrorPeer:
+              keyType: aes256k
+              keyRotationPolicy: KeyGeneration
+              keyGeneration: 2
             daemon:
               keyType: aes256k
               keyRotationPolicy: KeyGeneration
