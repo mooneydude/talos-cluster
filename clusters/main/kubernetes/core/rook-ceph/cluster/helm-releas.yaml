@@ -59,7 +59,8 @@ spec:
               keyRotationPolicy: KeyGeneration
               keyGeneration: 2
             daemon:
-              keyType: aes256k
+              # keyType intentionally unset: Rook autodetects. Setting it here
+              # forces --mon-auth-emergency-allowed-ciphers on the mons.
               keyRotationPolicy: KeyGeneration
               keyGeneration: 2
             csi:
