@@ -13,6 +13,11 @@ spec:
       ignoreUpdates: true
   concurrency: 1
   exclusive: true
+  drain:
+    force: true
+    deleteEmptydirData: true
+    ignoreDaemonSets: true
+    timeout: 10m
   nodeSelector:
     matchExpressions:
       - key: kubernetes.io/os
