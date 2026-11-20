@@ -19,4 +19,5 @@ resources:
   - node-feature-discovery.yaml
   - intel.yaml
   - ingress-nginx.yaml
+  - home-operations.yaml
 # more goes here!

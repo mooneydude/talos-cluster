@@ -10,7 +10,7 @@ resources:
   - snapshot-controller/ks.yaml
   - snapshot-controller/crds-ks.yaml
   - spegel/ks.yaml
-  - system-upgrade-controller/ks.yaml
+  - tuppr/ks.yaml
   - volsync/ks.yaml
   - rook-ceph/ks.yaml
   - intel-device-plugin-gpu/ks.yaml

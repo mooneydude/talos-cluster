@@ -1,0 +1,23 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/tuppr.home-operations.com/talosupgrade_v1alpha1.json
+apiVersion: tuppr.home-operations.com/v1alpha1
+kind: TalosUpgrade
+metadata:
+  name: talos
+spec:
+  talos:
+    # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+    version: v1.14.6
+  policy:
+    waitForVolumeDetach: true
+  healthChecks:
+    - apiVersion: ceph.rook.io/v1
+      kind: CephCluster
+      name: rook-ceph
+      namespace: rook-ceph
+      expr: status.ceph.health in ["HEALTH_OK", "HEALTH_WARN"]
+      description: Ceph cluster is not in HEALTH_ERR
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      expr: status.conditions.exists(c, c.type == "Ready" && c.status == "True")
+      description: all CNPG clusters Ready
