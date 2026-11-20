@@ -1,0 +1,73 @@
+name: Renovate Approve (TrueCharts)
+
+# Approves Renovate PRs that only bump TrueCharts HelmReleases, for minor and
+# patch updates. It never merges. Merging stays manual, because the existing
+# automerge workflow merges any PR labelled "automerge", and this workflow
+# does not add that label.
+#
+# Requires: Settings > Actions > General > "Allow GitHub Actions to create and
+# approve pull requests" must be enabled, or the approval step will fail.
+
+on:
+  pull_request:
+    types:
+      - opened
+      - labeled
+      - synchronize
+
+permissions:
+  contents: read
+
+jobs:
+  approve:
+    if: >-
+      github.event.pull_request.user.login == 'renovate[bot]' &&
+      (contains(github.event.pull_request.labels.*.name, 'type/minor') ||
+       contains(github.event.pull_request.labels.*.name, 'type/patch')) &&
+      !contains(github.event.pull_request.labels.*.name, 'type/major') &&
+      !contains(github.event.pull_request.labels.*.name, 'system-upgrade')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Check every changed file is a TrueCharts HelmRelease
+        id: scope
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          files=$(gh pr view "$PR" --json files --jq '.files[].path')
+          if [ -z "$files" ]; then
+            echo "eligible=false" >> "$GITHUB_OUTPUT"
+            echo "No changed files found."
+            exit 0
+          fi
+          eligible=true
+          while IFS= read -r f; do
+            case "$f" in
+              clusters/*/helm-release.yaml|clusters/*/*/helm-release.yaml|clusters/*/*/*/helm-release.yaml|clusters/*/*/*/*/helm-release.yaml|clusters/*/*/*/*/*/helm-release.yaml) ;;
+              *) echo "Not a HelmRelease: $f"; eligible=false; continue ;;
+            esac
+            if ! grep -qE '^\s+name: truecharts\s*$' "$f"; then
+              echo "Not a TrueCharts chart: $f"
+              eligible=false
+            fi
+          done <<< "$files"
+          echo "eligible=$eligible" >> "$GITHUB_OUTPUT"
+          echo "Eligible: $eligible"
+
+      - name: Approve
+        if: steps.scope.outputs.eligible == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          gh pr review "$PR" --approve --body "Auto-approved: TrueCharts minor/patch HelmRelease bump. Merge is manual."
