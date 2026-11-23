@@ -83,11 +83,11 @@ spec:
           - name: html
             type: restic
             credentials: s3
+            copyMethod: Direct
             dest:
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
             src:
-              copyMethod: Direct
               volumeSnapshotClassName: ceph-filesystem
               enabled: true
               trigger:
