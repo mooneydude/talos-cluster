@@ -136,6 +136,14 @@ spec:
       forceDeployDashboards: true
       defaultDashboardsEnabled: true
       forceDeployDatasources: true
-      service:
-        type: LoadBalancer
-        port: 80
+      ingress:
+        enabled: true
+        ingressClassName: internal
+        hosts:
+          - grafana.${DOMAIN_1}
+        tls:
+          - secretName: grafana-tls
+            hosts:
+              - grafana.${DOMAIN_1}
+        annotations:
+          cert-manager.io/cluster-issuer: domain-0-le-prod
