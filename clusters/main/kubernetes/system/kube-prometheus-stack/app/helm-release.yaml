@@ -136,6 +136,9 @@ spec:
       forceDeployDashboards: true
       defaultDashboardsEnabled: true
       forceDeployDatasources: true
+      sidecar:
+        datasources:
+          searchNamespace: ALL
       ingress:
         enabled: true
         ingressClassName: internal
