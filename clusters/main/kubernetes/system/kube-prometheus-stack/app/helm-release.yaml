@@ -136,3 +136,6 @@ spec:
       forceDeployDashboards: true
       defaultDashboardsEnabled: true
       forceDeployDatasources: true
+      service:
+        type: LoadBalancer
+        port: 80
