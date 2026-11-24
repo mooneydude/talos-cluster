@@ -313,7 +313,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "ceph_health_status",
+          "expr": "max(ceph_health_status)",
           "refId": "A",
           "editorMode": "code",
           "range": true,
@@ -680,7 +680,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "ceph_cluster_total_used_bytes / ceph_cluster_total_bytes * 100",
+          "expr": "max(ceph_cluster_total_used_bytes / ceph_cluster_total_bytes * 100)",
           "refId": "H",
           "editorMode": "code",
           "format": "time_series",
@@ -2577,7 +2577,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "ceph_cluster_total_used_bytes / ceph_cluster_total_bytes * 100",
+          "expr": "max(ceph_cluster_total_used_bytes / ceph_cluster_total_bytes * 100)",
           "refId": "A",
           "editorMode": "code",
           "range": true,
@@ -2852,7 +2852,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "ceph_pool_bytes_used * on(pool_id) group_left(name) ceph_pool_metadata > 1048576",
+          "expr": "max by (pool_id, name) (ceph_pool_bytes_used * on(pool_id) group_left(name) ceph_pool_metadata) > 1048576",
           "refId": "A",
           "editorMode": "code",
           "range": true,
