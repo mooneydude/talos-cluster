@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: pfsense-telegraf
+  namespace: kube-prometheus-stack
+spec:
+  jobName: pfsense
+  scrapeInterval: 15s
+  scrapeTimeout: 10s
+  metricsPath: /metrics
+  scheme: HTTP
+  staticConfigs:
+    - targets:
+        - "${GATEWAY}:9273"
+      labels:
+        instance: pfsense
+        device: pfsense
