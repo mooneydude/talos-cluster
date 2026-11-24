@@ -592,8 +592,9 @@
           "expr": "100 - avg(cpu_usage_idle{job=\"pfsense\",cpu=\"cpu-total\"})",
           "refId": "A",
           "editorMode": "code",
-          "range": false,
-          "instant": true,
+          "format": "time_series",
+          "range": true,
+          "instant": false,
           "legendFormat": "pfSense CPU %"
         },
         {
@@ -604,8 +605,9 @@
           "expr": "sum(rate(blocky_response_total[5m]))",
           "refId": "B",
           "editorMode": "code",
-          "range": false,
-          "instant": true,
+          "format": "time_series",
+          "range": true,
+          "instant": false,
           "legendFormat": "Blocky QPS"
         },
         {
@@ -616,8 +618,9 @@
           "expr": "100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\",kubernetes_node=\"k8s-control-1\"}[5m])) * 100)",
           "refId": "C",
           "editorMode": "code",
-          "range": false,
-          "instant": true,
+          "format": "time_series",
+          "range": true,
+          "instant": false,
           "legendFormat": "control-1 CPU"
         },
         {
@@ -628,8 +631,9 @@
           "expr": "100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\",kubernetes_node=\"k8s-control-2\"}[5m])) * 100)",
           "refId": "D",
           "editorMode": "code",
-          "range": false,
-          "instant": true,
+          "format": "time_series",
+          "range": true,
+          "instant": false,
           "legendFormat": "control-2 CPU"
         },
         {
@@ -640,8 +644,9 @@
           "expr": "100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\",kubernetes_node=\"k8s-worker-1\"}[5m])) * 100)",
           "refId": "E",
           "editorMode": "code",
-          "range": false,
-          "instant": true,
+          "format": "time_series",
+          "range": true,
+          "instant": false,
           "legendFormat": "worker-1 CPU"
         },
         {
@@ -652,8 +657,9 @@
           "expr": "100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\",kubernetes_node=\"k8s-worker-2\"}[5m])) * 100)",
           "refId": "F",
           "editorMode": "code",
-          "range": false,
-          "instant": true,
+          "format": "time_series",
+          "range": true,
+          "instant": false,
           "legendFormat": "worker-2 CPU"
         },
         {
@@ -664,8 +670,9 @@
           "expr": "100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\",kubernetes_node=\"k8s-worker-3\"}[5m])) * 100)",
           "refId": "G",
           "editorMode": "code",
-          "range": false,
-          "instant": true,
+          "format": "time_series",
+          "range": true,
+          "instant": false,
           "legendFormat": "worker-3 CPU"
         },
         {
@@ -676,8 +683,9 @@
           "expr": "ceph_cluster_total_used_bytes / ceph_cluster_total_bytes * 100",
           "refId": "H",
           "editorMode": "code",
-          "range": false,
-          "instant": true,
+          "format": "time_series",
+          "range": true,
+          "instant": false,
           "legendFormat": "Ceph Used %"
         },
         {
@@ -688,15 +696,19 @@
           "expr": "sum(kube_pod_status_phase{phase=\"Running\"})",
           "refId": "I",
           "editorMode": "code",
-          "range": false,
-          "instant": true,
+          "format": "time_series",
+          "range": true,
+          "instant": false,
           "legendFormat": "Running Pods"
         }
       ],
       "transformations": [
         {
-          "id": "merge",
-          "options": {}
+          "id": "joinByField",
+          "options": {
+            "byField": "Time",
+            "mode": "outer"
+          }
         }
       ],
       "fieldConfig": {
@@ -779,9 +791,9 @@
               "name": "pfsense_node",
               "type": "rectangle",
               "placement": {
-                "height": 76,
+                "height": 74,
                 "left": 15,
-                "top": 115,
+                "top": 60,
                 "width": 145
               },
               "background": {
@@ -803,7 +815,7 @@
                 },
                 "size": 12,
                 "text": {
-                  "fixed": "pfSense Gateway"
+                  "fixed": "pfSense CPU"
                 }
               },
               "connections": [
@@ -816,7 +828,7 @@
                   },
                   "source": {
                     "x": 1,
-                    "y": -0.3
+                    "y": 0.3
                   },
                   "target": {
                     "x": -1,
@@ -833,13 +845,13 @@
                   },
                   "source": {
                     "x": 1,
-                    "y": 0.3
+                    "y": -0.3
                   },
                   "target": {
                     "x": -1,
                     "y": 0
                   },
-                  "targetName": "wrk1_node"
+                  "targetName": "ctrl2_node"
                 },
                 {
                   "color": {
@@ -850,11 +862,11 @@
                   },
                   "source": {
                     "x": 0,
-                    "y": 1
+                    "y": -1
                   },
                   "target": {
                     "x": 0,
-                    "y": -1
+                    "y": 1
                   },
                   "targetName": "blocky_node"
                 }
@@ -864,9 +876,9 @@
               "name": "pfsense_node_val",
               "type": "metric-value",
               "placement": {
-                "height": 54,
+                "height": 52,
                 "left": 19,
-                "top": 135,
+                "top": 80,
                 "width": 137
               },
               "background": {
@@ -886,7 +898,7 @@
                 "color": {
                   "fixed": "#FFFFFF"
                 },
-                "size": 15,
+                "size": 16,
                 "text": {
                   "field": "pfSense CPU %",
                   "mode": "field"
@@ -897,9 +909,9 @@
               "name": "blocky_node",
               "type": "rectangle",
               "placement": {
-                "height": 70,
+                "height": 74,
                 "left": 15,
-                "top": 225,
+                "top": 185,
                 "width": 145
               },
               "background": {
@@ -929,9 +941,9 @@
               "name": "blocky_node_val",
               "type": "metric-value",
               "placement": {
-                "height": 48,
+                "height": 52,
                 "left": 19,
-                "top": 245,
+                "top": 205,
                 "width": 137
               },
               "background": {
@@ -951,7 +963,7 @@
                 "color": {
                   "fixed": "#FFFFFF"
                 },
-                "size": 15,
+                "size": 16,
                 "text": {
                   "field": "Blocky QPS",
                   "mode": "field"
@@ -962,9 +974,9 @@
               "name": "ctrl1_node",
               "type": "rectangle",
               "placement": {
-                "height": 66,
+                "height": 74,
                 "left": 215,
-                "top": 20,
+                "top": 40,
                 "width": 145
               },
               "background": {
@@ -1003,7 +1015,7 @@
                   },
                   "target": {
                     "x": -1,
-                    "y": -0.4
+                    "y": 0
                   },
                   "targetName": "wrk1_node"
                 }
@@ -1013,9 +1025,9 @@
               "name": "ctrl1_node_val",
               "type": "metric-value",
               "placement": {
-                "height": 44,
+                "height": 52,
                 "left": 219,
-                "top": 40,
+                "top": 60,
                 "width": 137
               },
               "background": {
@@ -1035,7 +1047,7 @@
                 "color": {
                   "fixed": "#FFFFFF"
                 },
-                "size": 15,
+                "size": 16,
                 "text": {
                   "field": "control-1 CPU",
                   "mode": "field"
@@ -1046,9 +1058,9 @@
               "name": "ctrl2_node",
               "type": "rectangle",
               "placement": {
-                "height": 66,
+                "height": 74,
                 "left": 215,
-                "top": 102,
+                "top": 150,
                 "width": 145
               },
               "background": {
@@ -1083,13 +1095,30 @@
                   },
                   "source": {
                     "x": 1,
-                    "y": 0
+                    "y": 0.25
                   },
                   "target": {
                     "x": -1,
                     "y": 0
                   },
                   "targetName": "wrk2_node"
+                },
+                {
+                  "color": {
+                    "fixed": "#A855F7"
+                  },
+                  "size": {
+                    "fixed": 2
+                  },
+                  "source": {
+                    "x": 1,
+                    "y": -0.25
+                  },
+                  "target": {
+                    "x": -1,
+                    "y": 0
+                  },
+                  "targetName": "wrk3_node"
                 }
               ]
             },
@@ -1097,9 +1126,9 @@
               "name": "ctrl2_node_val",
               "type": "metric-value",
               "placement": {
-                "height": 44,
+                "height": 52,
                 "left": 219,
-                "top": 122,
+                "top": 170,
                 "width": 137
               },
               "background": {
@@ -1119,7 +1148,7 @@
                 "color": {
                   "fixed": "#FFFFFF"
                 },
-                "size": 15,
+                "size": 16,
                 "text": {
                   "field": "control-2 CPU",
                   "mode": "field"
@@ -1130,7 +1159,7 @@
               "name": "wrk1_node",
               "type": "rectangle",
               "placement": {
-                "height": 66,
+                "height": 70,
                 "left": 415,
                 "top": 20,
                 "width": 145
@@ -1171,7 +1200,7 @@
                   },
                   "target": {
                     "x": -1,
-                    "y": -0.4
+                    "y": 0.55
                   },
                   "targetName": "ceph_node"
                 }
@@ -1181,7 +1210,7 @@
               "name": "wrk1_node_val",
               "type": "metric-value",
               "placement": {
-                "height": 44,
+                "height": 48,
                 "left": 419,
                 "top": 40,
                 "width": 137
@@ -1203,7 +1232,7 @@
                 "color": {
                   "fixed": "#FFFFFF"
                 },
-                "size": 15,
+                "size": 16,
                 "text": {
                   "field": "worker-1 CPU",
                   "mode": "field"
@@ -1214,9 +1243,9 @@
               "name": "wrk2_node",
               "type": "rectangle",
               "placement": {
-                "height": 66,
+                "height": 70,
                 "left": 415,
-                "top": 102,
+                "top": 112,
                 "width": 145
               },
               "background": {
@@ -1265,9 +1294,9 @@
               "name": "wrk2_node_val",
               "type": "metric-value",
               "placement": {
-                "height": 44,
+                "height": 48,
                 "left": 419,
-                "top": 122,
+                "top": 132,
                 "width": 137
               },
               "background": {
@@ -1287,7 +1316,7 @@
                 "color": {
                   "fixed": "#FFFFFF"
                 },
-                "size": 15,
+                "size": 16,
                 "text": {
                   "field": "worker-2 CPU",
                   "mode": "field"
@@ -1298,9 +1327,9 @@
               "name": "wrk3_node",
               "type": "rectangle",
               "placement": {
-                "height": 66,
+                "height": 70,
                 "left": 415,
-                "top": 184,
+                "top": 204,
                 "width": 145
               },
               "background": {
@@ -1335,13 +1364,30 @@
                   },
                   "source": {
                     "x": 1,
-                    "y": 0
+                    "y": 0.25
                   },
                   "target": {
                     "x": -1,
-                    "y": 0.4
+                    "y": -0.55
                   },
                   "targetName": "ceph_node"
+                },
+                {
+                  "color": {
+                    "fixed": "#14B8A6"
+                  },
+                  "size": {
+                    "fixed": 2
+                  },
+                  "source": {
+                    "x": 1,
+                    "y": -0.35
+                  },
+                  "target": {
+                    "x": -1,
+                    "y": 0
+                  },
+                  "targetName": "pods_node"
                 }
               ]
             },
@@ -1349,9 +1395,9 @@
               "name": "wrk3_node_val",
               "type": "metric-value",
               "placement": {
-                "height": 44,
+                "height": 48,
                 "left": 419,
-                "top": 204,
+                "top": 224,
                 "width": 137
               },
               "background": {
@@ -1371,7 +1417,7 @@
                 "color": {
                   "fixed": "#FFFFFF"
                 },
-                "size": 15,
+                "size": 16,
                 "text": {
                   "field": "worker-3 CPU",
                   "mode": "field"
@@ -1382,9 +1428,9 @@
               "name": "ceph_node",
               "type": "rectangle",
               "placement": {
-                "height": 82,
+                "height": 86,
                 "left": 615,
-                "top": 85,
+                "top": 55,
                 "width": 150
               },
               "background": {
@@ -1414,9 +1460,9 @@
               "name": "ceph_node_val",
               "type": "metric-value",
               "placement": {
-                "height": 60,
+                "height": 64,
                 "left": 619,
-                "top": 105,
+                "top": 75,
                 "width": 142
               },
               "background": {
@@ -1436,7 +1482,7 @@
                 "color": {
                   "fixed": "#FFFFFF"
                 },
-                "size": 15,
+                "size": 16,
                 "text": {
                   "field": "Ceph Used %",
                   "mode": "field"
@@ -1447,9 +1493,9 @@
               "name": "pods_node",
               "type": "rectangle",
               "placement": {
-                "height": 70,
+                "height": 74,
                 "left": 615,
-                "top": 195,
+                "top": 185,
                 "width": 150
               },
               "background": {
@@ -1479,9 +1525,9 @@
               "name": "pods_node_val",
               "type": "metric-value",
               "placement": {
-                "height": 48,
+                "height": 52,
                 "left": 619,
-                "top": 215,
+                "top": 205,
                 "width": 142
               },
               "background": {
@@ -1501,7 +1547,7 @@
                 "color": {
                   "fixed": "#FFFFFF"
                 },
-                "size": 15,
+                "size": 16,
                 "text": {
                   "field": "Running Pods",
                   "mode": "field"
