@@ -1842,7 +1842,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "pf_state_count{job=\"pfsense\"}",
+          "expr": "pf_entries{job=\"pfsense\"}",
           "refId": "A",
           "editorMode": "code",
           "range": true,
