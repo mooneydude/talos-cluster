@@ -20,9 +20,9 @@ spec:
   maxHistory: 3
   install:
     createNamespace: true
-    disableWait: true          # don't block on Deployment readiness
+    disableWait: true # don't block on Deployment readiness
     remediation:
-      retries: 0               # no uninstall-on-failure
+      retries: 0 # no uninstall-on-failure
   upgrade:
     cleanupOnFail: true
     disableWait: true
@@ -41,11 +41,11 @@ spec:
         bucket: "${MINIO_S3PREFIX}-joplin"
         accessKey: "${MINIO_S3ID}"
         secretKey: "${MINIO_S3KEY}"
-        encrKey: "${MINIO_S3KEY}" 
+        encrKey: "${MINIO_S3KEY}"
     TZ: America/Chicago
     resources:
       requests:
-        cpu: 10m   
+        cpu: 10m
     service:
       main:
         type: LoadBalancer
@@ -57,7 +57,7 @@ spec:
           main:
             port: 22300
             targetPort: 22300
-            protocol: tcp           
+            protocol: tcp
     secret:
       env-secrets:
         enabled: true
@@ -81,12 +81,12 @@ spec:
             type: restic
             credentials: s3
             src:
-              volumeSnapshotClassName: csi-ceph-blockpool               
+              volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
               trigger:
-                schedule: "0 0 * * *"  
+                schedule: "0 0 * * *"
             dest:
-              volumeSnapshotClassName: csi-ceph-blockpool               
+              volumeSnapshotClassName: csi-ceph-blockpool
               enabled: true
     dependencies:
       postgresql:
@@ -117,7 +117,7 @@ spec:
       main:
         # type: Deployment
         # strategy: RollingUpdate
-        # replicas: 2      
+        # replicas: 2
         podSpec:
           containers:
             main:
@@ -126,9 +126,9 @@ spec:
                 APP_PORT: "{{ .Values.service.main.ports.main.port }}"
                 USER_CONTENT_BASE_URL: "https://joplin.${DOMAIN_1}"
                 MAILER_ENABLED: 1
-                MAILER_HOST: smtp.gmail.com
+                MAILER_HOST: ${VAULT_SMTP}
                 MAILER_PORT: 587
                 MAILER_SECURITY: starttls
-                MAILER_AUTH_USER: ${VAULT_SMTP}
+                MAILER_AUTH_USER: ${VAULT_SMTP_USER}
                 MAILER_NOREPLY_NAME: MooneyDude
-                MAILER_NOREPLY_EMAIL: ${VAULT_SMTP}      
+                MAILER_NOREPLY_EMAIL: ${VAULT_SMTP_USER}
