@@ -163,30 +163,32 @@ spec:
           - PNG
           - TXT
           - XBitmap
+    podOptions:
+      defaultAffinity: false
     workload:
       main:
         type: Deployment
         strategy: RollingUpdate
         replicas: 2
         podSpec:
-          topologySpreadConstraints:
-            - maxSkew: 1
-              topologyKey: kubernetes.io/hostname
-              whenUnsatisfiable: DoNotSchedule
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/instance: nextcloud
-                  pod.name: main
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/instance: nextcloud
+                      pod.name: main
+                  topologyKey: kubernetes.io/hostname
       nginx:
         type: Deployment
         strategy: RollingUpdate
         replicas: 2
         podSpec:
-          topologySpreadConstraints:
-            - maxSkew: 1
-              topologyKey: kubernetes.io/hostname
-              whenUnsatisfiable: DoNotSchedule
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/instance: nextcloud
-                  pod.name: nginx
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/instance: nextcloud
+                      pod.name: nginx
+                  topologyKey: kubernetes.io/hostname
