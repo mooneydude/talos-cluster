@@ -1,0 +1,86 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nextcloud-valkey
+  namespace: nextcloud
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: valkey
+      version: 1.0.0
+      sourceRef:
+        kind: HelmRepository
+        name: valkey
+        namespace: flux-system
+      interval: 15m
+  timeout: 15m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    auth:
+      enabled: true
+      aclUsers:
+        default:
+          permissions: "~* &* +@all"
+          password: "${NEXTCLOUD_PWD}"
+    persistence:
+      enabled: true
+      size: 1Gi
+      storageClass: ceph-nvme
+      accessModes:
+        - ReadWriteOnce
+    replica:
+      enabled: true
+      replicas: 3
+      replicationUser: default
+      persistentVolumeClaimRetentionPolicy:
+        whenDeleted: Delete
+        whenScaled: Delete
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app.kubernetes.io/instance: nextcloud-valkey
+                app.kubernetes.io/component: valkey
+            topologyKey: kubernetes.io/hostname
+    podDisruptionBudget:
+      enabled: true
+      maxUnavailable: 1
+    sentinel:
+      enabled: true
+      replicas: 3
+      quorum: 2
+      password: "${NEXTCLOUD_PWD}-sentinel"
+      podDisruptionBudget:
+        enabled: true
+        maxUnavailable: 1
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app.kubernetes.io/instance: nextcloud-valkey
+                  app.kubernetes.io/component: sentinel
+              topologyKey: kubernetes.io/hostname
+    haproxy:
+      enabled: true
+      replicas: 2
+      podDisruptionBudget:
+        enabled: true
+        maxUnavailable: 1
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app.kubernetes.io/instance: nextcloud-valkey
+                  app.kubernetes.io/component: haproxy
+              topologyKey: kubernetes.io/hostname

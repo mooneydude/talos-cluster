@@ -5,6 +5,8 @@ metadata:
   namespace: nextcloud
 spec:
   interval: 15m
+  dependsOn:
+    - name: nextcloud-valkey
   chart:
     spec:
       chart: nextcloud
@@ -130,7 +132,11 @@ spec:
             credentials: s3
             revision: ""
       valkey:
-        enabled: true
+        enabled: false
+        depconfig:
+          password: "${NEXTCLOUD_PWD}"
+          creds:
+            plainhost: nextcloud-valkey-haproxy
     nextcloud:
       credentials:
         initialAdminPassword: ${NEXTCLOUD_PWD}
