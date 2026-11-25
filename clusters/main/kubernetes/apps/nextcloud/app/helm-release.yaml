@@ -114,7 +114,6 @@ spec:
           postgresqlUsername: nextcloud
           postgresqlDatabase: nextcloud
         operator:
-          pgVersion: 16          # temporary pin, remove after the pg18 upgrade
           backups:
             enabled: true
             credentials: s3
