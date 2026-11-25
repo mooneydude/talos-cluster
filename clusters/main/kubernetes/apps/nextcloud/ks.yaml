@@ -5,6 +5,8 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
+  dependsOn:
+    - name: valkey-operator
   path: clusters/main/kubernetes/apps/nextcloud/app
   prune: true
   sourceRef:

@@ -131,6 +131,19 @@ spec:
             revision: ""
       valkey:
         enabled: true
+        mode: operator
+        operator:
+          # replicas = replicas per shard (1 primary + 1 replica)
+          replicas: 1
+          persistence:
+            enabled: true
+            size: 5Gi
+            storageClass: ceph-nvme
+          scheduling:
+            node:
+              spread:
+                shard:
+                  mode: Required
     nextcloud:
       credentials:
         initialAdminPassword: ${NEXTCLOUD_PWD}
@@ -150,57 +163,30 @@ spec:
           - PNG
           - TXT
           - XBitmap
-    # workload:
-    #   main:
-    #     type: Deployment
-    #     strategy: RollingUpdate
-    #     replicas: 2
-    #     podSpec:
-    #       containers:
-    #         main:
-    #           enabled: true
-    #           primary: true
-    #           envFrom:
-    #             - configMapRef:
-    #                 name: nextcloud-config
-    #           probes:
-    #             liveness:
-    #               enabled: true
-    #               type: exec
-    #               command: /healthcheck.sh
-    #             readiness:
-    #               enabled: true
-    #               type: exec
-    #               command: /healthcheck.sh
-    #             startup:
-    #               enabled: true
-    #               type: tcp
-    #               port: "{{ .Values.service.nextcloud.ports.nextcloud.targetPort }}"
-    #   nginx:
-    #     enabled: true
-    #     type: Deployment
-    #     strategy: RollingUpdate
-    #     replicas: 2
-    #     podSpec:
-    #       containers:
-    #         nginx:
-    #           enabled: true
-    #           primary: true
-    #           imageSelector: nginxImage
-    #           probes:
-    #             readiness:
-    #               enabled: true
-    #               path: /robots.txt
-    #               port: "{{ .Values.service.main.ports.main.port }}"
-    #               httpHeaders:
-    #                 Host: kube.internal.healthcheck
-    #             liveness:
-    #               enabled: true
-    #               path: /robots.txt
-    #               port: "{{ .Values.service.main.ports.main.port }}"
-    #               httpHeaders:
-    #                 Host: kube.internal.healthcheck
-    #             startup:
-    #               enabled: true
-    #               type: tcp
-    #               port: "{{ .Values.service.main.ports.main.port }}"
+    workload:
+      main:
+        type: Deployment
+        strategy: RollingUpdate
+        replicas: 2
+        podSpec:
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: ScheduleAnyway
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/instance: nextcloud
+                  pod.name: main
+      nginx:
+        type: Deployment
+        strategy: RollingUpdate
+        replicas: 2
+        podSpec:
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: ScheduleAnyway
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/instance: nextcloud
+                  pod.name: nginx
