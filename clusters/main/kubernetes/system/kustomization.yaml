@@ -12,7 +12,6 @@ resources:
   - spegel/ks.yaml
   - tuppr/ks.yaml
   - volsync/ks.yaml
-  - valkey-operator/ks.yaml
   - rook-ceph/ks.yaml
   - intel-device-plugin-gpu/ks.yaml
   - intel-device-plugin-operator/ks.yaml
