@@ -94,9 +94,6 @@ spec:
           postgresqlUsername: blocky
           postgresqlDatabase: blocky
         operator:
-          # Pin to 16: the existing blocky-cnpg-main cluster runs PostgreSQL 16.
-          # common-2026 defaults to 18, which would force a major-version jump.
-          pgVersion: 16
       valkey:
         enabled: true
         depconfig:
