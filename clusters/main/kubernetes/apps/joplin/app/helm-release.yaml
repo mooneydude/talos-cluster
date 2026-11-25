@@ -95,7 +95,6 @@ spec:
           postgresqlUsername: joplin
           postgresqlDatabase: joplin
         operator:
-          pgVersion: 16
           mode: recovery
           backups:
             enabled: true
