@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: nextcloud
-      version: 49.2.15
+      version: 50.0.0
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -107,24 +107,31 @@ spec:
         size: 2Gi
         accessModes:
           - ReadWriteMany
-    cnpg:
-      main:
-        # mode: recovery
-        backups:
-          enabled: true
-          credentials: s3
-          scheduledBackups:
-            - name: daily-backup
-              schedule: "0 45 7 * * *"
-              backupOwnerReference: self
-              immediate: true
-              suspend: false
-          retentionPolicy: "7d"
-          revision: "1"
-        recovery:
-          method: object_store
-          credentials: s3
-          revision: ""
+    dependencies:
+      postgresql:
+        enabled: true
+        depconfig:
+          postgresqlUsername: nextcloud
+          postgresqlDatabase: nextcloud
+        operator:
+          pgVersion: 16          # temporary pin, remove after the pg18 upgrade
+          backups:
+            enabled: true
+            credentials: s3
+            scheduledBackups:
+              - name: daily-backup
+                schedule: "0 45 7 * * *"
+                backupOwnerReference: self
+                immediate: true
+                suspend: false
+            retentionPolicy: "7d"
+            revision: "1"          # keeps serverName nextcloud-cnpg-main-r1
+          recovery:
+            method: object_store
+            credentials: s3
+            revision: ""
+      valkey:
+        enabled: true
     nextcloud:
       credentials:
         initialAdminPassword: ${NEXTCLOUD_PWD}
