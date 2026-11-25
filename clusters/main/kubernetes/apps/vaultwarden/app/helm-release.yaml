@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: vaultwarden
-      version: 31.1.4
+      version: 32.0.0
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -92,24 +92,30 @@ spec:
             dest:
               volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true
-    cnpg:
-      main:
-        mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
-        backups:
-          enabled: true  # Set to 'false' when performing new install (recovery)
-          credentials: s3
-          scheduledBackups:
-            - name: daily-backup
-              schedule: "0 0 0 * * *"
-              backupOwnerReference: self
-              immediate: true
-              suspend: false           
-          retentionPolicy: "7d"
-          revision: "5"
-        recovery:
-          method: object_store
-          credentials: s3
-          revision: "5"
+    dependencies:
+      postgresql:
+        enabled: true
+        depconfig:
+          postgresqlUsername: vaultwarden
+          postgresqlDatabase: vaultwarden
+        operator:
+          pgVersion: 16
+          mode: recovery
+          backups:
+            enabled: true
+            credentials: s3
+            scheduledBackups:
+              - name: daily-backup
+                schedule: "0 0 0 * * *"
+                backupOwnerReference: self
+                immediate: true
+                suspend: false
+            retentionPolicy: "7d"
+            revision: "5"
+          recovery:
+            method: object_store
+            credentials: s3
+            revision: "5"
     workload:
       main:
         # type: Deployment
@@ -118,12 +124,6 @@ spec:
         podSpec:
           containers:
             main:
-              env:
-                DOMAIN: "https://{{ if .Values.ingress }}{{ if .Values.ingress.main.enabled }}{{ ( index .Values.ingress.main.hosts 0 ).host }}{{ else }}placeholder.com{{ end }}{{ else }}placeholder.com{{ end }}"
-                DATABASE_URL:
-                  secretKeyRef:
-                    name: cnpg-main-urls
-                    key: std
               envFrom:
                 - configMapRef:
                     name: vaultwardenconfig
