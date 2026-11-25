@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: blocky
-      version: 24.3.2
+      version: 25.0.0
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -45,6 +45,9 @@ spec:
         externalTrafficPolicy: Local
         loadBalancerIP: ${BLOCKY_IP}
         type: LoadBalancer
+        integrations:
+          metallb:
+            enabled: true
     k8sgateway:
       # -- list of processed domains
       domains:
@@ -80,29 +83,31 @@ spec:
     configmap:
       dashboard:
         enabled: true
+    secret:
       datasource:
         enabled: true
 
-    cnpg:
-      main:
+    dependencies:
+      postgresql:
         enabled: true
-
-    redis:
-      enabled: true
-      persistence:
-        data:
-          enabled: true
-          mountPath: /bitnami/valkey
-          # Blocky's redis is a disposable cross-replica cache, and the chart
-          # sets redis.required: true (fatal at startup, see
-          # templates/_blockyConfig.tpl upstream), so redis availability matters
-          # for blocky restarts. With the default RWO ceph-nvme PVC the redis
-          # pod is pinned to whichever node holds the volume: if that node dies
-          # the pod stays Pending until the node returns. emptyDir lets redis
-          # reschedule onto a healthy node in seconds, so the window where a
-          # blocky restart would fail to connect stays inside blocky's own
-          # 10 x 3s connectionAttempts/Cooldown retry budget.
-          type: emptyDir
+        depconfig:
+          postgresqlUsername: blocky
+          postgresqlDatabase: blocky
+        operator:
+          # Pin to 16: the existing blocky-cnpg-main cluster runs PostgreSQL 16.
+          # common-2026 defaults to 18, which would force a major-version jump.
+          pgVersion: 16
+      valkey:
+        enabled: true
+        depconfig:
+          password: "${BLOCKY_REDIS_PWD}"
+        persistence:
+          data:
+            # Blocky's valkey is a disposable cross-replica cache, and blocky
+            # sets redis.required: true (fatal at startup). emptyDir lets valkey
+            # reschedule onto a healthy node in seconds instead of being pinned
+            # to the node that holds an RWO PVC.
+            type: emptyDir
 
     resources:
       limits:
