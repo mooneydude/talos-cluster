@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: etesync
-      version: 18.2.6
+      version: 19.0.0
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -61,19 +61,27 @@ spec:
             enabled: true
             certificateIssuer: domain-0-le-prod
 
-    cnpg:
-      main:
-        # mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions
-        backups:
-          enabled: true # Set to 'false' when performing new install (recovery)
-          credentials: s3
-          retentionPolicy: "7d"
-          revision: "1"
-        recovery:
-          method: object_store
-          credentials: s3
-          revision: ""
-
+    dependencies:
+      postgresql:
+        enabled: true
+        depconfig:
+          postgresqlUsername: etesync
+          postgresqlDatabase: etesync
+        operator:
+          pgVersion: 16
+          backups:
+            enabled: true
+            credentials: s3
+            retentionPolicy: "7d"
+            revision: "1"
+          recovery:
+            method: object_store
+            credentials: s3
+            revision: ""
+      valkey:
+        enabled: true
+    etesync:
+      secretKey: ${ETESYNC_SECRET_KEY}
     persistence:
       app:
         storageClass: ceph-nvme
@@ -117,4 +125,3 @@ spec:
             main:
               env:
                 ALLOWED_HOSTS: "etesync.${DOMAIN_1},etesync.etesync.svc.cluster.local,etesync.etesync.svc,etesync"
-                SECRET_KEY: ${NEXTCLOUD_PWD}
