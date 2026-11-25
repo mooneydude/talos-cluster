@@ -93,7 +93,6 @@ spec:
         depconfig:
           postgresqlUsername: blocky
           postgresqlDatabase: blocky
-        operator:
       valkey:
         enabled: true
         depconfig:
