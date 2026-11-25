@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: joplin-server
-      version: 23.1.6
+      version: 24.0.0
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -58,6 +58,11 @@ spec:
             port: 22300
             targetPort: 22300
             protocol: tcp           
+    secret:
+      env-secrets:
+        enabled: true
+        data:
+          MAILER_AUTH_PASSWORD: ${VAULT_SMTP_PWD}
     ingress:
       main:
         enabled: true
@@ -83,24 +88,32 @@ spec:
             dest:
               volumeSnapshotClassName: csi-ceph-blockpool               
               enabled: true
-    cnpg:
-      main:
-        mode: recovery  # Set to 'recovery' when recovery from S3, also change the revisions 
-        backups:
-          enabled: true  # Set to 'false' when performing new install (recovery)
-          credentials: s3
-          scheduledBackups:
-            - name: daily-backup
-              schedule: "0 0 0 * * *"
-              backupOwnerReference: self
-              immediate: true
-              suspend: false           
-          retentionPolicy: "7d"
-          revision: "2"
-        recovery:
-          method: object_store
-          credentials: s3
-          revision: "2"
+    dependencies:
+      postgresql:
+        enabled: true
+        depconfig:
+          postgresqlUsername: joplin
+          postgresqlDatabase: joplin
+        operator:
+          pgVersion: 16
+          mode: recovery
+          backups:
+            enabled: true
+            credentials: s3
+            scheduledBackups:
+              - name: daily-backup
+                schedule: "0 0 0 * * *"
+                backupOwnerReference: self
+                immediate: true
+                suspend: false
+            retentionPolicy: "7d"
+            revision: "2"
+          recovery:
+            method: object_store
+            credentials: s3
+            revision: "2"
+      valkey:
+        enabled: false
     workload:
       main:
         # type: Deployment
@@ -113,23 +126,10 @@ spec:
                 APP_BASE_URL: "https://{{ if .Values.ingress }}{{ if .Values.ingress.main.enabled }}{{ ( index .Values.ingress.main.hosts 0 ).host }}{{ else }}placeholder.com{{ end }}{{ else }}placeholder.com{{ end }}"
                 APP_PORT: "{{ .Values.service.main.ports.main.port }}"
                 USER_CONTENT_BASE_URL: "https://joplin.${DOMAIN_1}"
-                DB_CLIENT: "pg"
-                POSTGRES_DATABASE: "{{ .Values.cnpg.main.database }}"
-                POSTGRES_USER: "{{ .Values.cnpg.main.user }}"
-                POSTGRES_PORT: "5432"
-                POSTGRES_PASSWORD:
-                  secretKeyRef:
-                    name: cnpg-main-user
-                    key: password
-                POSTGRES_HOST:
-                  secretKeyRef:
-                    name: cnpg-main-urls
-                    key: host
                 MAILER_ENABLED: 1
                 MAILER_HOST: smtp.gmail.com
                 MAILER_PORT: 587
                 MAILER_SECURITY: starttls
                 MAILER_AUTH_USER: ${VAULT_SMTP}
-                MAILER_AUTH_PASSWORD: ${VAULT_SMTP_PWD}
                 MAILER_NOREPLY_NAME: MooneyDude
                 MAILER_NOREPLY_EMAIL: ${VAULT_SMTP}      
