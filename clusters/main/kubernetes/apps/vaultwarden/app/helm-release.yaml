@@ -99,7 +99,6 @@ spec:
           postgresqlUsername: vaultwarden
           postgresqlDatabase: vaultwarden
         operator:
-          pgVersion: 16
           mode: recovery
           backups:
             enabled: true
