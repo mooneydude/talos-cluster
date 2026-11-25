@@ -68,7 +68,6 @@ spec:
           postgresqlUsername: etesync
           postgresqlDatabase: etesync
         operator:
-          pgVersion: 16
           backups:
             enabled: true
             credentials: s3
