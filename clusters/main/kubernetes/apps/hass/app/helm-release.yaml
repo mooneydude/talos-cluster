@@ -122,7 +122,6 @@ spec:
           postgresqlUsername: home-assistant
           postgresqlDatabase: home-assistant
         operator:
-          pgVersion: 16 # temporary pin, remove after the pg18 upgrade
           mode: recovery # Set to 'recovery' when recovery from S3, also change the revisions
           backups:
             enabled: true
