@@ -7,6 +7,8 @@ metadata:
   namespace: immich
 spec:
   interval: 15m
+  dependsOn:
+    - name: immich-valkey
   chart:
     spec:
       chart: immich
@@ -146,7 +148,11 @@ spec:
             credentials: s3
             revision: "2"
       valkey:
-        enabled: true
+        enabled: false
+        depconfig:
+          password: "${IMMICH_REDIS_PWD}"
+          creds:
+            plainhost: immich-valkey-haproxy
 
     podOptions:
       # Chart default adds required podAffinity co-locating pods that share a PVC,
@@ -170,6 +176,11 @@ spec:
                   topologyKey: kubernetes.io/hostname
           containers:
             main:
+              env:
+                REDIS_PASSWORD:
+                  secretKeyRef:
+                    name: immich-valkey-auth
+                    key: default-password
               resources:
                 excludeExtra: false
                 limits:
@@ -208,6 +219,10 @@ spec:
           containers:
             microservices:
               env:
+                REDIS_PASSWORD:
+                  secretKeyRef:
+                    name: immich-valkey-auth
+                    key: default-password
                 IMMICH_JOB_FACE_DETECTION_CONCURRENCY: "4"
                 IMMICH_JOB_SMART_SEARCH_CONCURRENCY: "4"
               resources:
