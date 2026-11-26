@@ -78,10 +78,10 @@ spec:
               trigger:
                 schedule: "0 1 * * *"
       thumbs:
-        storageClass: ceph-nvme
+        storageClass: ceph-filesystem
         size: 50Gi
         accessModes:
-          - ReadWriteOnce
+          - ReadWriteMany
         volsync:
           - name: thn
             type: restic
@@ -89,7 +89,7 @@ spec:
             dest:
               enabled: false
             src:
-              volumeSnapshotClassName: csi-ceph-blockpool
+              volumeSnapshotClassName: ceph-filesystem
               enabled: true
               trigger:
                 schedule: "0 1 * * *"
@@ -148,9 +148,26 @@ spec:
       valkey:
         enabled: true
 
+    podOptions:
+      # Chart default adds required podAffinity co-locating pods that share a PVC,
+      # which would pin every replica onto one node. All shared volumes are
+      # RWX/NFS, so co-location is unnecessary (same fix as nextcloud).
+      defaultAffinity: false
+
     workload:
       main:
+        type: Deployment
+        strategy: RollingUpdate
+        replicas: 2
         podSpec:
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/instance: immich
+                      pod.name: main
+                  topologyKey: kubernetes.io/hostname
           containers:
             main:
               resources:
@@ -162,13 +179,12 @@ spec:
         podSpec:
           affinity:
             podAntiAffinity:
-              preferredDuringSchedulingIgnoredDuringExecution:
-                - weight: 100
-                  podAffinityTerm:
-                    labelSelector:
-                      matchLabels:
-                        pod.name: machinelearning
-                    topologyKey: kubernetes.io/hostname
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/instance: immich
+                      pod.name: machinelearning
+                  topologyKey: kubernetes.io/hostname
           containers:
             machinelearning:
               resources:
@@ -183,13 +199,12 @@ spec:
         podSpec:
           affinity:
             podAntiAffinity:
-              preferredDuringSchedulingIgnoredDuringExecution:
-                - weight: 100
-                  podAffinityTerm:
-                    labelSelector:
-                      matchLabels:
-                        pod.name: microservices
-                    topologyKey: kubernetes.io/hostname
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/instance: immich
+                      pod.name: microservices
+                  topologyKey: kubernetes.io/hostname
           containers:
             microservices:
               env:
