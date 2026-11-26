@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: home-assistant
-      version: 32.2.8
+      version: 33.0.1
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -115,17 +115,24 @@ spec:
               trigger:
                 schedule: 45 0 * * *
             type: restic
-    cnpg:
-      main:
-        mode: recovery # Set to 'recovery' when recovery from S3, also change the revisions
-        backups:
-          enabled: true
-          credentials: s3
-          retentionPolicy: "14d"
-          revision: "2"
-        recovery:
-          credentials: s3
-          revision: "1"
+    dependencies:
+      postgresql:
+        enabled: true
+        depconfig:
+          postgresqlUsername: home-assistant
+          postgresqlDatabase: home-assistant
+        operator:
+          pgVersion: 16 # temporary pin, remove after the pg18 upgrade
+          mode: recovery # Set to 'recovery' when recovery from S3, also change the revisions
+          backups:
+            enabled: true
+            credentials: s3
+            retentionPolicy: "14d"
+            revision: "2"
+          recovery:
+            method: object_store
+            credentials: s3
+            revision: "1"
 
     #   zigbeedongle:
     #     enabled: true
