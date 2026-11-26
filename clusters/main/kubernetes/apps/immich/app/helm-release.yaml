@@ -88,10 +88,13 @@ spec:
           - name: thn
             type: restic
             credentials: s3
+            # RWX ceph-filesystem: mount the volume into the mover directly.
+            # The CephFS snapshot clone cost ~34 of the 35 minute sync (it
+            # copies all ~61k thumbnail files); Direct cuts it to restic time.
+            copyMethod: Direct
             dest:
               enabled: false
             src:
-              volumeSnapshotClassName: ceph-filesystem
               enabled: true
               trigger:
                 schedule: "0 1 * * *"
