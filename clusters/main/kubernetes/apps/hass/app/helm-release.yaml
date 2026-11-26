@@ -101,6 +101,10 @@ spec:
                 schedule: "30 14 * * *"
       matter:
         enabled: true
+        storageClass: ceph-filesystem
+        size: 1Gi
+        accessModes:
+          - ReadWriteMany
         targetSelector:
           main:
             matter:
@@ -108,9 +112,11 @@ spec:
         volsync:
           - credentials: s3
             dest:
+              volumeSnapshotClassName: ceph-filesystem
               enabled: true
             name: matter
             src:
+              volumeSnapshotClassName: ceph-filesystem
               enabled: true
               trigger:
                 schedule: 45 0 * * *
@@ -153,6 +159,15 @@ spec:
           # nodeSelector:
           #   zigbee: "true"
           hostNetwork: true
+          tolerations:
+            - key: node.kubernetes.io/not-ready
+              operator: Exists
+              effect: NoExecute
+              tolerationSeconds: 30
+            - key: node.kubernetes.io/unreachable
+              operator: Exists
+              effect: NoExecute
+              tolerationSeconds: 30
           # CoreDNS forwards to the node resolvers (1.1.1.1/8.8.8.8), so
           # *.mooneybin.net inside the pod resolves to Cloudflare instead of
           # the LAN ingress. Pin the external hostname to the nginx-external
