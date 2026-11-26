@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: immich
-      version: 35.7.12
+      version: 36.0.0
       sourceRef:
         kind: HelmRepository
         name: truecharts
@@ -127,18 +127,27 @@ spec:
           microservices:
             microservices: {}
 
-    cnpg:
-      main:
-        mode: recovery # Set to 'recovery' when recovery from S3, also change the revisions
-        backups:
-          enabled: true # Set to 'false' when performing new install (recovery)
-          credentials: s3
-          retentionPolicy: "7d"
-          revision: "3"
-        recovery:
-          method: object_store
-          credentials: s3
-          revision: "2"
+    dependencies:
+      postgresql:
+        enabled: true
+        depconfig:
+          postgresqlUsername: immich
+          postgresqlDatabase: immich
+        operator:
+          type: vectorchord
+          pgVersion: 16 # temporary pin, remove after the pg18 upgrade
+          mode: recovery # Set to 'recovery' when recovery from S3, also change the revisions
+          backups:
+            enabled: true # Set to 'false' when performing new install (recovery)
+            credentials: s3
+            retentionPolicy: "7d"
+            revision: "3"
+          recovery:
+            method: object_store
+            credentials: s3
+            revision: "2"
+      valkey:
+        enabled: true
 
     workload:
       main:
