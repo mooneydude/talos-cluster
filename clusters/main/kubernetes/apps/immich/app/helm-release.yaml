@@ -164,6 +164,11 @@ spec:
       main:
         type: Deployment
         strategy: RollingUpdate
+        # maxSurge: 0 because required anti-affinity plus the Intel GPU limit
+        # (i915 only on worker-1/worker-2) leaves no node for a surge pod.
+        rollingUpdate:
+          maxSurge: 0
+          maxUnavailable: 1
         replicas: 2
         podSpec:
           affinity:
