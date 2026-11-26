@@ -44,11 +44,14 @@ spec:
       repository: blampe/rreading-glasses
       tag: hardcover
       pullPolicy: Always
-    cnpg:
-      main:
+    dependencies:
+      postgresql:
         enabled: true
-        database: rreading-glasses
-        user: rreading-glasses
+        depconfig:
+          postgresqlUsername: rreading-glasses
+          postgresqlDatabase: rreading-glasses
+        operator:
+          pgVersion: 16 # temporary pin, remove after the pg18 upgrade
     service:
       main:
         ports:
@@ -76,17 +79,16 @@ spec:
                 HARDCOVER_AUTH: "${HARDCOVER_AUTH}"
                 POSTGRES_HOST:
                   secretKeyRef:
-                    name: cnpg-main-urls
-                    key: host
+                    expandObjectName: false
+                    name: rreading-glasses-postgresqlcreds
+                    key: plainhost
                 POSTGRES_DATABASE: rreading-glasses
-                POSTGRES_USER:
-                  secretKeyRef:
-                    name: cnpg-main-user
-                    key: username
+                POSTGRES_USER: rreading-glasses
                 POSTGRES_PASSWORD:
                   secretKeyRef:
-                    name: cnpg-main-user
-                    key: password
+                    expandObjectName: false
+                    name: rreading-glasses-postgresqlcreds
+                    key: postgresql-password
     ingress:
       main:
         enabled: true
