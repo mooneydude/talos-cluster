@@ -20,7 +20,12 @@ spec:
       retries: 3
   upgrade:
     cleanupOnFail: true
-    crds: CreateReplace
+    # Skip: chart 7.0.1 ships the group-snapshot CRDs with only v1beta1, but the
+    # live CRDs report storedVersions [v1beta1 v1beta2], so the CreateReplace
+    # patch is rejected and every retry (upgrade and rollback alike) bounced the
+    # controller pod. Group snapshots are unused here (0 objects). Revisit with a
+    # storedVersions storage migration if these CRDs ever need chart management.
+    crds: Skip
     remediation:
       strategy: rollback
       retries: 3
