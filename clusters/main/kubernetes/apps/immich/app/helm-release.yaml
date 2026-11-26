@@ -135,7 +135,6 @@ spec:
           postgresqlDatabase: immich
         operator:
           type: vectorchord
-          pgVersion: 16 # re-pinned: pg18 image lacks a required loadable library
           mode: recovery # Set to 'recovery' when recovery from S3, also change the revisions
           backups:
             enabled: true # Set to 'false' when performing new install (recovery)
