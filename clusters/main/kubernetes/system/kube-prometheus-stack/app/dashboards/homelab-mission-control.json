@@ -225,6 +225,7 @@
       "id": 8,
       "type": "stat",
       "title": "Unhealthy Pods",
+      "description": "Pods stuck in Failed, Unknown or Pending for more than ~5 minutes. Short-lived Pending states from CronJobs, VolSync snapshot clones and rollouts are ignored.",
       "datasource": {
         "type": "prometheus",
         "uid": "prometheus"
@@ -241,7 +242,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(kube_pod_status_phase{phase=~\"Failed|Pending|Unknown\"})",
+          "expr": "sum((min_over_time(kube_pod_status_phase{phase=~\"Failed|Pending|Unknown\"}[5m]) == 1) and (count_over_time(kube_pod_status_phase{phase=~\"Failed|Pending|Unknown\"}[5m]) >= 8)) or vector(0)",
           "refId": "A",
           "editorMode": "code",
           "range": true,
